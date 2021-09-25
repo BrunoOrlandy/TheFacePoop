@@ -4,11 +4,11 @@
 
 if(isset($_POST['login_button'])) {
 
-	$email = filter_var($_POST['log_email'], FILTER_SANITIZE_EMAIL); // Sanitizing email
+	$email = filter_var($_POST['log_email'], FILTER_SANITIZE_EMAIL); 
 
-	$_SESSION['log_email'] = $email; // Store email into session variable 
+	$_SESSION['log_email'] = $email; 
 
-	$password = md5($_POST['log_password']); // Get senha
+	$password = md5($_POST['log_password']); 
 
 	// Query para validar email e senha do login
 
@@ -21,7 +21,7 @@ if(isset($_POST['login_button'])) {
 		$row = pg_fetch_array($check_database_query);
 		$username = $row['username'];
 
-		// Update's user_closed='yes' for successfull logging in
+		// Update user_closed='yes' for successfull logging in
 
 		$user_closed_query = pg_query($con, "SELECT * FROM usuario WHERE email='$email' AND user_closed='yes'");
 		if(pg_num_rows($user_closed_query) == 1) {
@@ -29,8 +29,8 @@ if(isset($_POST['login_button'])) {
 			$reopen_account = pg_query($con, "UPDATE usuario SET user_closed='no' WHERE email='$email'");
 		}
 
-		$_SESSION['username'] = $username; // Storing username into session variable
-		header("Location: index.php"); // Redirecting to index page
+		$_SESSION['username'] = $username; 
+		header("Location: index.php"); 
 		exit();
 	}
 	else {
