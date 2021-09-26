@@ -1,67 +1,66 @@
-CREATE TABLE usuario(
-	usuario_id SERIAL PRIMARY KEY,
+CREATE TABLE users(
+	user_id SERIAL PRIMARY KEY,
 	login VARCHAR(50) NOT NULL,
-	nome VARCHAR(50) NOT NULL,
+	first_name VARCHAR(50) NOT NULL,
+	last_name VARCHAR(50) NOT NULL,
 	email VARCHAR(50) NOT NULL,
-	descricao VARCHAR(50) NOT NULL,
-	data_aniversario DATE,
-	data_inclusao DATE NOT NULL DEFAULT CURRENT_DATE
+	password VARCHAR(50) NOT NULL,
+	description VARCHAR(50),
+	birthday_date DATE,
+	register_date DATE NOT NULL DEFAULT CURRENT_DATE,
+	is_active BOOLEAN
 );
 
-CREATE TABLE amizade(
-	amizade_id SERIAL PRIMARY KEY,
-	data_solicitacao DATE NOT NULL,
-	data_aceite DATE,
-	data_bloqueio DATE
+CREATE TABLE friendships(
+	friendship_id SERIAL PRIMARY KEY,
+	request_date DATE NOT NULL,
+	acceptance_date DATE,
+	block_date DATE
 );
 
-CREATE TABLE usuario_amizade(
-	amizade_id int NOT NULL,
-	usuario_id int NOT NULL,
-	data_atualizacao date NOT NULL DEFAULT CURRENT_DATE,
-	PRIMARY KEY (amizade_id, usuario_id),
-	FOREIGN KEY (usuario_id) REFERENCES usuario (usuario_id),
-	FOREIGN KEY (amizade_id) REFERENCES amizade (amizade_id)
+CREATE TABLE users_friendships(
+	friendship_id int NOT NULL,
+	user_id int NOT NULL,
+	update_date date NOT NULL DEFAULT CURRENT_DATE,
+	PRIMARY KEY (friendship_id, user_id),
+	FOREIGN KEY (user_id) REFERENCES users (user_id),
+	FOREIGN KEY (friendship_id) REFERENCES friendships (friendship_id)
 );
 
 --propriedade TEXT 'variable unlimited length'
-CREATE TABLE comentario(
-	comentario_id SERIAL PRIMARY KEY,
-	usuario_id INT,
+CREATE TABLE comments(
+	comment_id SERIAL PRIMARY KEY,
+	user_id INT,
 	texto TEXT,
-	data_inclusao DATE NOT NULL,
-	CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(usuario_id)
+	inclusion_date DATE NOT NULL,
+	CONSTRAINT fk_users FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
-CREATE TABLE imagem(
-	imagem_id SERIAL PRIMARY KEY,
-	usuario_id INT,
-	CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(usuario_id)
+CREATE TABLE images(
+	image_id SERIAL PRIMARY KEY,
+	user_id INT,
+	file BYTEA,
+	CONSTRAINT fk_users FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
-CREATE TABLE postagem(
-	postagem_id SERIAL PRIMARY KEY,
-	imagem_id INT,
-	usuario_id INT NOT NULL,
-	comentario_id INT,
-	texto TEXT,
-	data_inclusao DATE NOT NULL,
-	CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(usuario_id),
-	CONSTRAINT fk_comentario FOREIGN KEY (comentario_id) REFERENCES comentario(comentario_id),
-	CONSTRAINT fk_imagem FOREIGN KEY (imagem_id) REFERENCES imagem(imagem_id)
+CREATE TABLE posts(
+	post_id SERIAL PRIMARY KEY,
+	image_id INT,
+	user_id INT NOT NULL,
+	comment_id INT,
+	text TEXT,
+	inclusion_date DATE NOT NULL,
+	CONSTRAINT fk_users FOREIGN KEY (user_id) REFERENCES users(user_id),
+	CONSTRAINT fk_comment FOREIGN KEY (comment_id) REFERENCES comments(comment_id),
+	CONSTRAINT fk_image FOREIGN KEY (image_id) REFERENCES images(image_id)
 );
 
-CREATE TABLE reacao(
-	reacao_id SERIAL PRIMARY KEY,
-	usuario_id INT,
-	postagem_id INT,
-	gostou INT,
-	nao_gostou INT,
-	espanto INT,
-	risada INT,
-	tristeza INT,
-	raiva INT,
-	data_inclusao DATE NOT NULL,
-	CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(usuario_id),
-	CONSTRAINT fk_postagem FOREIGN KEY (postagem_id) REFERENCES postagem(postagem_id)
+CREATE TABLE reactions(
+	reaction_id SERIAL PRIMARY KEY,
+	user_id INT,
+	post_id INT,
+	reaction_value INT,
+	inclusion_date DATE NOT NULL,
+	CONSTRAINT fk_users FOREIGN KEY (user_id) REFERENCES users(user_id),
+	CONSTRAINT fk_post FOREIGN KEY (post_id) REFERENCES posts(post_id)
 );

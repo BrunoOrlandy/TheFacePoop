@@ -1,6 +1,5 @@
 <?php
 
-
 // Declaring variables to prevent errors
 
 $fname = ""; // Variable for storing first name
@@ -13,7 +12,7 @@ $date = ""; // Variable for storing sign up date
 $error_array = array(); // Variable that holds error messages
 
 
-if(isset($_POST['register_button'])){
+if (isset($_POST['register_button'])) {
 
 	// Registration form values
 
@@ -37,7 +36,7 @@ if(isset($_POST['register_button'])){
 	$em = str_replace(' ', '', $em); // To replace the spaces in the input
 	$_SESSION['reg_email'] = $em; // Stores email into session variable
 
-	// Email 2
+	// Confirmation Email
 
 	$em2 = strip_tags($_POST['reg_email2']); // For removing html tags from input
 	$em2 = str_replace(' ', '', $em2); // To replace the spaces in the input
@@ -54,11 +53,11 @@ if(isset($_POST['register_button'])){
 
 	// Email Validation
 
-	if($em == $em2) { // Triggers if both emails are same
+	if ($em == $em2) { // Triggers if both emails are same
 
 		// Check if email is in valid format 
 
-		if(filter_var($em, FILTER_VALIDATE_EMAIL)) { 
+		if (filter_var($em, FILTER_VALIDATE_EMAIL)) {
 
 			$em = filter_var($em, FILTER_VALIDATE_EMAIL);
 
@@ -70,43 +69,37 @@ if(isset($_POST['register_button'])){
 
 			$num_rows = pg_num_rows($e_check);
 
-			if($num_rows > 0) {
-
+			if ($num_rows > 0) {
 				array_push($error_array, "Email already in use</br>");
 			}
-
-		}
-		else {
+		} else {
 			array_push($error_array, "Invalid email format</br>");
 		}
-
-	}
-	else {
+	} else {
 		array_push($error_array, "Emails doesn't match</br>");
 	}
 
 	// First Name length Validation
 
 
-	if(strlen($fname) > 25 || strlen($fname) < 2) {
+	if (strlen($fname) > 25 || strlen($fname) < 2) {
 
 		array_push($error_array, "Your First Name should be in between 2-25 characters</br>");
 	}
 
 	// Second Name length Validation
 
-	if(strlen($lname) > 25 || strlen($lname) < 2) {
+	if (strlen($lname) > 25 || strlen($lname) < 2) {
 		array_push($error_array,  "Your Last Name should be in between 2-25 characters</br>");
 	}
 
 	// Password validation
 
-	if($password != $password2) {
+	if ($password != $password2) {
 
 		array_push($error_array,  "Passwords doesn't match</br>");
-	}
-	else {
-		if(preg_match('/[^A-Za-z0-9]/', $password)) {
+	} else {
+		if (preg_match('/[^A-Za-z0-9]/', $password)) {
 
 			array_push($error_array, "Your password should contain only letters and numbers</br>");
 		}
@@ -114,45 +107,43 @@ if(isset($_POST['register_button'])){
 
 	// Password length Validation
 
-	if(strlen($password > 30 || strlen($password) < 5)) {
+	if (strlen($password > 30 || strlen($password) < 5)) {
 
 		array_push($error_array, "Your Password should be in between 5-30 characters</br>");
 	}
-    
-    // Triggers when no errors in $error_array
 
-	if(empty($error_array)) {
+	// Triggers when no errors in $error_array
 
-		$password = md5($password); // Encrypt password before sending to database
+	if (empty($error_array)) {
+		$encripted_password = md5($em.$password); // Encrypt password before sending to database
+		
+		// Generate login by concatenating first name and last name
 
-		// Generate username by concatenating first name and last name
+		$login = strtolower($fname . "_" . $lname);
+		$check_login_query = pg_query($con, "SELECT login FROM users WHERE login='$login'");
 
-		$username = strtolower($fname . "_" . $lname);
-		$check_username_query = pg_query($con, "SELECT username FROM users WHERE username='$username'");
+		// If login exists add number to login
 
-		$i = 0; 
-
-		// If username exists add number to username
-
-		while(pg_num_rows($check_username_query) != 0) {
+		$i = 0;
+		while (pg_num_rows($check_login_query) != 0) {
 
 			$i++; // Add 1 to i
-			$username = $username . "_" . $i;
-			$check_username_query = pg_query($con, "SELECT username FROM users WHERE username='$username'");
+			$login = $login . "_" . $i;
+			$check_login_query = pg_query($con, "SELECT login FROM users WHERE login='$login'");
 		}
 
 		// Profile picture assignment randomly
 
 		$rand = rand(1, 2); // Random number generation between 1 and 2
 
-		if($rand == 1)
+		if ($rand == 1)
 			$profile_pic = "assets/images/profile_pics/defaults/head_green_sea.png";
-		else if($rand == 2)
+		else if ($rand == 2)
 			$profile_pic = "assets/images/profile_pics/defaults/head_wet_asphalt.png";
 
 		// Inserting values into the database after all succesfull validations
 
-		$query = pg_query($con, "INSERT INTO users VALUES ('', '$fname', '$lname', '$username', '$em', '$password', '$date', '$profile_pic', '0', '0', 'no', ',')");
+		$query = pg_query($con, "INSERT INTO users VALUES (default, '$login', '$fname', '$lname', '$em', '$encripted_password', default, default, '$date')");
 
 		array_push($error_array, "<span style='color: #14C800;'>You're all set! Go ahead and login!</span><br>");
 
@@ -163,6 +154,4 @@ if(isset($_POST['register_button'])){
 		$_SESSION['reg_email'] = "";
 		$_SESSION['reg_email2'] = "";
 	}
-
 }
-?>
