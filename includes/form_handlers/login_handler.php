@@ -14,9 +14,9 @@ if(isset($_POST['login_button'])) {
 
 	$check_database_query = pg_query($con, "SELECT * FROM users WHERE email='$email' AND password='$password'");
 
-	$check_login_query = pg_num_rows($check_database_query);
+	//$check_login_query = pg_num_rows($check_database_query);
 
-	if($check_login_query == 1) {
+	if($check_database_query) {
 
 		$row = pg_fetch_array($check_database_query);
 		$login = $row['login'];
