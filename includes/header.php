@@ -1,30 +1,33 @@
-<?php  
+<?php
 require 'config/config.php'; // To include config.php file
-include("includes/classes/User.php"); // To include User.php file
-include("includes/classes/Post.php"); // To include Post.php file
-include("includes/classes/Message.php"); // To include Message.php file
+include("includes/models/User.php"); // To include User.php file
+include("includes/models/DAOs/UserDAO.php"); // To include User.php file
+include("includes/models/Post.php"); // To include Post.php file
+include("includes/models/DAOs/PostDAO.php"); // To include Post.php file
+//include("includes/models/Message.php"); // To include Message.php file
 
 
 // Triggers when session variable for username is set
 // It prevents illegal access of index page
 
-if (isset($_SESSION['username'])) {
+if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 
-	$userLoggedIn = $_SESSION['username'];
+	$userLoggedIn = $_SESSION['login'];
+	$userID = $_SESSION['user_id'];
 
-	$user_details_query = mysqli_query($con, "SELECT * FROM users WHERE username='$userLoggedIn'");
+	$user_details_query = pg_query($con, "SELECT * FROM users WHERE user_id='$userID'");
 
-	$user = mysqli_fetch_array($user_details_query);
-}
-else {
+	$user = pg_fetch_array($user_details_query);
+} else {
 	header("Location: register.php"); // If not set redirects to register.php
 }
 
 ?>
 
 <html>
+
 <head>
-	<title>Welcome to Buddy..!!</title>
+	<title>Welcome to FacePoop!</title>
 
 	<!-- Javascript -->
 
@@ -44,18 +47,21 @@ else {
 	<link rel="stylesheet" href="assets/css/jquery.Jcrop.css" type="text/css" />
 
 </head>
+
 <body>
 
 	<!-- Navigation Bar -->
 
-	<div class="top_bar"> 
+	<div class="top_bar">
 
 		<!-- Navbar Logo Section -->
 
-		<div class = "logo">
+		<div class="logo">
 
-			<a href="index.php"><h2>Buddy</h2></a>
-			
+			<a href="index.php">
+				<h2>FacePoop</h2>
+			</a>
+
 		</div>
 
 		<div class="search">
@@ -78,18 +84,9 @@ else {
 			<div class="search_results_footer_empty">
 			</div>
 
-
-
 		</div>
 
-		
-		
-
 		<nav>
-
-			
-
-				
 			<!-- Firstname display in navbar -->
 
 			<a href="<?php echo $userLoggedIn; ?>">

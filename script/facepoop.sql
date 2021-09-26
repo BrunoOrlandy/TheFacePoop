@@ -50,6 +50,7 @@ CREATE TABLE posts(
 	comment_id INT,
 	text TEXT,
 	inclusion_date DATE NOT NULL,
+	is_deleted BOOLEAN,
 	CONSTRAINT fk_users FOREIGN KEY (user_id) REFERENCES users(user_id),
 	CONSTRAINT fk_comment FOREIGN KEY (comment_id) REFERENCES comments(comment_id),
 	CONSTRAINT fk_image FOREIGN KEY (image_id) REFERENCES images(image_id)

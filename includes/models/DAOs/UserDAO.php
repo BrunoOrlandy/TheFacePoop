@@ -6,29 +6,33 @@ class UserDAO {
 
 	// constructor
 
-	public function __construct($con, $user){
+	public function __construct($con, $user_id){
 		$this->con = $con;
-		$user_details_query = pg_query($con, "SELECT * FROM users WHERE username='$user'");
+		$user_details_query = pg_query($con, "SELECT * FROM users WHERE user_id='$user_id'");
 		$this->user = pg_fetch_array($user_details_query);
 	}
 
-	// To get the username
+	public function getID() {
+		return $this->user['user_id'];
+	}
 
-	public function getUsername() {
-		return $this->user['username'];
+	// To get the login
+
+	public function getLogin() {
+		return $this->user['login'];
 	}
 
 	public function getNumberOfFriendRequests() {
-		$username = $this->user['username'];
-		$query = pg_query($this->con, "SELECT * FROM friend_requests WHERE user_to='$username'");
+		$login = $this->user['login'];
+		$query = pg_query($this->con, "SELECT * FROM friend_requests WHERE user_to='$login'");
 		return pg_num_rows($query);
 	}
 
 	// To get the number of posts
 
 	public function getNumPosts() {
-		$username = $this->user['username'];
-		$query = pg_query($this->con, "SELECT num_posts FROM users WHERE username='$username'");
+		$login = $this->user['login'];
+		$query = pg_query($this->con, "SELECT num_posts FROM users WHERE login='$login'");
 		$row = pg_fetch_array($query);
 		return $row['num_posts'];
 	}
@@ -36,8 +40,8 @@ class UserDAO {
 	// To get the firstname and lastname
 
 	public function getFirstAndLastName() {
-		$username = $this->user['username'];
-		$query = pg_query($this->con, "SELECT first_name, last_name FROM users WHERE username='$username'");
+		$login = $this->user['login'];
+		$query = pg_query($this->con, "SELECT first_name, last_name FROM users WHERE login='$login'");
 		$row = pg_fetch_array($query);
 		return $row['first_name'] . " " . $row['last_name'];
 	}
@@ -45,29 +49,29 @@ class UserDAO {
 	// To get the profile_pic of user
 
 	public function getProfilePic() {
-		$username = $this->user['username'];
-		$query = pg_query($this->con, "SELECT profile_pic FROM users WHERE username='$username'");
-		$row = pg_fetch_array($query);
-		return $row['profile_pic'];
+		return "assets/images/profile_pics/imagem.jpg";
+		// $login = $this->user['login'];
+		// $query = pg_query($this->con, "SELECT profile_pic FROM users WHERE login='$login'");
+		// return $row['profile_pic'];
 	}
 
 	// To get the friend array of user
 
-	public function getFriendArray() {
-		$username = $this->user['username'];
-		$query = pg_query($this->con, "SELECT friend_array FROM users WHERE username='$username'");
-		$row = pg_fetch_array($query);
-		return $row['friend_array'];
-	}
+	// public function getFriendArray() {
+	// 	$login = $this->user['login'];
+	// 	$query = pg_query($this->con, "SELECT friend_array FROM users WHERE login='$login'");
+	// 	$row = pg_fetch_array($query);
+	// 	return $row['friend_array'];
+	// }
 
 	// To check whether user is closed or not
 
-	public function isClosed() {
-		$username = $this->user['username'];
-		$query = pg_query($this->con, "SELECT user_closed FROM users WHERE username='$username'");
+	public function isAccountClosed() {
+		$login = $this->user['login'];
+		$query = pg_query($this->con, "SELECT is_active FROM users WHERE login='$login'");
 		$row = pg_fetch_array($query);
 
-		if($row['user_closed'] == 'yes')
+		if($row['is_active'] == false)
 			return true;
 		else 
 			return false;
@@ -75,22 +79,23 @@ class UserDAO {
 
 	// To verify both are friends or to added_by = loggedin user in profile page newsfeed
 
-	public function isFriend($username_to_check) {
-		$usernameComma = "," . $username_to_check . ",";
+	public function isFriendOf($login_to_check) {
+		$loginComma = "," . $login_to_check . ",";
 
-		if((strstr($this->user['friend_array'], $usernameComma) || $username_to_check == $this->user['username'])) {
-			return true;
-		}
-		else {
-			return false;
-		}
+		// if((strstr($this->user['friend_array'], $loginComma) || $login_to_check == $this->user['login'])) {
+		// 	return true;
+		// }
+		// else {
+		// 	return false;
+		// }
+		return true;
 	}
 
 	// To check for friend request receieved or not
 
 	public function didReceiveRequest($user_from) {
 
-		$user_to = $this->user['username'];
+		$user_to = $this->user['login'];
 
 		$check_request_query = pg_query($this->con, "SELECT * FROM friend_requests WHERE user_to='$user_to' AND user_from='$user_from'");
 
@@ -108,7 +113,7 @@ class UserDAO {
 
 	public function didSendRequest($user_to) {
 
-		$user_from = $this->user['username'];
+		$user_from = $this->user['login'];
 
 		$check_request_query = pg_query($this->con, "SELECT * FROM friend_requests WHERE user_to='$user_to' AND user_from='$user_from'");
 
@@ -124,30 +129,30 @@ class UserDAO {
 
 	// To Remove friend
 
-	public function removeFriend($user_to_remove) {
+	// public function removeFriend($user_to_remove) {
 
-		$logged_in_user = $this->user['username']; // To get the logged in username
+	// 	$logged_in_user = $this->user['login']; // To get the logged in login
 
-		$query = pg_query($this->con, "SELECT friend_array FROM users WHERE username='$user_to_remove'"); // To get the friend of user_to_remove
+	// 	$query = pg_query($this->con, "SELECT friend_array FROM users WHERE login='$user_to_remove'"); // To get the friend of user_to_remove
 
-		$row = pg_fetch_array($query);
+	// 	$row = pg_fetch_array($query);
 
-		$friend_array_username = $row['friend_array']; // User_to_remove friend _array
+	// 	$friend_array_login = $row['friend_array']; // User_to_remove friend _array
 
-		$new_friend_array = str_replace($user_to_remove . ",", "", $this->user['friend_array']); // Replace with null in logged_in user's friend array by finding the user_to_remove substring
+	// 	$new_friend_array = str_replace($user_to_remove . ",", "", $this->user['friend_array']); // Replace with null in logged_in user's friend array by finding the user_to_remove substring
 
-		$remove_friend = pg_query($this->con, "UPDATE users SET friend_array='$new_friend_array' WHERE username='$logged_in_user'"); // Update friend array after replacing with null of logged_in user
+	// 	$remove_friend = pg_query($this->con, "UPDATE users SET friend_array='$new_friend_array' WHERE login='$logged_in_user'"); // Update friend array after replacing with null of logged_in user
 
-		$new_friend_array = str_replace($this->user['username'] . ",", "", $friend_array_username); // Same process as above but in user_to_remove friend_array
+	// 	$new_friend_array = str_replace($this->user['login'] . ",", "", $friend_array_login); // Same process as above but in user_to_remove friend_array
 
-		$remove_friend = pg_query($this->con, "UPDATE users SET friend_array='$new_friend_array' WHERE username='$user_to_remove'"); // Updating new friend array of user_to_remove
-	}
+	// 	$remove_friend = pg_query($this->con, "UPDATE users SET friend_array='$new_friend_array' WHERE login='$user_to_remove'"); // Updating new friend array of user_to_remove
+	// }
 
 	// To Send request
 
 	public function sendRequest($user_to) {
 
-		$user_from = $this->user['username']; // To get the username of logged_in user
+		$user_from = $this->user['login']; // To get the login of logged_in user
 
 		// Query to insert into friend_requests
 
@@ -156,28 +161,28 @@ class UserDAO {
 
 	// To get the mutual friend count
 
-	public function getMutualFriends($user_to_check) {
-		$mutualFriends = 0;
-		$user_array = $this->user['friend_array'];
-		$user_array_explode = explode(",", $user_array);
+	// public function getMutualFriends($user_to_check) {
+	// 	$mutualFriends = 0;
+	// 	$user_array = $this->user['friend_array'];
+	// 	$user_array_explode = explode(",", $user_array);
 
-		$query = pg_query($this->con, "SELECT friend_array FROM users WHERE username='$user_to_check'");
-		$row = pg_fetch_array($query);
-		$user_to_check_array = $row['friend_array'];
-		$user_to_check_array_explode = explode(",", $user_to_check_array);
+	// 	$query = pg_query($this->con, "SELECT friend_array FROM users WHERE login='$user_to_check'");
+	// 	$row = pg_fetch_array($query);
+	// 	$user_to_check_array = $row['friend_array'];
+	// 	$user_to_check_array_explode = explode(",", $user_to_check_array);
 
-		foreach($user_array_explode as $i) {
+	// 	foreach($user_array_explode as $i) {
 
-			foreach($user_to_check_array_explode as $j) {
+	// 		foreach($user_to_check_array_explode as $j) {
 
-				if($i == $j && $i != "") {
-					$mutualFriends++;
-				}
-			}
-		}
-		return $mutualFriends;
+	// 			if($i == $j && $i != "") {
+	// 				$mutualFriends++;
+	// 			}
+	// 		}
+	// 	}
+	// 	return $mutualFriends;
 
-	}
+	// }
 
 
 

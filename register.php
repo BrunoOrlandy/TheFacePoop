@@ -42,7 +42,7 @@ require 'includes/form_handlers/login_handler.php'; // To include login_handler.
 		<div class="login_box">
 
 			<div class="login_header">
-				<h1>Bem-vindo..!!</h1>
+				<h1>Bem-vindo!</h1>
 				<p> Faça login ou inscreva-se abaixo! </p>
 			</div>
 
@@ -167,7 +167,7 @@ require 'includes/form_handlers/login_handler.php'; // To include login_handler.
 
 					<!-- Link to login form -->
 					
-					<a href="#" id="signin" class="signin">já tem uma conta? Faça login aqui!</a>
+					<a href="#" id="signin" class="signin">Já tem uma conta? Faça login aqui!</a>
 
 				</form>
 

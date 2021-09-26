@@ -3,18 +3,16 @@ include("includes/header.php"); // To include header.php file
 
 
 if (isset($_POST['post'])) { // Creates instance of Post class when post button is triggered
-	$post = new Post($con, $userLoggedIn);
-	$post->submitPost($_POST['post_text'], 'none');
+	$post = new PostDAO($con, $userID);
+	$post->submitPost($_POST['post_text']);
 }
-
-
 ?>
 
 <!-- Index page user details section -->
 
 <div class="user_details column">
 
-	<a href="<?php echo $userLoggedIn; ?>"> <img src="<?php echo $user['profile_pic']; ?>"> </a>
+	<a href="<?php echo $userLoggedIn; ?>"> <img src="assets/images/profile_pics/imagem.jpg"> </a>
 
 	<div class="user_details_left_right">
 
@@ -26,10 +24,10 @@ if (isset($_POST['post'])) { // Creates instance of Post class when post button 
 			?>
 		</a>
 		<br>
-		<?php echo "Posts: " . $user['num_posts'] . "<br>";
+		<!-- <?php echo "Posts: " . $user['num_posts'] . "<br>";
 		echo "Likes: " . $user['num_likes'];
 
-		?>
+		?> -->
 	</div>
 
 </div>
@@ -59,18 +57,11 @@ if (isset($_POST['post'])) { // Creates instance of Post class when post button 
 </div>
 
 
-
-<div class="user_details column">
-
-	<img src="assets/images/logo/buddy_logo.png" alt="logo">
-
-</div>
-
-
 <!-- Ajax request to limit the posts in index page newsfeed -->
 
 <script>
 	var userLoggedIn = '<?php echo $userLoggedIn; ?>';
+	var userID = '<?php echo $userID; ?>';
 
 	$(document).ready(function() {
 
@@ -80,7 +71,7 @@ if (isset($_POST['post'])) { // Creates instance of Post class when post button 
 		$.ajax({
 			url: "includes/handlers/ajax_load_posts.php", // url
 			type: "POST",
-			data: "page=1&userLoggedIn=" + userLoggedIn, // request
+			data: "page=1&userID=" + userID + "&userLoggedIn=" + userLoggedIn, // request
 			cache: false,
 
 			success: function(data) {
