@@ -13,8 +13,11 @@ class PostDAO
 	public function submitPost($post_text_body)
 	{
 			$inclusion_date = date("Y-m-d H:i:s");
+
 			$logged_user_id = $this->logged_user_obj->getID();
-			pg_query($this->con, "INSERT INTO posts VALUES(default, default, '$logged_user_id', default, '$post_text_body', '$inclusion_date', false)");		
+
+			pg_query($this->con, "INSERT INTO posts VALUES(default, default, '$logged_user_id', default, '$post_text_body', '$inclusion_date', false)");
+		}
 	}
 
 	public function loadPostsFriends($data, $limit_pagination)
@@ -80,7 +83,7 @@ class PostDAO
 					$date_time_now = date("Y-m-d H:i:s");
 					$start_date = new DateTime($date_time); // Time of post
 					$end_date = new DateTime($date_time_now); // Current time
-					$interval = (Object) $start_date->diff($end_date); // Difference between dates 
+					$interval = (object)$start_date->diff($end_date); // Difference between dates 
 
 					if ($interval->y >= 1) {
 
@@ -206,7 +209,7 @@ class PostDAO
 
 
 		$str = ""; //String to return 
-		$data_query = pg_query($this->con, "SELECT * FROM posts WHERE deleted=false AND user_id='$logged_user_id' ORDER BY id DESC");
+		$data_query = pg_query($this->con, "SELECT * FROM posts WHERE is_deleted=false AND user_id='$logged_user_id' ORDER BY post_id DESC");
 
 		if (pg_num_rows($data_query) > 0) {
 			$num_iterations = 0; // Number of results checked (not necasserily posted)
@@ -245,8 +248,9 @@ class PostDAO
 				$date_time_now = date("Y-m-d H:i:s");
 				$start_date = new DateTime($date_time); 
 				$end_date = new DateTime($date_time_now); 
-				$interval =(Object) $start_date->diff($end_date); 
-				if ($interval->y >= 1) {
+				$interval =(object) $start_date->diff($end_date); 
+
+        if ($interval->y >= 1) {
 					if ($interval == 1)
 						$time_message = $interval->y . " year ago"; 
 					else
