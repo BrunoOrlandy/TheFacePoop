@@ -24,10 +24,6 @@ if (isset($_POST['post'])) { // Creates instance of Post class when post button 
 			?>
 		</a>
 		<br>
-		<!-- <?php echo "Posts: " . $user['num_posts'] . "<br>";
-		echo "Likes: " . $user['num_likes'];
-
-		?> -->
 	</div>
 
 </div>
@@ -92,7 +88,7 @@ if (isset($_POST['post'])) { // Creates instance of Post class when post button 
 				var ajaxReq = $.ajax({
 					url: "includes/handlers/ajax_load_posts.php",
 					type: "POST",
-					data: "page=" + page + "&userLoggedIn=" + userLoggedIn,
+					data: "page=1&userID=" + userID + "&userLoggedIn=" + userLoggedIn, // request
 					cache: false,
 
 					success: function(response) {
