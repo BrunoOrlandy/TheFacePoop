@@ -10,41 +10,14 @@ class PostDAO
 		$this->logged_user_obj = new UserDAO($con, $user_id);
 	}
 
-	// To submit the post which was posted in index page
-
 	public function submitPost($post_text_body)
 	{
-		$post_text_body = strip_tags($post_text_body); // Removes html tags 
-		$post_text_body = pg_escape_string($this->con, $post_text_body); // Which escapes special characters in the body
-		$check_empty = preg_replace('/\s+/', '', $post_text_body); // Deletes all spaces 
-
-		if ($check_empty != "") {
-			// Current date and time
-
 			$inclusion_date = date("Y-m-d H:i:s");
-
-			// Get userID
-
 			$logged_user_id = $this->logged_user_obj->getID();
-
-			// Insert post 
-
-			pg_query($this->con, "INSERT INTO posts VALUES(default, default, '$logged_user_id', default, '$post_text_body', '$inclusion_date', false)");
-
-			// $returned_id = pg_insert_id($this->con); // which returns the id of post
-
-			// // Update post count for user 
-
-			// $num_posts = $this->logged_user_obj->getNumPosts();
-			// $num_posts++;
-			// $update_query = pg_query($this->con, "UPDATE users SET num_posts='$num_posts' WHERE user_id='$user_id'");
-		}
+			pg_query($this->con, "INSERT INTO posts VALUES(default, default, '$logged_user_id', default, '$post_text_body', '$inclusion_date', false)");		
 	}
 
-
-	// To load posts in index page
-
-	public function loadPostsFriends($data, $limit)
+	public function loadPostsFriends($data, $limit_pagination)
 	{
 		$page = $data['page'];
 
@@ -53,14 +26,14 @@ class PostDAO
 		if ($page == 1)
 			$start = 0;
 		else
-			$start = ($page - 1) * $limit;
+			$start = ($page - 1) * $limit_pagination;
 
-		$str = ""; // String to return 
+		$str = ""; 
 
 		$data_query = pg_query($this->con, "SELECT * FROM posts WHERE is_deleted=false ORDER BY post_id DESC");
 
 		if (pg_num_rows($data_query) > 0) {
-			$num_iterations = 0; // Number of results checked 
+			$num_iterations = 0; 
 			$count = 1;
 
 			while ($row = pg_fetch_array($data_query)) {
@@ -71,42 +44,30 @@ class PostDAO
 				$added_by_obj = new UserDAO($this->con, $user_id);
 				$user_login = $added_by_obj->getLogin();
 
-				// Prepare user_to string so it can be included even if not posted to a user
-
 				if ($user_id != $logged_user_id) {
 					$user_to_obj = new UserDAO($this->con, $user_id);
 					$user_to_name = $user_to_obj->getFirstAndLastName();
 					$user_to = "to <a href='" . $row['user_id'] . "'>" . $user_to_name . "</a>";
 				}
 
-				// Check if user who posted, has their account closed
-
 				if ($added_by_obj->isAccountClosed()) {
 					continue;
 				}
 
-				if ($this->logged_user_obj->isFriendOf($user_id)) { // Checks whether added_by is friend of userLOGGEDin or not
+				if ($this->logged_user_obj->isFriendOf($user_id)) { 
 
 					if ($num_iterations++ < $start)
 						continue;
-
-
-					// Once 10 posts have been loaded, break
-
-					if ($count > $limit) {
+					if ($count > $limit_pagination) {
 						break;
 					} else {
 						$count++;
 					}
 
-					// Display's delete button when userLoggedIn equals to added_by
-
 					if ($logged_user_id == $user_id)
 						$delete_button = "<button class='delete_button btn-danger' id='post$id'>Delete</button>";
 					else
 						$delete_button = "";
-
-					// Query to get added_by user's firstname lastname and profile pic
 
 					$user_details_query = pg_query($this->con, "SELECT first_name, last_name FROM users WHERE user_id='$user_id'");
 
@@ -114,15 +75,12 @@ class PostDAO
 
 					$first_name = $user_row['first_name'];
 					$last_name = $user_row['last_name'];
-					// $profile_pic = $user_row['profile_pic'];
 					$profile_pic = $added_by_obj->getProfilePic();
-
-					// Timeframe
 
 					$date_time_now = date("Y-m-d H:i:s");
 					$start_date = new DateTime($date_time); // Time of post
 					$end_date = new DateTime($date_time_now); // Current time
-					$interval = $start_date->diff($end_date); // Difference between dates 
+					$interval = (Object) $start_date->diff($end_date); // Difference between dates 
 
 					if ($interval->y >= 1) {
 
@@ -201,11 +159,6 @@ class PostDAO
 				}
 
 ?>
-
-				<!-- Triggers when delete post is pressed using post_id -->
-
-
-
 				<script>
 					$(document).ready(function() {
 						$('#post<?php echo $id; ?>').on('click', function() {
@@ -228,9 +181,9 @@ class PostDAO
 
 			<?php
 
-			} // End while loop
+			} // End loop
 
-			if ($count > $limit)
+			if ($count > $limit_pagination)
 				$str .= "<input type='hidden' class='nextPage' value='" . ($page + 1) . "'>
 							<input type='hidden' class='noMorePosts' value='false'>";
 			else
@@ -241,7 +194,7 @@ class PostDAO
 	}
 
 
-	public function loadProfilePosts($data, $limit)
+	public function loadProfilePosts($data, $limit_pagination)
 	{
 		$page = $data['page'];
 		$logged_user_id = $this->logged_user_obj->getID();
@@ -249,7 +202,7 @@ class PostDAO
 		if ($page == 1)
 			$start = 0;
 		else
-			$start = ($page - 1) * $limit;
+			$start = ($page - 1) * $limit_pagination;
 
 
 		$str = ""; //String to return 
@@ -269,7 +222,7 @@ class PostDAO
 					continue;
 
 				// Once 10 posts have been loaded, break
-				if ($count > $limit) {
+				if ($count > $limit_pagination) {
 					break;
 				} else {
 					$count++;
@@ -284,22 +237,20 @@ class PostDAO
 				$user_row = pg_fetch_array($user_details_query);
 				$first_name = $user_row['first_name'];
 				$last_name = $user_row['last_name'];
-				// $profile_pic = $user_row['profile_pic'];
-
+				
 				$added_by_obj = new UserDAO($this->con, $user_id);
 				$profile_pic = $added_by_obj->getProfilePic();
 				$user_login = $added_by_obj->getLogin();
-
-				//Timeframe
+				
 				$date_time_now = date("Y-m-d H:i:s");
-				$start_date = new DateTime($date_time); //Time of post
-				$end_date = new DateTime($date_time_now); //Current time
-				$interval = $start_date->diff($end_date); //Difference between dates 
+				$start_date = new DateTime($date_time); 
+				$end_date = new DateTime($date_time_now); 
+				$interval =(Object) $start_date->diff($end_date); 
 				if ($interval->y >= 1) {
 					if ($interval == 1)
-						$time_message = $interval->y . " year ago"; //1 year ago
+						$time_message = $interval->y . " year ago"; 
 					else
-						$time_message = $interval->y . " years ago"; //1+ year ago
+						$time_message = $interval->y . " years ago"; 
 				} else if ($interval->m >= 1) {
 					if ($interval->d == 0) {
 						$days = " ago";
@@ -381,9 +332,9 @@ class PostDAO
 				</script>
 <?php
 
-			} //End while loop
+			} //End loop
 
-			if ($count > $limit)
+			if ($count > $limit_pagination)
 				$str .= "<input type='hidden' class='nextPage' value='" . ($page + 1) . "'>
 							<input type='hidden' class='noMorePosts' value='false'>";
 			else

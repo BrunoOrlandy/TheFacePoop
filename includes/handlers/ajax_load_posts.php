@@ -2,11 +2,11 @@
 
 include("../../config/config.php");
 include("../models/DAOs/UserDAO.php");
-include("../models/DAOs/PostDAO.php");
+include("../models/Post.php");
 
-$limit = 10; // paginacao
+$limit_pagination = 10;
 
-$posts = new PostDAO($con, $_REQUEST['userID']);
-$posts->loadPostsFriends($_REQUEST, $limit);
+$posts = new Post($con, $_REQUEST['userID']);
+$posts->loadPostsFriends($_REQUEST, $limit_pagination);
 
 ?>

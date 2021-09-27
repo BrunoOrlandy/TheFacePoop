@@ -7,7 +7,12 @@ class Post
     private $comments;
     private $reactions;
     private $text;
- 
+    private $postDao;
+    
+    public function __construct($con, $user_id){
+        $this->postDao = new PostDAO($con, $user_id);
+	}
+
     public function getDate()
     {
         return $this->date;
@@ -67,4 +72,32 @@ class Post
 
         return $this;
     }
+
+    public function is_coment_valid($post_text_body){
+        $post_text_body = strip_tags($post_text_body);
+		$post_text_body = pg_escape_string($this->con, $post_text_body); 
+		$check_empty = preg_replace('/\s+/', '', $post_text_body); 
+        
+        return  $check_empty == '';
+    }
+
+    public function submitPost($post_text_body)
+    {       
+        if(!$this->is_coment_valid($post_text_body)){
+            $this->postDao->submitPost($post_text_body);
+        } 
+    }   
+
+    // quando existir interação com outros usuarios;
+    public function loadPostsFriends($data, $limit_pagination){
+        $this->postDao->loadPostsFriends($data, $limit_pagination);
+    }
+
+    //proprias postagens;
+    public function loadProfilePost($data, $limit_pagination){
+        $this->postDao->loadProfilePosts($data, $limit_pagination);
+    }
+
+
+
 }
