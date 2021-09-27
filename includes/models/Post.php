@@ -97,7 +97,4 @@ class Post
     public function loadProfilePost($data, $limit_pagination){
         $this->postDao->loadProfilePosts($data, $limit_pagination);
     }
-
-
-
 }

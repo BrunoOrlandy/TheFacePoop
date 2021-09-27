@@ -1,7 +1,6 @@
 <?php
 include("includes/header.php");
 include("includes/handlers/ajax_load_posts.php");
-include("../models/Post.php");
 
 
 if (isset($_POST['post'])) {
@@ -48,7 +47,7 @@ if (isset($_POST['post'])) {
 
 
 <script>
-	var userLoggedIn = '<?php echo $userLoggedIn; ?>';
+	var userLoggedIn = '<?php echo $userLoggedIn; ?> ';
 	var userID = '<?php echo $userID; ?>';
 
 	$(document).ready(function() {
@@ -79,7 +78,7 @@ if (isset($_POST['post'])) {
 				var ajaxReq = $.ajax({
 					url: "includes/handlers/ajax_load_posts.php",
 					type: "POST",
-					data: "page=" + page + "&userLoggedIn=" + userLoggedIn,
+					data: "page=1&userID=" + userID + "&userLoggedIn=" + userLoggedIn,
 					cache: false,
 
 					success: function(response) {
