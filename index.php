@@ -1,14 +1,13 @@
 <?php
-include("includes/header.php"); // To include header.php file
+include("includes/header.php");
+include("includes/handlers/ajax_load_posts.php");
 
 
-if (isset($_POST['post'])) { // Creates instance of Post class when post button is triggered
-	$post = new PostDAO($con, $userID);
+if (isset($_POST['post'])) {
+	$post = new Post($con, $userID);
 	$post->submitPost($_POST['post_text']);
 }
 ?>
-
-<!-- Index page user details section -->
 
 <div class="user_details column">
 
@@ -29,12 +28,8 @@ if (isset($_POST['post'])) { // Creates instance of Post class when post button 
 </div>
 
 
-
-<!-- Index page main_column section -->
-
 <div class="main_column column">
 
-	<!-- Post form section index page -->
 
 	<form class="post_form" action="index.php" method="POST">
 
@@ -44,8 +39,6 @@ if (isset($_POST['post'])) { // Creates instance of Post class when post button 
 
 	</form>
 
-	<!-- loading gif show while processing ajax request -->
-
 	<div class="posts_area"></div>
 	<img id="loading" src="assets/images/icons/loading.gif">
 
@@ -53,21 +46,18 @@ if (isset($_POST['post'])) { // Creates instance of Post class when post button 
 </div>
 
 
-<!-- Ajax request to limit the posts in index page newsfeed -->
-
 <script>
-	var userLoggedIn = '<?php echo $userLoggedIn; ?>';
+	var userLoggedIn = '<?php echo $userLoggedIn; ?> ';
 	var userID = '<?php echo $userID; ?>';
 
 	$(document).ready(function() {
 
 		$('#loading').show();
 
-		//Original ajax request for loading first posts 
 		$.ajax({
-			url: "includes/handlers/ajax_load_posts.php", // url
+			url: "includes/handlers/ajax_load_posts.php",
 			type: "POST",
-			data: "page=1&userID=" + userID + "&userLoggedIn=" + userLoggedIn, // request
+			data: "page=1&userID=" + userID + "&userLoggedIn=" + userLoggedIn,
 			cache: false,
 
 			success: function(data) {
@@ -77,7 +67,7 @@ if (isset($_POST['post'])) { // Creates instance of Post class when post button 
 		});
 
 		$(window).scroll(function() {
-			var height = $('.posts_area').height(); //Div containing posts
+			var height = $('.posts_area').height(); //Div posts
 			var scroll_top = $(this).scrollTop();
 			var page = $('.posts_area').find('.nextPage').val();
 			var noMorePosts = $('.posts_area').find('.noMorePosts').val();
@@ -88,30 +78,27 @@ if (isset($_POST['post'])) { // Creates instance of Post class when post button 
 				var ajaxReq = $.ajax({
 					url: "includes/handlers/ajax_load_posts.php",
 					type: "POST",
-					data: "page=1&userID=" + userID + "&userLoggedIn=" + userLoggedIn, // request
+					data: "page=1&userID=" + userID + "&userLoggedIn=" + userLoggedIn,
 					cache: false,
 
 					success: function(response) {
-						$('.posts_area').find('.nextPage').remove(); //Removes current .nextpage 
-						$('.posts_area').find('.noMorePosts').remove(); //Removes current .nextpage 
+						$('.posts_area').find('.nextPage').remove();
+						$('.posts_area').find('.noMorePosts').remove();
 
 						$('#loading').hide();
 						$('.posts_area').append(response);
 					}
 				});
 
-			} //End if 
+			}
 
 			return false;
 
-		}); //End (window).scroll(function())
+		});
 
 
 	});
 </script>
-
-
-
 
 </div>
 </body>
