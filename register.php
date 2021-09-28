@@ -100,7 +100,7 @@ require 'includes/form_handlers/login_handler.php';
 					} 
 					?>" required>
 	
-					<input type="text" name="reg_lname" placeholder="Sobre nome" value="<?php 
+					<input type="text" name="reg_lname" placeholder="Sobrenome" value="<?php 
 					if(isset($_SESSION['reg_lname'])) {
 						echo $_SESSION['reg_lname'];
 					} 
