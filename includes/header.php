@@ -23,7 +23,7 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 <html>
 
 <head>
-	<title>Welcome to FacePoop!</title>
+	<title>Bem-vindo ao The FacePoop!</title>
 
 	<!-- Javascript -->
 
@@ -85,7 +85,11 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 		<nav>
 			<!-- Firstname display in navbar -->
 
-			<a href="<?php echo $userLoggedIn; ?>">
+		<!-- 	<a href="<?php echo $userLoggedIn; ?>">
+				<?php echo $user['first_name']; ?>
+			</a>-->
+
+			<a href="profile.php">
 				<?php echo $user['first_name']; ?>
 			</a>
 

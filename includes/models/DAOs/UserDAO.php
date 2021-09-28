@@ -9,7 +9,7 @@ class UserDAO {
 	public function __construct($con, $user_id){
 		$this->con = $con;
 		$user_details_query = pg_query($con, "SELECT * FROM users WHERE user_id='$user_id'");
-		$this->user = pg_fetch_array($user_details_query);
+		$this->user = pg_query($user_details_query);
 	}
 
 	public function getID() {
@@ -50,21 +50,7 @@ class UserDAO {
 
 	public function getProfilePic() {
 		return "assets/images/profile_pics/imagem.jpg";
-		// $login = $this->user['login'];
-		// $query = pg_query($this->con, "SELECT profile_pic FROM users WHERE login='$login'");
-		// return $row['profile_pic'];
 	}
-
-	// To get the friend array of user
-
-	// public function getFriendArray() {
-	// 	$login = $this->user['login'];
-	// 	$query = pg_query($this->con, "SELECT friend_array FROM users WHERE login='$login'");
-	// 	$row = pg_fetch_array($query);
-	// 	return $row['friend_array'];
-	// }
-
-	// To check whether user is closed or not
 
 	public function isAccountClosed() {
 		$login = $this->user['login'];

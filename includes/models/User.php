@@ -14,6 +14,12 @@ class User
     private $friendships;
     private $registerDate;
     private $birthdayDate;
+    private $is_closed;
+    private $userDao;
+
+    public function __construct($con, $user_id){
+        $this->userDao = new UserDAO($con, $user_id);
+	}
 
     public function getLogin()
     {
@@ -158,4 +164,23 @@ class User
 
         return $this;
     }
+
+    public function isClosed(){
+        $this->userDao->isAccountClosed();
+    }
+
+    public function isFriend(){
+        $this->userDao->isAccountClosed();
+    }
+    public function didReceiveRequest(){
+        $this->userDao->didReceiveRequest('1');
+    }
+
+    public function didSendRequest(){
+        $this->userDao->didSendRequest('1');
+    }
+    
+
+
+    
 }
