@@ -52,12 +52,6 @@ class PostDAO
 				$added_by_obj = new UserDAO($this->con, $user_id);
 				$user_login = $added_by_obj->getLogin();
 
-				if ($user_id != $logged_user_id) {
-					$user_to_obj = new UserDAO($this->con, $user_id);
-					$user_to_name = $user_to_obj->getFirstAndLastName();
-					$user_to = "to <a href='" . $row['user_id'] . "'>" . $user_to_name . "</a>";
-				}
-
 				if ($added_by_obj->isAccountClosed()) {
 					continue;
 				}

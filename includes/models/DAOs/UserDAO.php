@@ -8,7 +8,7 @@ class UserDAO {
 
 	public function __construct($con, $user_id){
 		$this->con = $con;
-		$user_details_query = pg_query($con, "SELECT * FROM users WHERE user_id='$user_id'");
+		$user_details_query = pg_query($con, "SELECT * FROM users WHERE user_id= '$user_id'");
 		$this->user = pg_query($user_details_query);
 	}
 

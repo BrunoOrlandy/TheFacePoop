@@ -6,14 +6,11 @@ if(isset($_GET['login'])) {
 
 	$login = $_GET['login']; 
 
-	$user_details_query = pg_query($con, "SELECT * FROM users WHERE login='$login'"); // passar para o DAO
-
+	$user_details_query = pg_query($con, "SELECT * FROM users WHERE login= $login "); // passar para o DAO
 	$user_array = pg_fetch_array($user_details_query);
-
 	$num_friends = (substr_count($user_array['friend_array'], ",")) - 1; // To count the number of friends using comma
 }
 
-// Triggers when remove_friend is clicked
 
 if(isset($_POST['remove_friend'])) {
 
@@ -21,7 +18,6 @@ if(isset($_POST['remove_friend'])) {
 	//$user->removeFriend($login);
 }
 
-// Triggers when add_friend is clicked
 
 if(isset($_POST['add_friend'])) {
 
@@ -61,33 +57,7 @@ if(isset($_POST['respond_request'])) {
 
  			$profile_user_obj = new User($con, $login); 
 
- 			if($profile_user_obj->isClosed()) {
-        echo $profile_user_obj->isClosed();
- 				header("Location: user_closed.php");
- 			}
-
  			$logged_in_user_obj = new User($con, $userLoggedIn); 
-
- 			if($userLoggedIn != $login) {
-
- 				if($logged_in_user_obj->isFriend($login)) {
-
- 					echo '<input type="submit" name="remove_friend" class="danger" value="Remove Friend"><br>';
- 				}
- 				else if ($logged_in_user_obj->didReceiveRequest($login)) {
-
- 					echo '<input type="submit" name="respond_request" class="warning" value="Respond to Request"><br>';
- 				}
- 				else if ($logged_in_user_obj->didSendRequest($login)) {
-
- 					echo '<input type="submit" name="" class="default" value="Request Sent"><br>';
- 				}
- 				else 
-
- 					echo '<input type="submit" name="add_friend" class="success" value="Add Friend"><br>';
-
- 			}
-
  			?>
  		</form>
 

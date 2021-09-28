@@ -7,6 +7,6 @@ include("../models/DAOs/PostDAO.php");
 $limit = 10;
 
 $posts = new PostDAO($con, $_REQUEST['userID']);
-$posts->loadPostsFriends($_REQUEST, $limit);
+$posts->loadProfilePosts($_REQUEST, $limit);
 
 ?>
