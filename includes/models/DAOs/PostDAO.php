@@ -10,16 +10,12 @@ class PostDAO
 		$this->logged_user_obj = new UserDAO($con, $user_id);
 	}
 
-	// To submit the post which was posted in index page
-
 	public function submitPost($post_text_body)
 	{
-		$post_text_body = strip_tags($post_text_body); // Removes html tags 
-		$post_text_body = pg_escape_string($this->con, $post_text_body); // Which escapes special characters in the body
-		$check_empty = preg_replace('/\s+/', '', $post_text_body); // Deletes all spaces 
+		$post_text_body = strip_tags($post_text_body);
+		$check_empty = preg_replace('/\s+/', '', $post_text_body);
 
 		if ($check_empty != "") {
-			// Current date and time
 
 			$inclusion_date = date("Y-m-d H:i:s");
 
@@ -28,9 +24,6 @@ class PostDAO
 			pg_query($this->con, "INSERT INTO posts VALUES(default, default, '$logged_user_id', default, '$post_text_body', '$inclusion_date', false)");
 		}
 	}
-
-
-	// To load posts in index page
 
 	public function loadPostsFriends($data, $limit)
 	{
@@ -111,7 +104,7 @@ class PostDAO
 					$start_date = new DateTime($date_time); // Time of post
 					$end_date = new DateTime($date_time_now); // Current time
 					$interval = (object)$start_date->diff($end_date); // Difference between dates
-					 
+
 					if ($interval->y >= 1) {
 						if ($interval == 1)
 							$time_message = "Há $interval->y ano";
