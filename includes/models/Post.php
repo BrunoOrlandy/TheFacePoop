@@ -7,7 +7,7 @@ class Post
     private $comments;
     private $reactions;
     private $text;
- 
+
     public function getDate()
     {
         return $this->date;

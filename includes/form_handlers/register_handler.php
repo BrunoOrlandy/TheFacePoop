@@ -44,37 +44,37 @@ if (isset($_POST['register_button'])) {
 			$num_rows = pg_num_rows($e_check);
 
 			if ($num_rows > 0) {
-				array_push($error_array, "Email already in use</br>");
+				array_push($error_array, "Email já esta sendo usado</br>");
 			}
 		} else {
-			array_push($error_array, "Invalid email format</br>");
+			array_push($error_array, "Formato invalido de email</br>");
 		}
 	} else {
-		array_push($error_array, "Emails doesn't match</br>");
+		array_push($error_array, "Emails informados não coincidem</br>");
 	}
 
 	if (strlen($fname) > 25 || strlen($fname) < 2) {
 
-		array_push($error_array, "Your First Name should be in between 2-25 characters</br>");
+		array_push($error_array, "O nome deve ter entre 2 e 25 caracteres</br>");
 	}
 
 	if (strlen($lname) > 25 || strlen($lname) < 2) {
-		array_push($error_array,  "Your Last Name should be in between 2-25 characters</br>");
+		array_push($error_array,  "O sobrenome deve ter entre 2 e 25 caracteres</br>");
 	}
 
 	if ($password != $password2) {
 
-		array_push($error_array,  "Passwords doesn't match</br>");
+		array_push($error_array,  "As senhas não coincidem</br>");
 	} else {
 		if (preg_match('/[^A-Za-z0-9]/', $password)) {
 
-			array_push($error_array, "Your password should contain only letters and numbers</br>");
+			array_push($error_array, "A senha deve conter apenas letras e números</br>");
 		}
 	}
 
 	if (strlen($password > 30 || strlen($password) < 5)) {
 
-		array_push($error_array, "Your Password should be in between 5-30 characters</br>");
+		array_push($error_array, "A senha deve ter entre 5 e 30 caracteres</br>");
 	}
 
 	if (empty($error_array)) {
@@ -93,13 +93,13 @@ if (isset($_POST['register_button'])) {
 		$rand = rand(1, 2);
 
 		if ($rand == 1)
-			$profile_pic = "assets/images/profile_pics/defaults/head_green_sea.png";
+			$profile_pic = "assets/images/profile_pics/fb_default_green_sea.png";
 		else if ($rand == 2)
-			$profile_pic = "assets/images/profile_pics/defaults/head_wet_asphalt.png";
+			$profile_pic = "assets/images/profile_pics/fb_default_wet_asphalt.png";
 
 		$query = pg_query($con, "INSERT INTO users VALUES (default, '$login', '$fname', '$lname', '$em', '$encripted_password', default, default, '$date')");
 
-		array_push($error_array, "<span style='color: #14C800;'>You're all set! Go ahead and login!</span><br>");
+		array_push($error_array, "<span style='color: #14C800;'>Tudo pronto! Vá em frente e faça login!</span><br>");
 
 		$_SESSION['reg_fname'] = "";
 		$_SESSION['reg_lname'] = "";

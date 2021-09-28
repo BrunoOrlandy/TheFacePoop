@@ -27,12 +27,8 @@ if (isset($_POST['post'])) {
 </div>
 
 
-
-<!-- Index page main_column section -->
-
 <div class="main_column column">
 
-	<!-- Post form section index page -->
 
 	<form class="post_form" action="index.php" method="POST">
 
@@ -42,8 +38,6 @@ if (isset($_POST['post'])) {
 
 	</form>
 
-	<!-- loading gif show while processing ajax request -->
-
 	<div class="posts_area"></div>
 	<img id="loading" src="assets/images/icons/loading.gif">
 
@@ -51,10 +45,8 @@ if (isset($_POST['post'])) {
 </div>
 
 
-<!-- Ajax request to limit the posts in index page newsfeed -->
-
 <script>
-	var userLoggedIn = '<?php echo $userLoggedIn; ?>';
+	var userLoggedIn = '<?php echo $userLoggedIn; ?> ';
 	var userID = '<?php echo $userID; ?>';
 
 	$(document).ready(function() {
@@ -104,9 +96,6 @@ if (isset($_POST['post'])) {
 		});
 	});
 </script>
-
-
-
 
 </div>
 </body>

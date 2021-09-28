@@ -36,12 +36,12 @@ class PostDAO
 		else
 			$start = ($page - 1) * $limit;
 
-		$str = ""; // String to return 
+		$str = "";
 
 		$data_query = pg_query($this->con, "SELECT * FROM posts WHERE is_deleted=false ORDER BY post_id DESC");
 
 		if (pg_num_rows($data_query) > 0) {
-			$num_iterations = 0; // Number of results checked 
+			$num_iterations = 0;
 			$count = 1;
 
 			while ($row = pg_fetch_array($data_query)) {
@@ -52,42 +52,30 @@ class PostDAO
 				$added_by_obj = new UserDAO($this->con, $user_id);
 				$user_login = $added_by_obj->getLogin();
 
-				// Prepare user_to string so it can be included even if not posted to a user
-
 				if ($user_id != $logged_user_id) {
 					$user_to_obj = new UserDAO($this->con, $user_id);
 					$user_to_name = $user_to_obj->getFirstAndLastName();
 					$user_to = "to <a href='" . $row['user_id'] . "'>" . $user_to_name . "</a>";
 				}
 
-				// Check if user who posted, has their account closed
-
 				if ($added_by_obj->isAccountClosed()) {
 					continue;
 				}
 
-				if ($this->logged_user_obj->isFriendOf($user_id)) { // Checks whether added_by is friend of userLOGGEDin or not
+				if ($this->logged_user_obj->isFriendOf($user_id)) {
 
 					if ($num_iterations++ < $start)
 						continue;
-
-
-					// Once 10 posts have been loaded, break
-
 					if ($count > $limit) {
 						break;
 					} else {
 						$count++;
 					}
 
-					// Display's delete button when userLoggedIn equals to added_by
-
 					if ($logged_user_id == $user_id)
 						$delete_button = "<button class='delete_button btn-danger' id='post$id'>Delete</button>";
 					else
 						$delete_button = "";
-
-					// Query to get added_by user's firstname lastname and profile pic
 
 					$user_details_query = pg_query($this->con, "SELECT first_name, last_name FROM users WHERE user_id='$user_id'");
 
@@ -95,10 +83,7 @@ class PostDAO
 
 					$first_name = $user_row['first_name'];
 					$last_name = $user_row['last_name'];
-					// $profile_pic = $user_row['profile_pic'];
 					$profile_pic = $added_by_obj->getProfilePic();
-
-					// Timeframe
 
 					$date_time_now = date("Y-m-d H:i:s");
 					$start_date = new DateTime($date_time); // Time of post
@@ -107,9 +92,9 @@ class PostDAO
 
 					if ($interval->y >= 1) {
 						if ($interval == 1)
-							$time_message = "Há $interval->y ano";
+							$time_message = "H� $interval->y ano";
 						else
-							$time_message = "Há $interval->y anos";
+							$time_message = "H� $interval->y anos";
 					} else if ($interval->m >= 1) {
 						if ($interval->d == 0) {
 							$days = "";
@@ -119,33 +104,33 @@ class PostDAO
 							$days = "e $interval->d dias";
 						}
 						if ($interval->m == 1) {
-							$time_message = "Há $interval->m mês $days";
+							$time_message = "H� $interval->m m�s $days";
 						} else {
-							$time_message = "Há $interval->m meses $days";
+							$time_message = "H� $interval->m meses $days";
 						}
 					} else if ($interval->d >= 1) {
 						if ($interval->d == 1) {
 							$time_message = "Ontem";
 						} else {
-							$time_message = "Há $interval->d dias";
+							$time_message = "H� $interval->d dias";
 						}
 					} else if ($interval->h >= 1) {
 						if ($interval->h == 1) {
-							$time_message = "Há $interval->h hora";
+							$time_message = "H� $interval->h hora";
 						} else {
-							$time_message = "Há $interval->h horas";
+							$time_message = "H� $interval->h horas";
 						}
 					} else if ($interval->i >= 1) {
 						if ($interval->i == 1) {
-							$time_message = "Há $interval->i minuto";
+							$time_message = "H� $interval->i minuto";
 						} else {
-							$time_message = "Há $interval->i minutos";
+							$time_message = "H� $interval->i minutos";
 						}
 					} else {
 						if ($interval->s < 30) {
 							$time_message = "Agora";
 						} else {
-							$time_message = "Há $interval->s segundos";
+							$time_message = "H� $interval->s segundos";
 						}
 					}
 
@@ -178,11 +163,6 @@ class PostDAO
 				}
 
 ?>
-
-				<!-- Triggers when delete post is pressed using post_id -->
-
-
-
 				<script>
 					$(document).ready(function() {
 						$('#post<?php echo $id; ?>').on('click', function() {
@@ -205,7 +185,7 @@ class PostDAO
 
 			<?php
 
-			} // End while loop
+			} // End loop
 
 			if ($count > $limit)
 				$str .= "<input type='hidden' class='nextPage' value='" . ($page + 1) . "'>
@@ -261,17 +241,15 @@ class PostDAO
 				$user_row = pg_fetch_array($user_details_query);
 				$first_name = $user_row['first_name'];
 				$last_name = $user_row['last_name'];
-				// $profile_pic = $user_row['profile_pic'];
 
 				$added_by_obj = new UserDAO($this->con, $user_id);
 				$profile_pic = $added_by_obj->getProfilePic();
 				$user_login = $added_by_obj->getLogin();
 
-				//Timeframe
 				$date_time_now = date("Y-m-d H:i:s");
-				$start_date = new DateTime($date_time); //Time of post
-				$end_date = new DateTime($date_time_now); //Current time
-				$interval = (object)$start_date->diff($end_date); //Difference between dates 
+				$start_date = new DateTime($date_time);
+				$end_date = new DateTime($date_time_now);
+				$interval = (object)$start_date->diff($end_date);
 
 				if ($interval->y >= 1) {
 					if ($interval == 1)
@@ -287,33 +265,33 @@ class PostDAO
 						$days = "e $interval->d dias";
 					}
 					if ($interval->m == 1) {
-						$time_message = "Há $interval->m mês $days";
+						$time_message = "H� $interval->m m�s $days";
 					} else {
-						$time_message = "Há $interval->m meses $days";
+						$time_message = "H� $interval->m meses $days";
 					}
 				} else if ($interval->d >= 1) {
 					if ($interval->d == 1) {
 						$time_message = "Ontem";
 					} else {
-						$time_message = "Há $interval->d dias";
+						$time_message = "H� $interval->d dias";
 					}
 				} else if ($interval->h >= 1) {
 					if ($interval->h == 1) {
-						$time_message = "Há $interval->h hora";
+						$time_message = "H� $interval->h hora";
 					} else {
-						$time_message = "Há $interval->h horas";
+						$time_message = "H� $interval->h horas";
 					}
 				} else if ($interval->i >= 1) {
 					if ($interval->i == 1) {
-						$time_message = "Há $interval->i minuto";
+						$time_message = "H� $interval->i minuto";
 					} else {
-						$time_message = "Há $interval->i minutos";
+						$time_message = "H� $interval->i minutos";
 					}
 				} else {
 					if ($interval->s < 30) {
 						$time_message = "Agora";
 					} else {
-						$time_message = "Há $interval->s segundos";
+						$time_message = "H� $interval->s segundos";
 					}
 				}
 
@@ -357,7 +335,7 @@ class PostDAO
 				</script>
 <?php
 
-			} //End while loop
+			} //End loop
 
 			if ($count > $limit)
 				$str .= "<input type='hidden' class='nextPage' value='" . ($page + 1) . "'>
