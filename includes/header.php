@@ -21,7 +21,7 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 <html>
 
 <head>
-	<title>Welcome to FacePoop!</title>
+	<title>Bem-vindo ao FacePoop!</title>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="assets/js/bootstrap.js"></script>
