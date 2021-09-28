@@ -17,7 +17,7 @@ class PostDAO
 			$logged_user_id = $this->logged_user_obj->getID();
 
 			pg_query($this->con, "INSERT INTO posts VALUES(default, default, '$logged_user_id', default, '$post_text_body', '$inclusion_date', false)");
-		}
+	
 	}
 
 	public function loadPostsFriends($data, $limit_pagination)
