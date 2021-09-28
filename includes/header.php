@@ -1,25 +1,21 @@
 <?php
-require 'config/config.php'; // To include config.php file
-include("includes/models/User.php"); // To include User.php file
-include("includes/models/DAOs/UserDAO.php"); // To include User.php file
-include("includes/models/Post.php"); // To include Post.php file
-include("includes/models/DAOs/PostDAO.php"); // To include Post.php file
-//include("includes/models/Message.php"); // To include Message.php file
+require 'config/config.php'; 
+include("includes/models/User.php"); 
+include("includes/models/DAOs/UserDAO.php");
+include("includes/models/Post.php"); 
+include("includes/models/DAOs/PostDAO.php"); 
 
-
-// Triggers when session variable for username is set
-// It prevents illegal access of index page
 
 if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 
 	$userLoggedIn = $_SESSION['login'];
 	$userID = $_SESSION['user_id'];
 
-	$user_details_query = pg_query($con, "SELECT * FROM users WHERE user_id='$userID'");
+	$user_details_query = pg_query($con, "SELECT * FROM users WHERE user_id='$userID'"); // Passar para DAO
 
 	$user = pg_fetch_array($user_details_query);
 } else {
-	header("Location: register.php"); // If not set redirects to register.php
+	header("Location: register.php"); 
 }
 
 ?>
@@ -99,23 +95,11 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 				<i class="fas fa-home"></i>
 			</a>
 
-			<!-- Messages -->
-
-			<a href="messages.php">
-				<i class="fas fa-comments"></i>
-			</a>
-
-			<!-- Friend Requests -->
+			<!-- Friend Requests
 
 			<a href="requests.php">
 				<i class="fas fa-users"></i>
-			</a>
-
-			<!-- Settings -->
-
-			<a href="settings.php">
-				<i class="fas fa-cog"></i>
-			</a>
+			</a> -->
 
 			<!-- Logout -->
 
