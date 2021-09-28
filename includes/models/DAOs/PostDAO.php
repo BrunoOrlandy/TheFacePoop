@@ -52,12 +52,6 @@ class PostDAO
 				$added_by_obj = new UserDAO($this->con, $user_id);
 				$user_login = $added_by_obj->getLogin();
 
-				if ($user_id != $logged_user_id) {
-					$user_to_obj = new UserDAO($this->con, $user_id);
-					$user_to_name = $user_to_obj->getFirstAndLastName();
-					$user_to = "to <a href='" . $row['user_id'] . "'>" . $user_to_name . "</a>";
-				}
-
 				if ($added_by_obj->isAccountClosed()) {
 					continue;
 				}
@@ -73,7 +67,7 @@ class PostDAO
 					}
 
 					if ($logged_user_id == $user_id)
-						$delete_button = "<button class='delete_button btn-danger' id='post$id'>Delete</button>";
+						$delete_button = "<button class='delete_button btn-danger' id='post$id'>Excluir</button>";
 					else
 						$delete_button = "";
 
@@ -86,15 +80,15 @@ class PostDAO
 					$profile_pic = $added_by_obj->getProfilePic();
 
 					$date_time_now = date("Y-m-d H:i:s");
-					$start_date = new DateTime($date_time); // Time of post
-					$end_date = new DateTime($date_time_now); // Current time
-					$interval = (object)$start_date->diff($end_date); // Difference between dates
+					$start_date = new DateTime($date_time);
+					$end_date = new DateTime($date_time_now);
+					$interval = (object)$start_date->diff($end_date);
 
 					if ($interval->y >= 1) {
 						if ($interval == 1)
-							$time_message = "H� $interval->y ano";
+							$time_message = "Há $interval->y ano";
 						else
-							$time_message = "H� $interval->y anos";
+							$time_message = "Há $interval->y anos";
 					} else if ($interval->m >= 1) {
 						if ($interval->d == 0) {
 							$days = "";
@@ -104,33 +98,33 @@ class PostDAO
 							$days = "e $interval->d dias";
 						}
 						if ($interval->m == 1) {
-							$time_message = "H� $interval->m m�s $days";
+							$time_message = "Há $interval->m mês $days";
 						} else {
-							$time_message = "H� $interval->m meses $days";
+							$time_message = "Há $interval->m meses $days";
 						}
 					} else if ($interval->d >= 1) {
 						if ($interval->d == 1) {
 							$time_message = "Ontem";
 						} else {
-							$time_message = "H� $interval->d dias";
+							$time_message = "Há $interval->d dias";
 						}
 					} else if ($interval->h >= 1) {
 						if ($interval->h == 1) {
-							$time_message = "H� $interval->h hora";
+							$time_message = "Há $interval->h hora";
 						} else {
-							$time_message = "H� $interval->h horas";
+							$time_message = "Há $interval->h horas";
 						}
 					} else if ($interval->i >= 1) {
 						if ($interval->i == 1) {
-							$time_message = "H� $interval->i minuto";
+							$time_message = "Há $interval->i minuto";
 						} else {
-							$time_message = "H� $interval->i minutos";
+							$time_message = "Há $interval->i minutos";
 						}
 					} else {
 						if ($interval->s < 30) {
 							$time_message = "Agora";
 						} else {
-							$time_message = "H� $interval->s segundos";
+							$time_message = "Há $interval->s segundos";
 						}
 					}
 
@@ -166,14 +160,13 @@ class PostDAO
 				<script>
 					$(document).ready(function() {
 						$('#post<?php echo $id; ?>').on('click', function() {
-							bootbox.confirm("Are you sure you want to delete this post?", function(result) {
+							bootbox.confirm("Tem certeza que deseja excluir esta postagem?", function(result) {
 								$.post("includes/form_handlers/delete_post.php?post_id=<?php echo $id; ?>", {
 									result: result
 								});
 
 								if (result)
 									location.reload();
-
 							});
 						});
 
@@ -191,7 +184,7 @@ class PostDAO
 				$str .= "<input type='hidden' class='nextPage' value='" . ($page + 1) . "'>
 							<input type='hidden' class='noMorePosts' value='false'>";
 			else
-				$str .= "<input type='hidden' class='noMorePosts' value='true'><p style='text-align: centre;'> No more posts to show! </p>";
+				$str .= "<input type='hidden' class='noMorePosts' value='true'><p style='text-align: centre;'> Não existem mais postagens! </p>";
 		}
 
 		echo $str;
@@ -209,11 +202,11 @@ class PostDAO
 			$start = ($page - 1) * $limit;
 
 
-		$str = ""; //String to return 
+		$str = "";
 		$data_query = pg_query($this->con, "SELECT * FROM posts WHERE is_deleted=false AND user_id='$logged_user_id' ORDER BY post_id DESC");
 
 		if (pg_num_rows($data_query) > 0) {
-			$num_iterations = 0; // Number of results checked (not necasserily posted)
+			$num_iterations = 0;
 			$count = 1;
 
 			while ($row = pg_fetch_array($data_query)) {
@@ -225,7 +218,6 @@ class PostDAO
 				if ($num_iterations++ < $start)
 					continue;
 
-				// Once 10 posts have been loaded, break
 				if ($count > $limit) {
 					break;
 				} else {
@@ -233,7 +225,7 @@ class PostDAO
 				}
 
 				if ($logged_user_id == $user_id)
-					$delete_button = "<button class='delete_button btn-danger' id='post$id'>Delete</button>";
+					$delete_button = "<button class='delete_button btn-danger' id='post$id'>Excluir</button>";
 				else
 					$delete_button = "";
 
@@ -265,33 +257,33 @@ class PostDAO
 						$days = "e $interval->d dias";
 					}
 					if ($interval->m == 1) {
-						$time_message = "H� $interval->m m�s $days";
+						$time_message = "Há $interval->m mês $days";
 					} else {
-						$time_message = "H� $interval->m meses $days";
+						$time_message = "Há $interval->m meses $days";
 					}
 				} else if ($interval->d >= 1) {
 					if ($interval->d == 1) {
 						$time_message = "Ontem";
 					} else {
-						$time_message = "H� $interval->d dias";
+						$time_message = "Há $interval->d dias";
 					}
 				} else if ($interval->h >= 1) {
 					if ($interval->h == 1) {
-						$time_message = "H� $interval->h hora";
+						$time_message = "Há $interval->h hora";
 					} else {
-						$time_message = "H� $interval->h horas";
+						$time_message = "Há $interval->h horas";
 					}
 				} else if ($interval->i >= 1) {
 					if ($interval->i == 1) {
-						$time_message = "H� $interval->i minuto";
+						$time_message = "Há $interval->i minuto";
 					} else {
-						$time_message = "H� $interval->i minutos";
+						$time_message = "Há $interval->i minutos";
 					}
 				} else {
 					if ($interval->s < 30) {
 						$time_message = "Agora";
 					} else {
-						$time_message = "H� $interval->s segundos";
+						$time_message = "Há $interval->s segundos";
 					}
 				}
 
@@ -322,7 +314,7 @@ class PostDAO
 				<script>
 					$(document).ready(function() {
 						$('#post<?php echo $id; ?>').on('click', function() {
-							bootbox.confirm("Are you sure you want to delete this post??", function(result) {
+							bootbox.confirm("Tem certeza que deseja excluir esta postagem?", function(result) {
 								$.post("includes/form_handlers/delete_post.php?post_id=<?php echo $id; ?>", {
 									result: result
 								});
@@ -335,13 +327,13 @@ class PostDAO
 				</script>
 <?php
 
-			} //End loop
+			}
 
 			if ($count > $limit)
 				$str .= "<input type='hidden' class='nextPage' value='" . ($page + 1) . "'>
 							<input type='hidden' class='noMorePosts' value='false'>";
 			else
-				$str .= "<input type='hidden' class='noMorePosts' value='true'><p style='text-align: centre;'> No more posts to show! </p>";
+				$str .= "<input type='hidden' class='noMorePosts' value='true'><p style='text-align: centre;'> Não existem mais postagens! </p>";
 		}
 
 		echo $str;

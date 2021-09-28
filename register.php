@@ -36,7 +36,6 @@ require 'includes/form_handlers/login_handler.php';
 		';
 	}
 
-
 	?>
 
 	<div class="wrapper">

@@ -1,7 +1,6 @@
 <?php
 include("includes/header.php");
 
-
 if (isset($_POST['post'])) {
 	$post = new PostDAO($con, $userID);
 	$post->submitPost($_POST['post_text']);
@@ -26,10 +25,7 @@ if (isset($_POST['post'])) {
 
 </div>
 
-
 <div class="main_column column">
-
-
 	<form class="post_form" action="index.php" method="POST">
 
 		<textarea name="post_text" id="post_text" placeholder="What's on your mind?"></textarea>
@@ -40,7 +36,6 @@ if (isset($_POST['post'])) {
 
 	<div class="posts_area"></div>
 	<img id="loading" src="assets/images/icons/loading.gif">
-
 
 </div>
 
