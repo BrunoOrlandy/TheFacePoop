@@ -1,10 +1,9 @@
 <?php
 include("includes/header.php");
-include("includes/handlers/ajax_load_posts.php");
 
 
 if (isset($_POST['post'])) {
-	$post = new Post($con, $userID);
+	$post = new PostDAO($con, $userID);
 	$post->submitPost($_POST['post_text']);
 }
 ?>
@@ -67,7 +66,7 @@ if (isset($_POST['post'])) {
 		});
 
 		$(window).scroll(function() {
-			var height = $('.posts_area').height(); //Div posts
+			var height = $('.posts_area').height();
 			var scroll_top = $(this).scrollTop();
 			var page = $('.posts_area').find('.nextPage').val();
 			var noMorePosts = $('.posts_area').find('.noMorePosts').val();
@@ -95,8 +94,6 @@ if (isset($_POST['post'])) {
 			return false;
 
 		});
-
-
 	});
 </script>
 
