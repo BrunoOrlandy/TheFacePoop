@@ -1,14 +1,12 @@
 <?php
-include("includes/header.php"); // To include header.php file
+include("includes/header.php");
 
 
-if (isset($_POST['post'])) { // Creates instance of Post class when post button is triggered
+if (isset($_POST['post'])) {
 	$post = new PostDAO($con, $userID);
 	$post->submitPost($_POST['post_text']);
 }
 ?>
-
-<!-- Index page user details section -->
 
 <div class="user_details column">
 
@@ -63,11 +61,10 @@ if (isset($_POST['post'])) { // Creates instance of Post class when post button 
 
 		$('#loading').show();
 
-		//Original ajax request for loading first posts 
 		$.ajax({
-			url: "includes/handlers/ajax_load_posts.php", // url
+			url: "includes/handlers/ajax_load_posts.php",
 			type: "POST",
-			data: "page=1&userID=" + userID + "&userLoggedIn=" + userLoggedIn, // request
+			data: "page=1&userID=" + userID + "&userLoggedIn=" + userLoggedIn,
 			cache: false,
 
 			success: function(data) {
@@ -77,7 +74,7 @@ if (isset($_POST['post'])) { // Creates instance of Post class when post button 
 		});
 
 		$(window).scroll(function() {
-			var height = $('.posts_area').height(); //Div containing posts
+			var height = $('.posts_area').height();
 			var scroll_top = $(this).scrollTop();
 			var page = $('.posts_area').find('.nextPage').val();
 			var noMorePosts = $('.posts_area').find('.noMorePosts').val();
@@ -88,25 +85,23 @@ if (isset($_POST['post'])) { // Creates instance of Post class when post button 
 				var ajaxReq = $.ajax({
 					url: "includes/handlers/ajax_load_posts.php",
 					type: "POST",
-					data: "page=1&userID=" + userID + "&userLoggedIn=" + userLoggedIn, // request
+					data: "page=1&userID=" + userID + "&userLoggedIn=" + userLoggedIn,
 					cache: false,
 
 					success: function(response) {
-						$('.posts_area').find('.nextPage').remove(); //Removes current .nextpage 
-						$('.posts_area').find('.noMorePosts').remove(); //Removes current .nextpage 
+						$('.posts_area').find('.nextPage').remove();
+						$('.posts_area').find('.noMorePosts').remove();
 
 						$('#loading').hide();
 						$('.posts_area').append(response);
 					}
 				});
 
-			} //End if 
+			}
 
 			return false;
 
-		}); //End (window).scroll(function())
-
-
+		});
 	});
 </script>
 

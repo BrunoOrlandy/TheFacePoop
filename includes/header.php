@@ -1,14 +1,9 @@
 <?php
-require 'config/config.php'; // To include config.php file
-include("includes/models/User.php"); // To include User.php file
-include("includes/models/DAOs/UserDAO.php"); // To include User.php file
-include("includes/models/Post.php"); // To include Post.php file
-include("includes/models/DAOs/PostDAO.php"); // To include Post.php file
-//include("includes/models/Message.php"); // To include Message.php file
-
-
-// Triggers when session variable for username is set
-// It prevents illegal access of index page
+require 'config/config.php';
+include("includes/models/User.php");
+include("includes/models/DAOs/UserDAO.php");
+include("includes/models/Post.php");
+include("includes/models/DAOs/PostDAO.php");
 
 if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 
@@ -19,7 +14,7 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 
 	$user = pg_fetch_array($user_details_query);
 } else {
-	header("Location: register.php"); // If not set redirects to register.php
+	header("Location: register.php");
 }
 
 ?>
