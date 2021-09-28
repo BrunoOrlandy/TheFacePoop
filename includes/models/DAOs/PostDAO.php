@@ -110,53 +110,49 @@ class PostDAO
 					$date_time_now = date("Y-m-d H:i:s");
 					$start_date = new DateTime($date_time); // Time of post
 					$end_date = new DateTime($date_time_now); // Current time
-					$interval = (object)$start_date->diff($end_date); // Difference between dates 
-
+					$interval = (object)$start_date->diff($end_date); // Difference between dates
+					 
 					if ($interval->y >= 1) {
-
 						if ($interval == 1)
-							$time_message = $interval->y . " year ago"; // 1 year ago
+							$time_message = "Há $interval->y ano";
 						else
-							$time_message = $interval->y . " year's ago"; // 1+ year ago
+							$time_message = "Há $interval->y anos";
 					} else if ($interval->m >= 1) {
-
 						if ($interval->d == 0) {
-							$days = " ago";
+							$days = "";
 						} else if ($interval->d == 1) {
-							$days = $interval->d . " day ago";
+							$days = "e $interval->d dia";
 						} else {
-							$days = $interval->d . " day's ago";
+							$days = "e $interval->d dias";
 						}
-
-
 						if ($interval->m == 1) {
-							$time_message = $interval->m . " month" . $days;
+							$time_message = "Há $interval->m mês $days";
 						} else {
-							$time_message = $interval->m . " month's" . $days;
+							$time_message = "Há $interval->m meses $days";
 						}
 					} else if ($interval->d >= 1) {
 						if ($interval->d == 1) {
-							$time_message = "Yesterday";
+							$time_message = "Ontem";
 						} else {
-							$time_message = $interval->d . " day's ago";
+							$time_message = "Há $interval->d dias";
 						}
 					} else if ($interval->h >= 1) {
 						if ($interval->h == 1) {
-							$time_message = $interval->h . " hour ago";
+							$time_message = "Há $interval->h hora";
 						} else {
-							$time_message = $interval->h . " hour's ago";
+							$time_message = "Há $interval->h horas";
 						}
 					} else if ($interval->i >= 1) {
 						if ($interval->i == 1) {
-							$time_message = $interval->i . " minute ago";
+							$time_message = "Há $interval->i minuto";
 						} else {
-							$time_message = $interval->i . " minutes' ago";
+							$time_message = "Há $interval->i minutos";
 						}
 					} else {
 						if ($interval->s < 30) {
-							$time_message = "Just now";
+							$time_message = "Agora";
 						} else {
-							$time_message = $interval->s . " second's ago";
+							$time_message = "Há $interval->s segundos";
 						}
 					}
 
@@ -283,49 +279,48 @@ class PostDAO
 				$start_date = new DateTime($date_time); //Time of post
 				$end_date = new DateTime($date_time_now); //Current time
 				$interval = (object)$start_date->diff($end_date); //Difference between dates 
+
 				if ($interval->y >= 1) {
 					if ($interval == 1)
-						$time_message = $interval->y . " year ago"; //1 year ago
+						$time_message = "Há $interval->y ano";
 					else
-						$time_message = $interval->y . " years ago"; //1+ year ago
+						$time_message = "Há $interval->y anos";
 				} else if ($interval->m >= 1) {
 					if ($interval->d == 0) {
-						$days = " ago";
+						$days = "";
 					} else if ($interval->d == 1) {
-						$days = $interval->d . " day ago";
+						$days = "e $interval->d dia";
 					} else {
-						$days = $interval->d . " days ago";
+						$days = "e $interval->d dias";
 					}
-
-
 					if ($interval->m == 1) {
-						$time_message = $interval->m . " month" . $days;
+						$time_message = "Há $interval->m mês $days";
 					} else {
-						$time_message = $interval->m . " months" . $days;
+						$time_message = "Há $interval->m meses $days";
 					}
 				} else if ($interval->d >= 1) {
 					if ($interval->d == 1) {
-						$time_message = "Yesterday";
+						$time_message = "Ontem";
 					} else {
-						$time_message = $interval->d . " days ago";
+						$time_message = "Há $interval->d dias";
 					}
 				} else if ($interval->h >= 1) {
 					if ($interval->h == 1) {
-						$time_message = $interval->h . " hour ago";
+						$time_message = "Há $interval->h hora";
 					} else {
-						$time_message = $interval->h . " hours ago";
+						$time_message = "Há $interval->h horas";
 					}
 				} else if ($interval->i >= 1) {
 					if ($interval->i == 1) {
-						$time_message = $interval->i . " minute ago";
+						$time_message = "Há $interval->i minuto";
 					} else {
-						$time_message = $interval->i . " minutes ago";
+						$time_message = "Há $interval->i minutos";
 					}
 				} else {
 					if ($interval->s < 30) {
-						$time_message = "Just now";
+						$time_message = "Agora";
 					} else {
-						$time_message = $interval->s . " seconds ago";
+						$time_message = "Há $interval->s segundos";
 					}
 				}
 
