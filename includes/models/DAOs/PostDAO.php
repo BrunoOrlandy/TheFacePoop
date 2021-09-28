@@ -12,15 +12,20 @@ class PostDAO
 
 	public function submitPost($post_text_body)
 	{
+		$post_text_body = strip_tags($post_text_body);
+		$check_empty = preg_replace('/\s+/', '', $post_text_body);
+
+		if ($check_empty != "") {
+
 			$inclusion_date = date("Y-m-d H:i:s");
 
 			$logged_user_id = $this->logged_user_obj->getID();
 
 			pg_query($this->con, "INSERT INTO posts VALUES(default, default, '$logged_user_id', default, '$post_text_body', '$inclusion_date', false)");
-	
+		}
 	}
 
-	public function loadPostsFriends($data, $limit_pagination)
+	public function loadPostsFriends($data, $limit)
 	{
 		$page = $data['page'];
 
@@ -29,14 +34,14 @@ class PostDAO
 		if ($page == 1)
 			$start = 0;
 		else
-			$start = ($page - 1) * $limit_pagination;
+			$start = ($page - 1) * $limit;
 
-		$str = ""; 
+		$str = "";
 
 		$data_query = pg_query($this->con, "SELECT * FROM posts WHERE is_deleted=false ORDER BY post_id DESC");
 
 		if (pg_num_rows($data_query) > 0) {
-			$num_iterations = 0; 
+			$num_iterations = 0;
 			$count = 1;
 
 			while ($row = pg_fetch_array($data_query)) {
@@ -57,11 +62,11 @@ class PostDAO
 					continue;
 				}
 
-				if ($this->logged_user_obj->isFriendOf($user_id)) { 
+				if ($this->logged_user_obj->isFriendOf($user_id)) {
 
 					if ($num_iterations++ < $start)
 						continue;
-					if ($count > $limit_pagination) {
+					if ($count > $limit) {
 						break;
 					} else {
 						$count++;
@@ -83,53 +88,49 @@ class PostDAO
 					$date_time_now = date("Y-m-d H:i:s");
 					$start_date = new DateTime($date_time); // Time of post
 					$end_date = new DateTime($date_time_now); // Current time
-					$interval = (object)$start_date->diff($end_date); // Difference between dates 
+					$interval = (object)$start_date->diff($end_date); // Difference between dates
 
 					if ($interval->y >= 1) {
-
 						if ($interval == 1)
-							$time_message = $interval->y . " year ago"; // 1 year ago
+							$time_message = "H� $interval->y ano";
 						else
-							$time_message = $interval->y . " year's ago"; // 1+ year ago
+							$time_message = "H� $interval->y anos";
 					} else if ($interval->m >= 1) {
-
 						if ($interval->d == 0) {
-							$days = " ago";
+							$days = "";
 						} else if ($interval->d == 1) {
-							$days = $interval->d . " day ago";
+							$days = "e $interval->d dia";
 						} else {
-							$days = $interval->d . " day's ago";
+							$days = "e $interval->d dias";
 						}
-
-
 						if ($interval->m == 1) {
-							$time_message = $interval->m . " month" . $days;
+							$time_message = "H� $interval->m m�s $days";
 						} else {
-							$time_message = $interval->m . " month's" . $days;
+							$time_message = "H� $interval->m meses $days";
 						}
 					} else if ($interval->d >= 1) {
 						if ($interval->d == 1) {
-							$time_message = "Yesterday";
+							$time_message = "Ontem";
 						} else {
-							$time_message = $interval->d . " day's ago";
+							$time_message = "H� $interval->d dias";
 						}
 					} else if ($interval->h >= 1) {
 						if ($interval->h == 1) {
-							$time_message = $interval->h . " hour ago";
+							$time_message = "H� $interval->h hora";
 						} else {
-							$time_message = $interval->h . " hour's ago";
+							$time_message = "H� $interval->h horas";
 						}
 					} else if ($interval->i >= 1) {
 						if ($interval->i == 1) {
-							$time_message = $interval->i . " minute ago";
+							$time_message = "H� $interval->i minuto";
 						} else {
-							$time_message = $interval->i . " minutes' ago";
+							$time_message = "H� $interval->i minutos";
 						}
 					} else {
 						if ($interval->s < 30) {
-							$time_message = "Just now";
+							$time_message = "Agora";
 						} else {
-							$time_message = $interval->s . " second's ago";
+							$time_message = "H� $interval->s segundos";
 						}
 					}
 
@@ -186,7 +187,7 @@ class PostDAO
 
 			} // End loop
 
-			if ($count > $limit_pagination)
+			if ($count > $limit)
 				$str .= "<input type='hidden' class='nextPage' value='" . ($page + 1) . "'>
 							<input type='hidden' class='noMorePosts' value='false'>";
 			else
@@ -197,7 +198,7 @@ class PostDAO
 	}
 
 
-	public function loadProfilePosts($data, $limit_pagination)
+	public function loadProfilePosts($data, $limit)
 	{
 		$page = $data['page'];
 		$logged_user_id = $this->logged_user_obj->getID();
@@ -205,7 +206,7 @@ class PostDAO
 		if ($page == 1)
 			$start = 0;
 		else
-			$start = ($page - 1) * $limit_pagination;
+			$start = ($page - 1) * $limit;
 
 
 		$str = ""; //String to return 
@@ -225,7 +226,7 @@ class PostDAO
 					continue;
 
 				// Once 10 posts have been loaded, break
-				if ($count > $limit_pagination) {
+				if ($count > $limit) {
 					break;
 				} else {
 					$count++;
@@ -240,59 +241,57 @@ class PostDAO
 				$user_row = pg_fetch_array($user_details_query);
 				$first_name = $user_row['first_name'];
 				$last_name = $user_row['last_name'];
-				
+
 				$added_by_obj = new UserDAO($this->con, $user_id);
 				$profile_pic = $added_by_obj->getProfilePic();
 				$user_login = $added_by_obj->getLogin();
-				
-				$date_time_now = date("Y-m-d H:i:s");
-				$start_date = new DateTime($date_time); 
-				$end_date = new DateTime($date_time_now); 
-				$interval =(object) $start_date->diff($end_date); 
 
-        if ($interval->y >= 1) {
+				$date_time_now = date("Y-m-d H:i:s");
+				$start_date = new DateTime($date_time);
+				$end_date = new DateTime($date_time_now);
+				$interval = (object)$start_date->diff($end_date);
+
+				if ($interval->y >= 1) {
 					if ($interval == 1)
-						$time_message = $interval->y . " year ago"; 
+						$time_message = "Há $interval->y ano";
 					else
-						$time_message = $interval->y . " years ago"; 
+						$time_message = "Há $interval->y anos";
 				} else if ($interval->m >= 1) {
 					if ($interval->d == 0) {
-						$days = " ago";
+						$days = "";
 					} else if ($interval->d == 1) {
-						$days = $interval->d . " day ago";
+						$days = "e $interval->d dia";
 					} else {
-						$days = $interval->d . " days ago";
+						$days = "e $interval->d dias";
 					}
-
-
 					if ($interval->m == 1) {
-						$time_message = $interval->m . " month" . $days;
+						$time_message = "H� $interval->m m�s $days";
 					} else {
-						$time_message = $interval->m . " months" . $days;
+						$time_message = "H� $interval->m meses $days";
 					}
 				} else if ($interval->d >= 1) {
 					if ($interval->d == 1) {
-						$time_message = "Yesterday";
+						$time_message = "Ontem";
 					} else {
-						$time_message = $interval->d . " days ago";
+						$time_message = "H� $interval->d dias";
 					}
 				} else if ($interval->h >= 1) {
 					if ($interval->h == 1) {
-						$time_message = $interval->h . " hour ago";
+						$time_message = "H� $interval->h hora";
 					} else {
-						$time_message = $interval->h . " hours ago";
+						$time_message = "H� $interval->h horas";
 					}
 				} else if ($interval->i >= 1) {
 					if ($interval->i == 1) {
-						$time_message = $interval->i . " minute ago";
+						$time_message = "H� $interval->i minuto";
 					} else {
-						$time_message = $interval->i . " minutes ago";
+						$time_message = "H� $interval->i minutos";
 					}
 				} else {
 					if ($interval->s < 30) {
-						$time_message = "Just now";
+						$time_message = "Agora";
 					} else {
-						$time_message = $interval->s . " seconds ago";
+						$time_message = "H� $interval->s segundos";
 					}
 				}
 
@@ -338,7 +337,7 @@ class PostDAO
 
 			} //End loop
 
-			if ($count > $limit_pagination)
+			if ($count > $limit)
 				$str .= "<input type='hidden' class='nextPage' value='" . ($page + 1) . "'>
 							<input type='hidden' class='noMorePosts' value='false'>";
 			else

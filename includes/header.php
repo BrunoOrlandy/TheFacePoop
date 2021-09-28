@@ -1,10 +1,9 @@
 <?php
-require 'config/config.php'; 
-include("includes/models/User.php"); 
+require 'config/config.php';
+include("includes/models/User.php");
 include("includes/models/DAOs/UserDAO.php");
-include("includes/models/Post.php"); 
-include("includes/models/DAOs/PostDAO.php"); 
-
+include("includes/models/Post.php");
+include("includes/models/DAOs/PostDAO.php");
 
 if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 
@@ -15,7 +14,7 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 
 	$user = pg_fetch_array($user_details_query);
 } else {
-	header("Location: register.php"); 
+	header("Location: register.php");
 }
 
 ?>

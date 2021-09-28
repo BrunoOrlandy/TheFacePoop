@@ -1,25 +1,27 @@
-<?php  
+<?php
 
-require 'config/config.php'; 
-require 'includes/form_handlers/register_handler.php'; 
-require 'includes/form_handlers/login_handler.php'; 
+require 'config/config.php';
+require 'includes/form_handlers/register_handler.php';
+require 'includes/form_handlers/login_handler.php';
 
 ?>
 
 
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>FacePoop</title>
 	<link rel="stylesheet" type="text/css" href="assets/css/register_style.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="assets/js/register.js"></script>
 </head>
+
 <body>
 
-	<?php  
+	<?php
 
-	if(isset($_POST['register_button'])) {
+	if (isset($_POST['register_button'])) {
 
 		echo '
 		<script>
@@ -58,11 +60,11 @@ require 'includes/form_handlers/login_handler.php';
 
 					<!-- Email Section -->
 
-					<input type="email" name="log_email" placeholder="Endereço de email" value="<?php 
-					if(isset($_SESSION['log_email'])) {
-						echo $_SESSION['log_email'];
-					} 
-					?>" required>
+					<input type="email" name="log_email" placeholder="Endereço de email" value="<?php
+																								if (isset($_SESSION['log_email'])) {
+																									echo $_SESSION['log_email'];
+																								}
+																								?>" required>
 					<br>
 
 					<!-- Password Section -->
@@ -70,7 +72,9 @@ require 'includes/form_handlers/login_handler.php';
 					<input type="password" name="log_password" placeholder="Senha">
 					<br>
 
-					<?php if(in_array("Login ou senha incorretos<br>", $error_array)) echo  "Login ou senha incorretos<br>"; ?>
+					<!-- Error's Section -->
+
+					<?php if (in_array("Login ou senha incorretos<br>", $error_array)) echo  "Login ou senha incorretos<br>"; ?>
 
 					<!-- Login Button -->
 
@@ -125,7 +129,7 @@ require 'includes/form_handlers/login_handler.php';
 					<?php if(in_array("Emails informados não coincidem</br>",$error_array)) echo "Emails informados não coincidem</br>"; ?>
 
 					<input type="password" name="reg_password" placeholder="Senha" required>
-					
+
 					<input type="password" name="reg_password2" placeholder="Confirmar senha" required>
 					<br>
 
@@ -149,4 +153,5 @@ require 'includes/form_handlers/login_handler.php';
 	</div>
 
 </body>
+
 </html>
