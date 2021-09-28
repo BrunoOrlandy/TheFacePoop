@@ -145,12 +145,7 @@ class PostDAO
 										<br>
 										<br>
 									</div>
-								</div>
-
-								<div class='newsfeedPostOptions'>
-									<iframe src='like.php?post_id=$id' scrolling='no'></iframe>
-								</div>
-								
+								</div>								
 
 							</div>
 							<hr>";
@@ -301,10 +296,6 @@ class PostDAO
 									<br>
 									<br>
 									<br>
-								</div>
-
-								<div class='newsfeedPostOptions'>
-									<iframe src='like.php?post_id=$id' scrolling='no'></iframe>
 								</div>
 
 							</div>

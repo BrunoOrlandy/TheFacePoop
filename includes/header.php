@@ -51,7 +51,7 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 
 		<div class="search">
 
-			<form action="search.php" method="GET" name="search_form">
+			<!-- <form action="search.php" method="GET" name="search_form">
 
 				<input type="text" onkeyup="getLiveSearchUsers(this.value, '<?php echo $userLoggedIn; ?>')" name="q" placeholder="Search..." autocomplete="off" id="search_text_input">
 
@@ -59,7 +59,7 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 					<img src="assets/images/icons/magnifying_glass.png">
 				</div>
 
-			</form>
+			</form> -->
 
 			<div class="search_results">
 			</div>
@@ -70,7 +70,7 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 		</div>
 
 		<nav>
-			<a href="<?php echo $userLoggedIn; ?>">
+			<a href="profile.php">
 				<?php echo $user['first_name']; ?>
 			</a>
 

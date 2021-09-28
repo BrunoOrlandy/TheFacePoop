@@ -20,7 +20,7 @@ $(document).ready(function () {
 				location.reload();
 			},
 			error: function () {
-				alert('Failure');
+				alert('Não foi possível postar :C');
 			}
 		});
 
