@@ -70,7 +70,7 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 		</div>
 
 		<nav>
-			<a href="profile.php">
+			<a href="profile.php?login=<?php echo $userLoggedIn; ?>">
 				<?php echo $user['first_name']; ?>
 			</a>
 
@@ -84,7 +84,9 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 				<i class="fas fa-users"></i>
 			</a> -->
 
-			<!-- Logout -->
+			<a href="settings.php">
+				<i class="fas fa-cog"></i>
+			</a>
 
 			<a href="includes/handlers/logout.php">
 				<i class="fas fa-sign-out-alt"></i>

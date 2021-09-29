@@ -9,11 +9,11 @@ if (isset($_POST['post'])) {
 
 <div class="user_details column">
 
-	<a href="<?php echo $userLoggedIn; ?>"> <img src="assets/images/profile_pics/imagem.jpg"> </a>
+	<a href="profile.php?login=<?php echo $userLoggedIn; ?>"> <img src="assets/images/profile_pics/imagem.jpg"> </a>
 
 	<div class="user_details_left_right">
 
-		<a href="<?php echo $userLoggedIn; ?>">
+		<a href="profile.php?login=<?php echo $userLoggedIn; ?>">
 
 			<?php
 			echo $user['first_name'] . " " . $user['last_name'];
@@ -28,8 +28,8 @@ if (isset($_POST['post'])) {
 <div class="main_column column">
 	<form class="post_form" action="index.php" method="POST">
 
-		<textarea name="post_text" id="post_text" placeholder="What's on your mind?"></textarea>
-		<input type="submit" name="post" id="post_button" value="Post">
+		<textarea name="post_text" id="post_text" placeholder="O que você tem em mente?"></textarea>
+		<input type="submit" name="post" id="post_button" value="Publicar">
 		<hr>
 
 	</form>

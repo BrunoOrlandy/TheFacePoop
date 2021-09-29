@@ -5,18 +5,18 @@ if (isset($_GET['login'])) {
 
   $login = $_GET['login'];
 
-  $user_details_query = pg_query($con, "SELECT * FROM users WHERE login=$login");
+  $user_details_query = pg_query($con, "SELECT * FROM users WHERE login='$login'");
 
   $user_array = pg_fetch_array($user_details_query);
 }
 
 if (isset($_POST['remove_friend'])) {
-  // $user = new UserDAO($con, $userLoggedIn);
-  // $user->removeFriend($username);
+  // $user = new UserDAO($con, $userID);
+  // $user->removeFriend($login);
 }
 
 if (isset($_POST['add_friend'])) {
-  $user = new UserDAO($con, $userLoggedIn);
+  $user = new UserDAO($con, $userID);
   $user->sendRequest($login);
 }
 
@@ -41,7 +41,7 @@ if (isset($_POST['respond_request'])) {
 
     <?php
 
-    $logged_in_user_obj = new UserDAO($con, $userLoggedIn);
+    $logged_in_user_obj = new UserDAO($con, $userID);
 
     if ($userLoggedIn != $login) {
 
@@ -101,9 +101,7 @@ if (isset($_POST['respond_request'])) {
 
             <textarea class="form-control" name="post_body"></textarea>
 
-            <input type="hidden" name="user_from" value="<?php echo $userLoggedIn; ?>">
-
-            <input type="hidden" name="user_to" value="<?php echo $login; ?>">
+            <input type="hidden" name="logged_user" value="<?php echo $userID; ?>">
 
           </div>
         </form>
@@ -112,9 +110,9 @@ if (isset($_POST['respond_request'])) {
 
       <div class="modal-footer">
 
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
 
-        <button type="button" class="btn btn-primary" name="post_button" id="submit_profile_post">Post</button>
+        <button type="button" class="btn btn-primary" name="post_button" id="submit_profile_post">Postar</button>
 
       </div>
     </div>
@@ -124,13 +122,14 @@ if (isset($_POST['respond_request'])) {
 <script>
   var userLoggedIn = '<?php echo $userLoggedIn; ?>';
   var userLogin = '<?php echo $login; ?>';
+  var userID = '<?php echo $userID; ?>';
 
   $(document).ready(function() {
 
     $('#loading').show();
 
     $.ajax({
-      url: "includes/handlers/ajax_load_profile_posts.php",
+      url: "includes/handlers/ajax_load_posts.php",
       type: "POST",
       data: "page=1&userID=" + userID + "&userLoggedIn=" + userLoggedIn + "&login=" + userLogin,
       cache: false,
@@ -142,7 +141,7 @@ if (isset($_POST['respond_request'])) {
     });
 
     $(window).scroll(function() {
-      var height = $('.posts_area').height(); //Div containing posts
+      var height = $('.posts_area').height();
       var scroll_top = $(this).scrollTop();
       var page = $('.posts_area').find('.nextPage').val();
       var noMorePosts = $('.posts_area').find('.noMorePosts').val();
@@ -156,13 +155,13 @@ if (isset($_POST['respond_request'])) {
           data: "page=" + page + "&userID=" + userID + "&userLoggedIn=" + userLoggedIn + "&login=" + userLogin,
           cache: false,
 
-          success: function(response) {
-            $('.posts_area').find('.nextPage').remove();
-            $('.posts_area').find('.noMorePosts').remove();
+					success: function(response) {
+						$('.posts_area').find('.nextPage').remove();
+						$('.posts_area').find('.noMorePosts').remove();
 
-            $('#loading').hide();
-            $('.posts_area').append(response);
-          }
+						$('#loading').hide();
+						$('.posts_area').append(response);
+					}
         });
 
       }
