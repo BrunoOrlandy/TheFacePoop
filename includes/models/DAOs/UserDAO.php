@@ -73,7 +73,7 @@ class UserDAO
 
 		$user_to = $this->user['login'];
 
-		$check_request_query = pg_query($this->con, "SELECT * FROM friend_requests WHERE user_to='$user_to' AND user_from='$user_from'");
+		$check_request_query = pg_query($this->con, "SELECT * FROM users_friendships WHERE user_to='$user_to' AND user_from='$user_from'");
 
 		if (pg_num_rows($check_request_query) > 0) {
 
@@ -89,7 +89,7 @@ class UserDAO
 
 		$user_from = $this->user['login'];
 
-		$check_request_query = pg_query($this->con, "SELECT * FROM friend_requests WHERE user_to='$user_to' AND user_from='$user_from'");
+		$check_request_query = pg_query($this->con, "SELECT * FROM users_friendships WHERE user_to='$user_to' AND user_from='$user_from'");
 
 		if (pg_num_rows($check_request_query) > 0) {
 
