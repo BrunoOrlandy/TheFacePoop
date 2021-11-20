@@ -11,20 +11,15 @@ CREATE TABLE users(
 	is_active BOOLEAN
 );
 
+
 CREATE TABLE friendships(
-	friendship_id SERIAL PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
+	user_to_id int NOT NULL,
+	user_id int NOT NULL,
 	request_date DATE NOT NULL,
 	acceptance_date DATE,
-	block_date DATE
-);
-
-CREATE TABLE users_friendships(
-	friendship_id int NOT NULL,
-	user_id int NOT NULL,
-	update_date date NOT NULL DEFAULT CURRENT_DATE,
-	PRIMARY KEY (friendship_id, user_id),
-	FOREIGN KEY (user_id) REFERENCES users (user_id),
-	FOREIGN KEY (friendship_id) REFERENCES friendships (friendship_id)
+	block_date DATE,
+	FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
 --propriedade TEXT 'variable unlimited length'

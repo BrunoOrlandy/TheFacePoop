@@ -51,6 +51,10 @@ class User
         return $this;
     }
 
+    public function getFirstAndLastName(){
+        return $this->getFirstName().  $this->getLastName();
+    }
+
     public function getEmail()
     {
         return $this->email;

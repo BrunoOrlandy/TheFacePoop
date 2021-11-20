@@ -4,6 +4,9 @@ include("includes/models/User.php");
 include("includes/models/DAOs/UserDAO.php");
 include("includes/models/Post.php");
 include("includes/models/DAOs/PostDAO.php");
+include("includes/models/DAOs/FriendshipDAO.php");
+include("includes/models/Friendship.php");
+
 
 if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 
