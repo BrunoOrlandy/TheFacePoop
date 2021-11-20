@@ -23,17 +23,22 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 <head>
 	<title>Bem-vindo ao FacePoop!</title>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script src="assets/js/bootstrap.js"></script>
-	<script src="assets/js/bootbox.min.js"></script>
-	<script src="assets/js/facepoop.js"></script>
-	<script src="assets/js/jquery.jcrop.js"></script>
-	<script src="assets/js/jcrop_bits.js"></script>
-
+	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
-	<link rel="stylesheet" href="assets/css/jquery.Jcrop.css" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="assets/css/jquery.Jcrop.css" />
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+	<script src="assets/js/popper.min.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
+	<script src="assets/js/bootbox.min.js"></script>
+	<script src="assets/js/bootbox.locales.min.js"></script>
+
+	<script src="assets/js/facepoop.js"></script>
+	<script src="assets/js/jquery.jcrop.js"></script>
+	<script src="assets/js/jcrop_bits.js"></script>
 
 </head>
 
@@ -78,11 +83,9 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 				<i class="fas fa-home"></i>
 			</a>
 
-			<!-- Friend Requests
-
 			<a href="requests.php">
 				<i class="fas fa-users"></i>
-			</a> -->
+			</a>
 
 			<a href="settings.php">
 				<i class="fas fa-cog"></i>

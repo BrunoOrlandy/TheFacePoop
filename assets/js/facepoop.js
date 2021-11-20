@@ -70,12 +70,3 @@ function getLiveSearchUsers(value, user) {
 		}
 	});
 }
-
-
-
-
-
-
-
-
-
