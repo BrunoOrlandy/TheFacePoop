@@ -2,7 +2,7 @@
 include("includes/header.php");
 
 if (isset($_POST['post'])) {
-	$post = new PostDAO($con, $userID);
+	$post = new PostDAO($con, $loggedUserID);
 	$post->submitPost($_POST['post_text']);
 }
 ?>
@@ -16,7 +16,7 @@ if (isset($_POST['post'])) {
 		<a href="profile.php?login=<?php echo $userLoggedIn; ?>">
 
 			<?php
-			echo $user['first_name'] . " " . $user['last_name'];
+			echo $loggedUser->getFirstName() . " " . $loggedUser->getLastName();
 
 			?>
 		</a>

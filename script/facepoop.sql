@@ -26,7 +26,7 @@ CREATE TABLE friendships(
 CREATE TABLE comments(
 	comment_id SERIAL PRIMARY KEY,
 	user_id INT,
-	texto TEXT,
+	text TEXT,
 	inclusion_date DATE NOT NULL,
 	CONSTRAINT fk_users FOREIGN KEY (user_id) REFERENCES users(user_id)
 );

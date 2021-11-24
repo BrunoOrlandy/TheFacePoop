@@ -1,20 +1,22 @@
 <?php
+
 require 'config/config.php';
 include("includes/models/User.php");
-include("includes/models/DAOs/UserDAO.php");
 include("includes/models/Post.php");
-include("includes/models/DAOs/PostDAO.php");
-include("includes/models/DAOs/FriendshipDAO.php");
+include("includes/models/Search.php");
 include("includes/models/Friendship.php");
+include("includes/models/DAOs/UserDAO.php");
+include("includes/models/DAOs/PostDAO.php");
+include("includes/models/DAOs/SearchDAO.php");
+include("includes/models/DAOs/FriendshipDAO.php");
 
 
 if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 
 	$userLoggedIn = $_SESSION['login'];
-	$userID = $_SESSION['user_id'];
+	$loggedUserID = $_SESSION['user_id'];
 
-	$user_details_query = pg_query($con, "SELECT * FROM users WHERE user_id='$userID'");
-	$user = pg_fetch_array($user_details_query);
+	$loggedUser = new User($loggedUserID);
 } else {
 	header("Location: register.php");
 }
@@ -57,17 +59,17 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 
 		</div>
 
-		<div class="search">
+		<!-- <div class="search">
 
-			<!-- <form action="search.php" method="GET" name="search_form">
+			<form action="search.php" method="GET" name="search_form">
 
-				<input type="text" onkeyup="getLiveSearchUsers(this.value, '<?php echo $userLoggedIn; ?>')" name="q" placeholder="Search..." autocomplete="off" id="search_text_input">
+				<input type="text" onkeyup="getLiveSearchUsers(this.value, '<?php echo $userLoggedIn; ?>')" name="" placeholder="Pesquisar no Facepoop..." autocomplete="off" id="search_text_input">
 
 				<div class="button_holder">
 					<img src="assets/images/icons/magnifying_glass.png">
 				</div>
 
-			</form> -->
+			</form>
 
 			<div class="search_results">
 			</div>
@@ -75,15 +77,19 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 			<div class="search_results_footer_empty">
 			</div>
 
-		</div>
+		</div> -->
 
 		<nav>
 			<a href="profile.php?login=<?php echo $userLoggedIn; ?>">
-				<?php echo $user['first_name']; ?>
+				<?php echo $loggedUser->getFirstName(); ?>
 			</a>
 
 			<a href="index.php">
 				<i class="fas fa-home"></i>
+			</a>
+
+			<a href="search.php">
+				<i class="fas fa-search"></i>
 			</a>
 
 			<a href="requests.php">

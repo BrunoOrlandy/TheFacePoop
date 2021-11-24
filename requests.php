@@ -29,7 +29,7 @@ include("includes/header.php"); // To include header.php file
 			$user_from_obj = new User($con, $user_from);
             $user_from_obj_DAO = new UserDAO($con, $user_from);
 
-			echo $user_from_obj->getFirstAndLastName() . " lhe enviou uma solicitação de amizade!";
+			echo $user_from_obj->getFullName() . " lhe enviou uma solicitação de amizade!";
 
 			$user_from_friend_array = $user_from_obj_DAO->getFriendArray();
 

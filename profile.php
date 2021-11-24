@@ -16,7 +16,7 @@ if (isset($_POST['remove_friend'])) {
 }
 
 if (isset($_POST['add_friend'])) {
-  $user = new UserDAO($con, $userID);
+  $user = new User($con, $userID);
   $user->sendRequest($login);
 }
 

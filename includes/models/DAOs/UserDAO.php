@@ -5,10 +5,10 @@ class UserDAO
 	private $user;
 	private $con;
 
-	public function __construct($con, $user_id)
+	public function __construct($userId)
 	{
-		$this->con = $con;
-		$user_details_query = pg_query($con, "SELECT * FROM users WHERE user_id='$user_id'");
+		$this->con = $GLOBALS['con'];
+		$user_details_query = pg_query($this->con, "SELECT * FROM users WHERE user_id='$userId'");
 		$this->user = pg_fetch_array($user_details_query);
 	}
 
@@ -37,11 +37,30 @@ class UserDAO
 		return $row['num_posts'];
 	}
 
-	public function getFirstAndLastName()
+	public function getFirstName()
 	{
-		$login = $this->user['login'];
-		$query = pg_query($this->con, "SELECT first_name, last_name FROM users WHERE login='$login'");
+		$userId = $this->user['user_id'];
+		$query = pg_query($this->con, "SELECT first_name, last_name FROM users WHERE user_id='$userId'");
 		$row = pg_fetch_array($query);
+
+		return $row['first_name'] . " " . $row['last_name'];
+	}
+
+	public function getLastName()
+	{
+		$userId = $this->user['user_id'];
+		$query = pg_query($this->con, "SELECT first_name, last_name FROM users WHERE user_id='$userId'");
+		$row = pg_fetch_array($query);
+
+		return $row['first_name'] . " " . $row['last_name'];
+	}
+
+	public function getFullName()
+	{
+		$userId = $this->user['user_id'];
+		$query = pg_query($this->con, "SELECT first_name, last_name FROM users WHERE user_id='$userId'");
+		$row = pg_fetch_array($query);
+
 		return $row['first_name'] . " " . $row['last_name'];
 	}
 
@@ -63,47 +82,66 @@ class UserDAO
 			return false;
 	}
 
-	public function isFriendOf($login_to_check)
+	public function isFriendOf($userToId)
 	{
-		return true;
-	}
+		$userFromId = $this->user['user_id'];
 
-	public function didReceiveRequest($user_from)
-	{
+		$checkRequest = pg_query($this->con, "SELECT * FROM friendships WHERE user_to_id=$userToId AND user_id=$userFromId AND acceptance_date IS NOT NULL AND block_date IS NOT NULL");
 
-		$user_to = $this->user['login'];
-
-		$check_request_query = pg_query($this->con, "SELECT * FROM users_friendships WHERE user_to='$user_to' AND user_from='$user_from'");
-
-		if (pg_num_rows($check_request_query) > 0) {
-
+		if (pg_num_rows($checkRequest) > 0) {
 			return true;
 		} else {
-
 			return false;
 		}
 	}
 
-	public function didSendRequest($user_to)
+	public function didReceiveRequest($userToId)
 	{
+		$userFromId = $this->user['user_id'];
 
-		$user_from = $this->user['login'];
+		$checkRequest = pg_query($this->con, "SELECT * FROM friendships WHERE user_to_id=$userToId AND user_id=$userFromId AND request_date IS NOT NULL");
 
-		$check_request_query = pg_query($this->con, "SELECT * FROM users_friendships WHERE user_to='$user_to' AND user_from='$user_from'");
-
-		if (pg_num_rows($check_request_query) > 0) {
-
+		if (pg_num_rows($checkRequest) > 0) {
 			return true;
 		} else {
-
 			return false;
 		}
 	}
 
-	public function sendRequest($user_to)
+	public function didSendRequest($userToId)
 	{
-		$user_from = $this->user['login'];
+		$userFromId = $this->user['user_id'];
 
-		pg_query($this->con, "INSERT INTO users_friendships VALUES(default, '$user_to', '$user_from')");
+		$checkRequest = pg_query($this->con, "SELECT * FROM friendships WHERE user_to_id=$userToId AND user_id=$userFromId AND request_date IS NOT NULL");
+
+		if (pg_num_rows($checkRequest) > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function sendRequest($userToId)
+	{
+		$userFromId = $this->user['user_id'];
+		$date = date("Y-m-d");
+
+		pg_query($this->con, "INSERT INTO friendships VALUES(default, $userToId, $userFromId, '$date', default, default)");
+	}
+
+	public function removeFriend($userIdToRemove)
+	{
+		$userID = $this->user['user_id'];
+
+		pg_query($this->con, "DELETE FROM friendships WHERE user_to_id=$userIdToRemove AND user_id=$userID");
+	}
+
+	public function getMutualFriends($userIdToCheck)
+	{
+		$userID = $this->user['user_id'];
+
+		$query = pg_query($this->con, "SELECT * FROM friendships WHERE user_to_id=$userIdToCheck AND user_id=$userID AND request_date IS NOT NULL");
+
+		return pg_num_rows($query);
 	}
 }

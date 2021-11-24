@@ -97,7 +97,7 @@ if (isset($_POST['register_button'])) {
 		else if ($rand == 2)
 			$profile_pic = "assets/images/profile_pics/fb_default_wet_asphalt.png";
 
-		$query = pg_query($con, "INSERT INTO users VALUES (default, '$login', '$fname', '$lname', '$em', '$encripted_password', default, default, '$date')");
+		$query = pg_query($con, "INSERT INTO users VALUES (default, '$login', '$fname', '$lname', '$em', '$encripted_password', default, default, '$date', true)");
 
 		array_push($error_array, "<span style='color: #14C800;'>Tudo pronto! Vá em frente e faça login!</span><br>");
 
