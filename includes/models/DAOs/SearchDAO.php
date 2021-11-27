@@ -25,16 +25,6 @@ class SearchDAO
         if ($comments != null)
             $results = $comments;
 
-        // $split = explode(" ", $searchString);
-
-        // if (count($split) == 3)
-        //     $query = pg_query($this->con, "SELECT * FROM users WHERE (first_name LIKE '$names[0]%' AND last_name LIKE '$names[2]%') AND user_closed='no'");
-        // //If query has one word only, search first names or last names 
-        // else if (count($names) == 2)
-        //     $query = pg_query($this->con, "SELECT * FROM users WHERE (first_name LIKE '$names[0]%' AND last_name LIKE '$names[1]%') AND user_closed='no'");
-        // else
-        //     $query = pg_query($this->con, "SELECT * FROM users WHERE (first_name LIKE '$names[0]%' OR last_name LIKE '$names[0]%') AND user_closed='no'");
-
         return $results;
     }
 

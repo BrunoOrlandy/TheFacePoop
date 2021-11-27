@@ -2,20 +2,34 @@
 
 class FriendshipDAO
 {
-    private $friendship;
     private $con;
 
+    public function __construct()
+    {
+        $this->con = $GLOBALS['con'];
+    }
 
-    public function __construct($con, $user_id)
-	{
-		$this->con = $con;
-		$this->friendship = new UserDAO($con, $user_id);
-	}
+    public function getFriendRequests($userId)
+    {
+        $query = pg_query($this->con, "SELECT * FROM friendships WHERE user_to_id='$userId' and acceptance_date IS NULL");
+        $users = array();
 
-    // Query to get freind_request's where user_to equals to loggedInUSER
-    public function getFriendRequests($user_id){
-	return pg_query($this->con, "SELECT * FROM friendships WHERE user_id='$user_id' and acceptance_date is null"); 
+        while ($row = pg_fetch_array($query)) {
+            $users[] = new User($row['user_id']);
+        }
+
+        return $users;
+    }
+
+    public function acceptFriendRequest($userId, $userToId)
+    {
+        $date = date("Y-m-d");
+
+        pg_query($this->con, "UPDATE friendships SET acceptance_date='$date' WHERE user_to_id=$userId AND user_id=$userToId");
+    }
+
+    public function rejectFriendRequest($userId, $userToId)
+    {
+        pg_query($this->con, "DELETE FROM friendships WHERE user_to_id=$userId AND user_id=$userToId");
     }
 }
-
-?>

@@ -56,13 +56,13 @@ if (isset($_GET['type'])) {
 					if ($loggedUser->isFriendOf($currentUserId))
 						$button = "<input type='submit' name='" . $currentUserId . "' class='danger' value='Excluir amigo'>";
 					else if ($value->didReceiveRequest($loggedUser->getId()))
-						$button = "<input type='submit' name='" . $currentUserId . "' class='warning' value='Responder solicitação'>";
+						$button = "<input type='submit' name='" . $currentUserId . "' class='default' value='Responder solicitação'>";
 					else if ($loggedUser->didSendRequest($currentUserId))
 						$button = "<input type='submit' class='default' value='Solicitação enviada'>";
 					else
 						$button = "<input type='submit' name='" . $currentUserId . "' class='success' value='Adicionar amigo'>";
 
-					$mutual_friends = $loggedUser->getMutualFriends($currentUserId) . " amigos em comum";
+					$mutual_friends = $loggedUser->getMutualFriends($currentUserId) . " amigo(s) em comum";
 
 					if (isset($_POST[$currentUserId])) {
 						if ($loggedUser->isFriendOf($currentUserId)) {

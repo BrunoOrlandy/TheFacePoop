@@ -12,7 +12,7 @@ class UserDAO
 		$this->user = pg_fetch_array($user_details_query);
 	}
 
-	public function getID()
+	public function getId()
 	{
 		return $this->user['user_id'];
 	}
@@ -29,30 +29,30 @@ class UserDAO
 		return pg_num_rows($query);
 	}
 
-	public function getNumPosts()
-	{
-		$login = $this->user['login'];
-		$query = pg_query($this->con, "SELECT num_posts FROM users WHERE login='$login'");
-		$row = pg_fetch_array($query);
-		return $row['num_posts'];
-	}
+	// public function getNumPosts()
+	// {
+	// 	$login = $this->user['login'];
+	// 	$query = pg_query($this->con, "SELECT num_posts FROM users WHERE login='$login'");
+	// 	$row = pg_fetch_array($query);
+	// 	return $row['num_posts'];
+	// }
 
 	public function getFirstName()
 	{
 		$userId = $this->user['user_id'];
-		$query = pg_query($this->con, "SELECT first_name, last_name FROM users WHERE user_id='$userId'");
+		$query = pg_query($this->con, "SELECT first_name FROM users WHERE user_id='$userId'");
 		$row = pg_fetch_array($query);
 
-		return $row['first_name'] . " " . $row['last_name'];
+		return $row['first_name'];
 	}
 
 	public function getLastName()
 	{
 		$userId = $this->user['user_id'];
-		$query = pg_query($this->con, "SELECT first_name, last_name FROM users WHERE user_id='$userId'");
+		$query = pg_query($this->con, "SELECT last_name FROM users WHERE user_id='$userId'");
 		$row = pg_fetch_array($query);
 
-		return $row['first_name'] . " " . $row['last_name'];
+		return $row['last_name'];
 	}
 
 	public function getFullName()
@@ -72,8 +72,8 @@ class UserDAO
 
 	public function isAccountClosed()
 	{
-		$login = $this->user['login'];
-		$query = pg_query($this->con, "SELECT is_active FROM users WHERE login='$login'");
+		$userId = $this->user['user_id'];
+		$query = pg_query($this->con, "SELECT is_active FROM users WHERE user_id='$userId'");
 		$row = pg_fetch_array($query);
 
 		if ($row['is_active'] == false)
@@ -86,7 +86,7 @@ class UserDAO
 	{
 		$userFromId = $this->user['user_id'];
 
-		$checkRequest = pg_query($this->con, "SELECT * FROM friendships WHERE user_to_id=$userToId AND user_id=$userFromId AND acceptance_date IS NOT NULL AND block_date IS NOT NULL");
+		$checkRequest = pg_query($this->con, "SELECT * FROM friendships WHERE user_to_id=$userFromId AND user_id=$userToId AND (acceptance_date IS NOT NULL OR block_date IS NOT NULL)");
 
 		if (pg_num_rows($checkRequest) > 0) {
 			return true;
@@ -131,16 +131,16 @@ class UserDAO
 
 	public function removeFriend($userIdToRemove)
 	{
-		$userID = $this->user['user_id'];
+		$userId = $this->user['user_id'];
 
-		pg_query($this->con, "DELETE FROM friendships WHERE user_to_id=$userIdToRemove AND user_id=$userID");
+		pg_query($this->con, "DELETE FROM friendships WHERE user_to_id=$userId AND user_id=$userIdToRemove");
 	}
 
 	public function getMutualFriends($userIdToCheck)
 	{
-		$userID = $this->user['user_id'];
+		$userId = $this->user['user_id'];
 
-		$query = pg_query($this->con, "SELECT * FROM friendships WHERE user_to_id=$userIdToCheck AND user_id=$userID AND request_date IS NOT NULL");
+		$query = pg_query($this->con, "SELECT * FROM friendships WHERE user_to_id=$userId AND user_id=$userIdToCheck AND request_date IS NOT NULL");
 
 		return pg_num_rows($query);
 	}
