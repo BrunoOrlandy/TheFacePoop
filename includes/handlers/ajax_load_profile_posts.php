@@ -6,7 +6,7 @@ include("../models/DAOs/PostDAO.php");
 
 $limit = 10;
 
-$posts = new PostDAO($con, $_REQUEST['userID']);
+$posts = new PostDAO($_REQUEST['userID']);
 $posts->loadProfilePosts($_REQUEST, $limit);
 
 ?>

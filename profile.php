@@ -1,23 +1,18 @@
 <?php
 include("includes/header.php");
 
-if (isset($_GET['login'])) {
-
-  $login = $_GET['login'];
-
-  $user_details_query = pg_query($con, "SELECT * FROM users WHERE login='$login'");
-
-  $user_array = pg_fetch_array($user_details_query);
+if (isset($_GET['profileUserID'])) {
+  $profileUserID = $_GET['profileUserID'];
 }
 
 if (isset($_POST['remove_friend'])) {
-  // $user = new UserDAO($con, $userID);
-  // $user->removeFriend($login);
+  $user = new User($loggedUserID);
+  $user->removeFriend($profileUserID);
 }
 
 if (isset($_POST['add_friend'])) {
-  $user = new User($con, $userID);
-  $user->sendRequest($login);
+  $user = new User($loggedUserID);
+  $user->sendRequest($profileUserID);
 }
 
 if (isset($_POST['respond_request'])) {
@@ -37,25 +32,18 @@ if (isset($_POST['respond_request'])) {
 
   <img src="assets/images/profile_pics/imagem.jpg">
 
-  <form action="<?php echo $login; ?>" method="POST">
+  <form action="<?php echo $profileUserID; ?>" method="POST">
 
     <?php
 
-    $logged_in_user_obj = new UserDAO($con, $userID);
-
-    if ($userLoggedIn != $login) {
-
-      if ($logged_in_user_obj->isFriendOf($login)) {
-
+    if ($loggedUser->getId() != $profileUserID) {
+      if ($loggedUser->isFriendOf($uprofileUserID)) {
         echo '<input type="submit" name="remove_friend" class="danger" value="Excluir amigo"><br>';
-      } else if ($logged_in_user_obj->didReceiveRequest($login)) {
-
-        echo '<input type="submit" name="respond_request" class="warning" value="Responder"><br>';
-      } else if ($logged_in_user_obj->didSendRequest($login)) {
-
+      } else if ($loggedUser->didReceiveRequest($profileUserID)) {
+        echo '<input type="submit" name="respond_request" class="default" value="Responder solicitação"><br>';
+      } else if ($loggedUser->didSendRequest($profileUserID)) {
         echo '<input type="submit" name="" class="default" value="Solicitação enviada"><br>';
       } else
-
         echo '<input type="submit" name="add_friend" class="success" value="Adicionar amigo"><br>';
     }
 
@@ -66,15 +54,14 @@ if (isset($_POST['respond_request'])) {
 
   <?php
 
-  // if ($userLoggedIn != $login) {
+  if ($loggedUserID != $profileUserID) {
 
-  //   echo '<div class="profile_info_bottom">';
+    echo '<div class="profile_info_bottom">';
 
-  //   echo $logged_in_user_obj->getMutualFriends($login) . " Mutual Friends";
+    echo $loggedUser->getMutualFriends($profileUserID) . " amigo(s) em comum";
 
-  //   echo '</div>';
-  // }
-
+    echo '</div>';
+  }
 
   ?>
 
@@ -98,8 +85,6 @@ if (isset($_POST['respond_request'])) {
     <div class="modal-content">
 
       <div class="modal-header">
-
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="postModalLabel">Nova postagem!</h4>
 
       </div>
@@ -112,7 +97,7 @@ if (isset($_POST['respond_request'])) {
 
             <textarea class="form-control" name="post_body"></textarea>
 
-            <input type="hidden" name="logged_user" value="<?php echo $userID; ?>">
+            <input type="hidden" name="logged_user" value="<?php echo $profileUserID; ?>">
 
           </div>
         </form>
@@ -131,18 +116,16 @@ if (isset($_POST['respond_request'])) {
 </div>
 
 <script>
-  var userLoggedIn = '<?php echo $userLoggedIn; ?>';
-  var userLogin = '<?php echo $login; ?>';
-  var userID = '<?php echo $userID; ?>';
+  var userID = '<?php echo $profileUserID; ?>';
 
   $(document).ready(function() {
 
     $('#loading').show();
 
     $.ajax({
-      url: "includes/handlers/ajax_load_posts.php",
+      url: "includes/handlers/ajax_load_profile_posts.php",
       type: "POST",
-      data: "page=1&userID=" + userID + "&userLoggedIn=" + userLoggedIn + "&login=" + userLogin,
+      data: "page=1&userID=" + userID,
       cache: false,
 
       success: function(data) {
@@ -163,7 +146,7 @@ if (isset($_POST['respond_request'])) {
         var ajaxReq = $.ajax({
           url: "includes/handlers/ajax_load_profile_posts.php",
           type: "POST",
-          data: "page=" + page + "&userID=" + userID + "&userLoggedIn=" + userLoggedIn + "&login=" + userLogin,
+          data: "page=" + page + "&userID=" + userID,
           cache: false,
 
           success: function(response) {

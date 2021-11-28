@@ -13,7 +13,7 @@ include("includes/models/DAOs/FriendshipDAO.php");
 
 if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 
-	$userLoggedIn = $_SESSION['login'];
+	$loggedUserLogin = $_SESSION['login'];
 	$loggedUserID = $_SESSION['user_id'];
 
 	$loggedUser = new User($loggedUserID);
@@ -59,28 +59,8 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 
 		</div>
 
-		<!-- <div class="search">
-
-			<form action="search.php" method="GET" name="search_form">
-
-				<input type="text" onkeyup="getLiveSearchUsers(this.value, '<?php echo $userLoggedIn; ?>')" name="" placeholder="Pesquisar no Facepoop..." autocomplete="off" id="search_text_input">
-
-				<div class="button_holder">
-					<img src="assets/images/icons/magnifying_glass.png">
-				</div>
-
-			</form>
-
-			<div class="search_results">
-			</div>
-
-			<div class="search_results_footer_empty">
-			</div>
-
-		</div> -->
-
 		<nav>
-			<a href="profile.php?login=<?php echo $userLoggedIn; ?>">
+			<a href="profile.php?profileUserID=<?php echo $loggedUserID; ?>">
 				<?php echo $loggedUser->getFirstName(); ?>
 			</a>
 

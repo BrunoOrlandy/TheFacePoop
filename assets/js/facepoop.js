@@ -46,14 +46,14 @@ $(document).click(function (e) {
 });
 
 function getUsers(value, user) {
-	$.post("includes/handlers/ajax_friend_search.php", { query: value, userLoggedIn: user }, function (data) {
+	$.post("includes/handlers/ajax_friend_search.php", { query: value, loggedUserLogin: user }, function (data) {
 		$(".results").html(data);
 	});
 }
 
 function getLiveSearchUsers(value, user) {
 
-	$.post("includes/handlers/ajax_search.php", { query: value, userLoggedIn: user }, function (data) {
+	$.post("includes/handlers/ajax_search.php", { query: value, loggedUserLogin: user }, function (data) {
 
 		if ($(".search_results_footer_empty")[0]) {
 			$(".search_results_footer_empty").toggleClass("search_results_footer");

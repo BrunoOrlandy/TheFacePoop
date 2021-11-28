@@ -4,10 +4,10 @@ class PostDAO
 	private $logged_user_obj;
 	private $con;
 
-	public function __construct($con, $user_id)
+	public function __construct($userId)
 	{
-		$this->con = $con;
-		$this->logged_user_obj = new UserDAO($con, $user_id);
+		$this->con = $GLOBALS['con'];
+		$this->logged_user_obj = new UserDAO($userId);
 	}
 
 	public function submitPost($post_text_body)
@@ -49,14 +49,14 @@ class PostDAO
 				$user_id = $row['user_id'];
 				$text_body = $row['text'];
 				$date_time = $row['inclusion_date'];
-				$added_by_obj = new UserDAO($this->con, $user_id);
+				$added_by_obj = new UserDAO("$user_id");
 				$user_login = $added_by_obj->getLogin();
 
 				if ($added_by_obj->isAccountClosed()) {
 					continue;
 				}
 
-				if ($this->logged_user_obj->isFriendOf($user_id)) {
+				if ($this->logged_user_obj->isFriendOf("$user_id") || $logged_user_id == $user_id) {
 
 					if ($num_iterations++ < $start)
 						continue;
@@ -136,7 +136,7 @@ class PostDAO
 								<div class = 'post_main_frame' style='margin-left: 8px;'>
 
 									<div class='posted_by' style='color:#ACACAC;'>
-										<a href='$user_login'> $first_name $last_name </a> &nbsp;&nbsp;&nbsp;&nbsp; $time_message
+										<a href=profile.php?profileUserID='$user_id'> $first_name $last_name </a> &nbsp;&nbsp;&nbsp;&nbsp; $time_message
 										$delete_button
 									</div>
 									<div id='post_body'>
@@ -229,7 +229,7 @@ class PostDAO
 				$first_name = $user_row['first_name'];
 				$last_name = $user_row['last_name'];
 
-				$added_by_obj = new UserDAO($this->con, $user_id);
+				$added_by_obj = new UserDAO("$user_id");
 				$profile_pic = $added_by_obj->getProfilePic();
 				$user_login = $added_by_obj->getLogin();
 
@@ -288,7 +288,7 @@ class PostDAO
 								</div>
 
 								<div class='posted_by' style='color:#ACACAC;'>
-									<a href='$user_login'> $first_name $last_name </a> &nbsp;&nbsp;&nbsp;&nbsp;$time_message
+									<a href=profile.php?profileUserID='$user_id'> $first_name $last_name </a> &nbsp;&nbsp;&nbsp;&nbsp;$time_message
 									$delete_button
 								</div>
 								<div id='post_body'>

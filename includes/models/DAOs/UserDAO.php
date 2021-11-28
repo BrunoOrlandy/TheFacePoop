@@ -8,7 +8,7 @@ class UserDAO
 	public function __construct($userId)
 	{
 		$this->con = $GLOBALS['con'];
-		$user_details_query = pg_query($this->con, "SELECT * FROM users WHERE user_id='$userId'");
+		$user_details_query = pg_query($this->con, "SELECT * FROM users WHERE user_id=$userId");
 		$this->user = pg_fetch_array($user_details_query);
 	}
 
@@ -86,7 +86,7 @@ class UserDAO
 	{
 		$userFromId = $this->user['user_id'];
 
-		$checkRequest = pg_query($this->con, "SELECT * FROM friendships WHERE user_to_id=$userFromId AND user_id=$userToId AND (acceptance_date IS NOT NULL OR block_date IS NOT NULL)");
+		$checkRequest = pg_query($this->con, "SELECT * FROM friendships WHERE ((user_to_id=$userFromId AND user_id=$userToId) OR (user_to_id=$userToId AND user_id=$userFromId)) AND (acceptance_date IS NOT NULL OR block_date IS NOT NULL)");
 
 		if (pg_num_rows($checkRequest) > 0) {
 			return true;
