@@ -67,7 +67,7 @@ class PostDAO
 					}
 
 					if ($logged_user_id == $user_id)
-						$delete_button = "<button class='delete_button btn-danger' id='post$id'>Excluir</button>";
+						$delete_button = "<i class='fas fa-trash delete_button' id='post$id'></i>";
 					else
 						$delete_button = "";
 
@@ -220,7 +220,7 @@ class PostDAO
 				}
 
 				if ($logged_user_id == $user_id)
-					$delete_button = "<button class='delete_button btn-danger' id='post$id'>Excluir</button>";
+					$delete_button = "<i class='fas fa-trash delete_button' id='post$id'></i>";
 				else
 					$delete_button = "";
 

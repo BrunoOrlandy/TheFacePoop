@@ -15,16 +15,14 @@ if (isset($_GET['type'])) {
 }
 ?>
 
-<div class="main_column column" id="main_column">
+<div class="main_column column">
 
-	<form action="search.php" method="GET" name="search_form">
-
-		<input type="text" onkeyup="" name="search_string" placeholder="Pesquisar..." autocomplete="off" id="search_text_input">
-
-		<div class="button_holder">
+	<form class="search_form" action="search.php" method="GET" name="search_form">
+		<textarea name="search_string" id="search_string" placeholder="Pesquisar..." autocomplete="off"></textarea>
+		<button type="submit" name="post" id="post_button" class="btn btn-primary search_button">
 			<i class="fas fa-search"></i>
-		</div>
-
+		</button>
+		<hr>
 	</form>
 
 	<?php
@@ -36,7 +34,7 @@ if (isset($_GET['type'])) {
 		$queryResult = $search->searchFor($search_string, $type);
 
 		if (count($queryResult) == 0)
-			echo "Não há resultados para" . $search_string;
+			echo "Não há resultados para: " . $search_string . "<br> <br>";
 		else
 			echo count($queryResult) . " resultados encontrados: <br> <br>";
 
@@ -54,13 +52,13 @@ if (isset($_GET['type'])) {
 
 				if ($loggedUser->getId() != $currentUserId) {
 					if ($loggedUser->isFriendOf($currentUserId))
-						$button = "<input type='submit' name='" . $currentUserId . "' class='danger' value='Excluir amigo'>";
+						$button = "<button type='submit' name='" . $currentUserId . "' class='btn btn-danger'><i class='fa fa-user-times'></i></button>";
 					else if ($value->didReceiveRequest($loggedUser->getId()))
 						$button = "<input type='submit' name='" . $currentUserId . "' class='default' value='Responder solicitação'>";
 					else if ($loggedUser->didSendRequest($currentUserId))
 						$button = "<input type='submit' class='default' value='Solicitação enviada'>";
 					else
-						$button = "<input type='submit' name='" . $currentUserId . "' class='success' value='Adicionar amigo'>";
+						$button = "<button type='submit' name='" . $currentUserId . "' class='btn btn-success'><i class='fa fa-user-plus'></i></button>";
 
 					$mutual_friends = $loggedUser->getMutualFriends($currentUserId) . " amigo(s) em comum";
 

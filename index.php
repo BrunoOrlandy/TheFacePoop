@@ -7,29 +7,13 @@ if (isset($_POST['post'])) {
 }
 ?>
 
-<div class="user_details column">
-
-	<a href="profile.php?profileUserID=<?php echo $loggedUserID; ?>"> <img src="assets/images/profile_pics/imagem.jpg"> </a>
-
-	<div class="user_details_left_right">
-
-		<a href="profile.php?profileUserID=<?php echo $loggedUserID; ?>">
-
-			<?php
-			echo $loggedUser->getFirstName() . " " . $loggedUser->getLastName();
-
-			?>
-		</a>
-		<br>
-	</div>
-
-</div>
-
 <div class="main_column column">
 	<form class="post_form" action="index.php" method="POST">
 
 		<textarea name="post_text" id="post_text" placeholder="O que você tem em mente?"></textarea>
-		<input type="submit" name="post" id="post_button" value="Publicar">
+		<button type="submit" name="post" id="post_button" class="btn btn-primary">
+			<i class="fa fa-paper-plane"></i>
+		</button>
 		<hr>
 
 	</form>

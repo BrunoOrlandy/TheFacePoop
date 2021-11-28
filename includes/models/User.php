@@ -89,7 +89,7 @@ class User
 
     public function getFullName()
     {
-        return $this->getFirstName() . $this->getLastName();
+        return $this->getFirstName() . " " . $this->getLastName();
     }
 
     public function getEmail()

@@ -18,7 +18,7 @@ include("includes/header.php");
 		echo "Você não tem novos pedidos de amizade!";
 	else {
 		foreach ($users as &$user) {
-			echo $user->getFullName() . "enviou uma solicitação de amizade!";
+			echo '&nbsp' . $user->getFullName() . " enviou uma solicitação de amizade!";
 
 			if (isset($_POST['accept_request' . $user->getId()])) {
 
@@ -41,9 +41,8 @@ include("includes/header.php");
 	?>
 			<form action="requests.php" method="POST">
 
-				<input type="submit" name="accept_request<?php echo $user->getId(); ?>" id="accept_button" value="Aceitar">
-
-				<input type="submit" name="reject_request<?php echo $user->getId(); ?>" id="ignore_button" value="Recusar">
+				<button type="submit" name="accept_request<?php echo $user->getId(); ?>" class="btn btn-sucess" id="accept_button"><i class="fa fa-check"></i></button>
+				<button type="submit" name="reject_request<?php echo $user->getId(); ?>" class="btn btn-danger" id="reject_button"><i class="fa fa-times"></i></button>
 				<hr>
 				</hr>
 

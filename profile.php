@@ -36,21 +36,24 @@ if (isset($_POST['respond_request'])) {
 
     <?php
 
-    if ($loggedUser->getId() != $profileUserID) {
-      if ($loggedUser->isFriendOf($uprofileUserID)) {
-        echo '<input type="submit" name="remove_friend" class="danger" value="Excluir amigo"><br>';
-      } else if ($loggedUser->didReceiveRequest($profileUserID)) {
+    if ($loggedUser->getId() != $profileUserID)
+      if ($loggedUser->isFriendOf($profileUserID))
+        echo '<button type="submit" class="btn btn-danger profile_side_button" name="remove_friend"><i class="fa fa-user-times"></i></button><br>';
+      else if ($loggedUser->didReceiveRequest($profileUserID))
         echo '<input type="submit" name="respond_request" class="default" value="Responder solicitação"><br>';
-      } else if ($loggedUser->didSendRequest($profileUserID)) {
+      else if ($loggedUser->didSendRequest($profileUserID))
         echo '<input type="submit" name="" class="default" value="Solicitação enviada"><br>';
-      } else
-        echo '<input type="submit" name="add_friend" class="success" value="Adicionar amigo"><br>';
-    }
+      else
+        echo '<button type="submit" class="btn btn-success profile_side_button" name="add_friend"><i class="fa fa-user-plus"></i></button><br>';
 
     ?>
   </form>
 
-  <input type="submit" class="blue" data-toggle="modal" data-target="#post_form" value="Nova postagem">
+  <?php
+  if ($loggedUser->getId() == $profileUserID) {
+    echo '<button type="submit" class="btn btn-primary  profile_side_button" data-toggle="modal" data-target="#post_form"><i class="fa fa-plus-circle"></i></button>';
+  }
+  ?>
 
   <?php
 
@@ -68,14 +71,8 @@ if (isset($_POST['respond_request'])) {
 </div>
 
 <div class="profile_main_column column">
-
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane fade in active" id="newsfeed_div">
-      <div class="posts_area"></div>
-      <img id="loading" src="assets/images/icons/loading.gif">
-    </div>
-  </div>
-
+  <div class="posts_area"></div>
+  <img id="loading" src="assets/images/icons/loading.gif">
 </div>
 
 <div class="modal fade" id="post_form" tabindex="-1" role="dialog" aria-labelledby="postModalLabel" aria-hidden="true" style="z-index: 9999; margin-top: 60px;">
@@ -102,7 +99,6 @@ if (isset($_POST['respond_request'])) {
           </div>
         </form>
       </div>
-
 
       <div class="modal-footer">
 
