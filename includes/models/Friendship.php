@@ -7,6 +7,15 @@ class Friendship
     private $acceptanceDate;
     private $blockDate;
 
+    private $friendshipDAO;
+
+    public function __construct($userId)
+    {
+        $this->friendshipDAO = new FriendshipDAO();
+
+        $this->setUser(new User($userId));
+    }
+
     public function getUser()
     {
         return $this->user;
@@ -15,6 +24,18 @@ class Friendship
     public function setUser($user)
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getUserTo()
+    {
+        return $this->userTo;
+    }
+
+    public function setUserTo($userTo)
+    {
+        $this->userTo = $userTo;
 
         return $this;
     }
@@ -53,5 +74,26 @@ class Friendship
         $this->blockDate = $blockDate;
 
         return $this;
+    }
+
+    public function getFriendRequests()
+    {
+        $userId = $this->getUser()->getId();
+
+        return $this->friendshipDAO->getFriendRequests($userId);
+    }
+
+    public function acceptFriendRequest($userToId)
+    {
+        $userId = $this->getUser()->getId();
+
+        $this->friendshipDAO->acceptFriendRequest($userId, $userToId);
+    }
+
+    public function rejectFriendRequest($userToId)
+    {
+        $userId = $this->getUser()->getId();
+
+        $this->friendshipDAO->rejectFriendRequest($userId, $userToId);
     }
 }

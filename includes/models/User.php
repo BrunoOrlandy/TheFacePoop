@@ -2,6 +2,7 @@
 
 class User
 {
+    private $id;
     private $login;
     private $firstName;
     private $lastName;
@@ -14,6 +15,41 @@ class User
     private $friendships;
     private $registerDate;
     private $birthdayDate;
+
+    private $userDAO;
+
+    public function __construct($userId)
+    {
+        $this->userDAO = new UserDAO($userId);
+
+        $this->setId($this->userDAO->getID());
+        $this->setFirstName($this->userDAO->getFirstName());
+        $this->setLastName($this->userDAO->getLastName());
+        $this->setId($this->userDAO->getID());
+        $this->setId($this->userDAO->getID());
+        $this->setId($this->userDAO->getID());
+        $this->setId($this->userDAO->getID());
+        $this->setId($this->userDAO->getID());
+        $this->setId($this->userDAO->getID());
+        $this->setId($this->userDAO->getID());
+        $this->setId($this->userDAO->getID());
+        $this->setId($this->userDAO->getID());
+        $this->setId($this->userDAO->getID());
+        $this->setId($this->userDAO->getID());
+        $this->setId($this->userDAO->getID());
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     public function getLogin()
     {
@@ -49,6 +85,11 @@ class User
         $this->lastName = $lastName;
 
         return $this;
+    }
+
+    public function getFullName()
+    {
+        return $this->getFirstName() . $this->getLastName();
     }
 
     public function getEmail()
@@ -98,7 +139,7 @@ class User
 
         return $this;
     }
- 
+
     public function getCoverPhoto()
     {
         return $this->coverPhoto;
@@ -157,5 +198,35 @@ class User
         $this->birthdayDate = $birthdayDate;
 
         return $this;
+    }
+
+    public function isFriendOf($userToId)
+    {
+        return $this->userDAO->isFriendOf($userToId);
+    }
+
+    public function didReceiveRequest($userToId)
+    {
+        return $this->userDAO->didReceiveRequest($userToId);
+    }
+
+    public function didSendRequest($userToId)
+    {
+        return $this->userDAO->didSendRequest($userToId);
+    }
+
+    public function sendRequest($userToId)
+    {
+        return $this->userDAO->sendRequest($userToId);
+    }
+
+    public function removeFriend($userIdToRemove)
+    {
+        $this->userDAO->removeFriend($userIdToRemove);
+    }
+
+    public function getMutualFriends($userIdToCheck)
+    {
+        return $this->userDAO->getMutualFriends($userIdToCheck);
     }
 }

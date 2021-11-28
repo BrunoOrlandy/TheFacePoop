@@ -2,21 +2,21 @@
 include("includes/header.php");
 
 if (isset($_POST['post'])) {
-	$post = new PostDAO($con, $userID);
+	$post = new PostDAO($loggedUserID);
 	$post->submitPost($_POST['post_text']);
 }
 ?>
 
 <div class="user_details column">
 
-	<a href="profile.php?login=<?php echo $userLoggedIn; ?>"> <img src="assets/images/profile_pics/imagem.jpg"> </a>
+	<a href="profile.php?profileUserID=<?php echo $loggedUserID; ?>"> <img src="assets/images/profile_pics/imagem.jpg"> </a>
 
 	<div class="user_details_left_right">
 
-		<a href="profile.php?login=<?php echo $userLoggedIn; ?>">
+		<a href="profile.php?profileUserID=<?php echo $loggedUserID; ?>">
 
 			<?php
-			echo $user['first_name'] . " " . $user['last_name'];
+			echo $loggedUser->getFirstName() . " " . $loggedUser->getLastName();
 
 			?>
 		</a>
@@ -41,8 +41,7 @@ if (isset($_POST['post'])) {
 
 
 <script>
-	var userLoggedIn = '<?php echo $userLoggedIn; ?> ';
-	var userID = '<?php echo $userID; ?>';
+	var userID = '<?php echo $loggedUserID; ?>';
 
 	$(document).ready(function() {
 
@@ -51,7 +50,7 @@ if (isset($_POST['post'])) {
 		$.ajax({
 			url: "includes/handlers/ajax_load_posts.php",
 			type: "POST",
-			data: "page=1&userID=" + userID + "&userLoggedIn=" + userLoggedIn,
+			data: "page=1&userID=" + userID,
 			cache: false,
 
 			success: function(data) {
@@ -72,7 +71,7 @@ if (isset($_POST['post'])) {
 				var ajaxReq = $.ajax({
 					url: "includes/handlers/ajax_load_posts.php",
 					type: "POST",
-					data: "page=1&userID=" + userID + "&userLoggedIn=" + userLoggedIn,
+					data: "page=1&userID=" + userID,
 					cache: false,
 
 					success: function(response) {

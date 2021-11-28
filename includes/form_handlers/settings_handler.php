@@ -9,10 +9,10 @@ if (isset($_POST['update_details'])) {
 	$row = pg_fetch_array($email_check);
 	$matched_user = $row['login'];
 
-	if ($matched_user == "" || $matched_user == $userLoggedIn) {
+	if ($matched_user == "" || $matched_user == $loggedUserLogin) {
 		$message = "Informações atualizadas!<br><br>";
 
-		$query = pg_query($con, "UPDATE users SET first_name='$first_name', last_name='$last_name', email='$email' WHERE login='$userLoggedIn'");
+		$query = pg_query($con, "UPDATE users SET first_name='$first_name', last_name='$last_name', email='$email' WHERE login='$loggedUserLogin'");
 	} else
 		$message = "Este email já está sendo usado!<br><br>";
 } else
@@ -23,7 +23,7 @@ if (isset($_POST['update_password'])) {
 	$new_password_1 = strip_tags($_POST['new_password_1']);
 	$new_password_2 = strip_tags($_POST['new_password_2']);
 
-	$password_query = pg_query($con, "SELECT email, password FROM users WHERE login='$userLoggedIn'");
+	$password_query = pg_query($con, "SELECT email, password FROM users WHERE login='$loggedUserLogin'");
 	$row = pg_fetch_array($password_query);
 	$db_password = $row['password'];
 	$db_email = $row['email'];
@@ -34,7 +34,7 @@ if (isset($_POST['update_password'])) {
 				$password_message = "A senha precisa ter mais que 4 caracteres!<br><br>";
 			} else {
 				$new_password_md5 = md5($db_email . $new_password_1);
-				$password_query = pg_query($con, "UPDATE users SET password='$new_password_md5' WHERE login='$userLoggedIn'");
+				$password_query = pg_query($con, "UPDATE users SET password='$new_password_md5' WHERE login='$loggedUserLogin'");
 				$password_message = "Senha alterada!<br><br>";
 			}
 		} else {

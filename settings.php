@@ -13,7 +13,7 @@ include("includes/form_handlers/settings_handler.php");
 	Altere os valores e clique em 'Atualizar Informações'
 
 	<?php
-	$user_data_query = pg_query($con, "SELECT first_name, last_name, email FROM users WHERE login='$userLoggedIn'");
+	$user_data_query = pg_query($con, "SELECT first_name, last_name, email FROM users WHERE login='$loggedUserLogin'");
 	$row = pg_fetch_array($user_data_query);
 
 	$first_name = $row['first_name'];
