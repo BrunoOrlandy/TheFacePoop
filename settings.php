@@ -12,23 +12,16 @@ include("includes/form_handlers/settings_handler.php");
 
 	Altere os valores e clique em 'Atualizar Informações'
 
-	<?php
-	$user_data_query = pg_query($con, "SELECT first_name, last_name, email FROM users WHERE login='$loggedUserLogin'");
-	$row = pg_fetch_array($user_data_query);
-
-	$first_name = $row['first_name'];
-	$last_name = $row['last_name'];
-	$email = $row['email'];
-	?>
+	<br /> <br />
 
 	<form action="settings.php" method="POST">
-		Nome: <input type="text" name="first_name" value="<?php echo $first_name; ?>" id="settings_input"><br>
-		Sobrenome: <input type="text" name="last_name" value="<?php echo $last_name; ?>" id="settings_input"><br>
-		Email: <input type="text" name="email" value="<?php echo $email; ?>" id="settings_input"><br>
+		Nome: <input type="text" name="first_name" value="<?php echo $loggedUser->getFirstName(); ?>" id="settings_input"><br>
+		Sobrenome: <input type="text" name="last_name" value="<?php echo $loggedUser->getLastName(); ?>" id="settings_input"><br>
+		Email: <input type="text" name="email" value="<?php echo $loggedUser->getEmail(); ?>" id="settings_input"><br>
 
 		<?php echo $message; ?>
 
-		<input type="submit" name="update_details" id="save_details" value="Atualizar Informações" class="info settings_submit"><br>
+		<input type="submit" name="update_details" id="save_details" value="Atualizar Informações" class="btn btn-primary settings_submit"><br>
 	</form>
 
 	<h4>Alterar senha</h4>
@@ -39,12 +32,12 @@ include("includes/form_handlers/settings_handler.php");
 
 		<?php echo $password_message; ?>
 
-		<input type="submit" name="update_password" id="save_details" value="Atualizar Senha" class="info settings_submit"><br>
+		<input type="submit" name="update_password" id="save_details" value="Atualizar Senha" class="btn btn-primary settings_submit"><br>
 	</form>
 
 	<h4>Hibernar Conta</h4>
 	<form action="settings.php" method="POST">
-		<input type="submit" name="close_account" id="close_account" value="Hibernar Conta" class="danger settings_submit">
+		<input type="submit" name="close_account" id="close_account" value="Hibernar Conta" class="btn btn-danger settings_submit">
 	</form>
 
 
