@@ -60,7 +60,7 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 		</div>
 
 		<nav>
-			<a href="profile.php?profileUserID=<?php echo $loggedUserID; ?>">
+			<a href="profile.php?profileUserID=<?php echo $loggedUser->getId(); ?>">
 				<?php echo $loggedUser->getFirstName(); ?>
 			</a>
 

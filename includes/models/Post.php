@@ -2,11 +2,31 @@
 
 class Post
 {
+    private $id;
     private $date;
     private $images;
     private $comments;
     private $reactions;
     private $text;
+
+    private $postDAO;
+
+    public function __construct()
+    {
+        $this->postDAO = new PostDAO();
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     public function getDate()
     {
@@ -55,7 +75,7 @@ class Post
 
         return $this;
     }
- 
+
     public function getText()
     {
         return $this->text;
@@ -66,5 +86,15 @@ class Post
         $this->text = $text;
 
         return $this;
+    }
+
+    public function submitPost($userId, $postText)
+    {
+        $this->postDAO->submitPost($userId, $postText);
+    }
+
+    public function getPosts($userId)
+    {
+        return $this->postDAO->getPosts($userId);
     }
 }

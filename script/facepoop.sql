@@ -8,7 +8,9 @@ CREATE TABLE users(
 	description VARCHAR(50),
 	birthday_date DATE,
 	register_date DATE NOT NULL DEFAULT CURRENT_DATE,
-	is_active BOOLEAN
+	image_id INT,
+	is_active BOOLEAN,
+	CONSTRAINT fk_image FOREIGN KEY (image_id) REFERENCES images(image_id)
 );
 
 
@@ -33,9 +35,7 @@ CREATE TABLE comments(
 
 CREATE TABLE images(
 	image_id SERIAL PRIMARY KEY,
-	user_id INT,
-	file BYTEA,
-	CONSTRAINT fk_users FOREIGN KEY (user_id) REFERENCES users(user_id)
+	file BYTEA
 );
 
 CREATE TABLE posts(

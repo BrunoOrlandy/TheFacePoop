@@ -2,30 +2,15 @@
 
 class Friendship
 {
-    private $user;
     private $requestDate;
     private $acceptanceDate;
     private $blockDate;
 
     private $friendshipDAO;
 
-    public function __construct($userId)
+    public function __construct()
     {
         $this->friendshipDAO = new FriendshipDAO();
-
-        $this->setUser(new User($userId));
-    }
-
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    public function setUser($user)
-    {
-        $this->user = $user;
-
-        return $this;
     }
 
     public function getUserTo()
@@ -76,24 +61,53 @@ class Friendship
         return $this;
     }
 
-    public function getFriendRequests()
+    public function isFriendOf($userFromId, $userToId)
     {
-        $userId = $this->getUser()->getId();
+        return $this->friendshipDAO->isFriendOf($userFromId, $userToId);
+    }
 
+    public function didReceiveRequest($userFromId, $userToId)
+    {
+        return $this->friendshipDAO->didReceiveRequest($userFromId, $userToId);
+    }
+
+    public function didSendRequest($userFromId, $userToId)
+    {
+        return $this->friendshipDAO->didSendRequest($userFromId, $userToId);
+    }
+
+    public function sendRequest($userFromId, $userToId)
+    {
+        return $this->friendshipDAO->sendRequest($userFromId, $userToId);
+    }
+
+    public function removeFriend($userId, $userIdToRemove)
+    {
+        $this->friendshipDAO->removeFriend($userId, $userIdToRemove);
+    }
+
+    public function getMutualFriends($userId, $userIdToCheck)
+    {
+        return $this->friendshipDAO->getMutualFriends($userId, $userIdToCheck);
+    }
+
+    public function getFriendRequests($userId)
+    {
         return $this->friendshipDAO->getFriendRequests($userId);
     }
 
-    public function acceptFriendRequest($userToId)
+    public function getFriends($userId)
     {
-        $userId = $this->getUser()->getId();
+        return $this->friendshipDAO->getFriends($userId);
+    }
 
+    public function acceptFriendRequest($userId, $userToId)
+    {
         $this->friendshipDAO->acceptFriendRequest($userId, $userToId);
     }
 
-    public function rejectFriendRequest($userToId)
+    public function rejectFriendRequest($userId, $userToId)
     {
-        $userId = $this->getUser()->getId();
-
         $this->friendshipDAO->rejectFriendRequest($userId, $userToId);
     }
 }
