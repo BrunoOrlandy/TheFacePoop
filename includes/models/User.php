@@ -204,6 +204,16 @@ class User
         return $this->post->getPosts($this->getId());
     }
 
+    public function deletePost($postId)
+    {
+        $this->post->deletePost($postId);
+    }
+
+    public function getReaction($postId)
+    {
+        return $this->post->getUserReaction($this->getId(), $postId);
+    }
+
     //Friendship region
 
     public function isFriendOf($userToId)
@@ -243,9 +253,8 @@ class User
 
     public function getFriends()
     {
-        $friends[] = $this->friendship->getFriends($this->getId());
-        $friends[] = $this;
-        
+        $friends = $this->friendship->getFriends($this->getId());
+
         return $friends;
     }
 

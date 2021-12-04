@@ -28,6 +28,7 @@ CREATE TABLE friendships(
 CREATE TABLE comments(
 	comment_id SERIAL PRIMARY KEY,
 	user_id INT,
+	post_id INT,
 	text TEXT,
 	inclusion_date DATE NOT NULL,
 	CONSTRAINT fk_users FOREIGN KEY (user_id) REFERENCES users(user_id)
@@ -42,7 +43,6 @@ CREATE TABLE posts(
 	post_id SERIAL PRIMARY KEY,
 	image_id INT,
 	user_id INT NOT NULL,
-	comment_id INT,
 	text TEXT,
 	inclusion_date DATE NOT NULL,
 	is_deleted BOOLEAN,

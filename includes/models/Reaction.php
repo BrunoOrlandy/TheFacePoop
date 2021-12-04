@@ -2,9 +2,28 @@
 
 class Reaction
 {
+    private $id;
     private $date;
-    private $user;
     private $reactionType;
+
+    private $reactionDAO;
+
+    public function __construct()
+    {
+        $this->reactionDAO = new ReactionDAO();
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     public function getDate()
     {
@@ -14,18 +33,6 @@ class Reaction
     public function setDate($date)
     {
         $this->date = $date;
-
-        return $this;
-    }
-
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    public function setUser($user)
-    {
-        $this->user = $user;
 
         return $this;
     }
@@ -40,6 +47,21 @@ class Reaction
         $this->reactionType = $reactionType;
 
         return $this;
+    }
+
+    public function submitReaction($userId, $postId, $reactionValue)
+    {
+        $this->reactionDAO->submitReaction($userId, $postId, $reactionValue);
+    }
+
+    public function getReactions($postId)
+    {
+        return $this->reactionDAO->getReactions($postId);
+    }
+
+    public function getUserReaction($userId, $postId)
+    {
+        return $this->reactionDAO->getUserReaction($userId, $postId);
     }
 }
 

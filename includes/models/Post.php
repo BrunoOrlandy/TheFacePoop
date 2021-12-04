@@ -6,7 +6,7 @@ class Post
     private $date;
     private $images;
     private $comments;
-    private $reactions;
+    private $reaction;
     private $text;
 
     private $postDAO;
@@ -14,6 +14,8 @@ class Post
     public function __construct()
     {
         $this->postDAO = new PostDAO();
+
+        $this->reaction = new Reaction();
     }
 
     public function getId()
@@ -64,18 +66,6 @@ class Post
         return $this;
     }
 
-    public function getReactions()
-    {
-        return $this->reactions;
-    }
-
-    public function setReactions($reactions)
-    {
-        $this->reactions = $reactions;
-
-        return $this;
-    }
-
     public function getText()
     {
         return $this->text;
@@ -96,5 +86,27 @@ class Post
     public function getPosts($userId)
     {
         return $this->postDAO->getPosts($userId);
+    }
+
+    public function deletePost($postId)
+    {
+        $this->postDAO->deletePost($postId);
+    }
+
+    //Reaction region
+
+    public function submitReaction($userId, $reactionValue)
+    {
+        $this->reaction->submitReaction($userId, $this->getId(), $reactionValue);
+    }
+
+    public function getReactions()
+    {
+        return $this->reaction->getReactions($this->getId());
+    }
+
+    public function getUserReaction($userId, $postId)
+    {
+        return $this->reaction->getUserReaction($userId, $postId);
     }
 }

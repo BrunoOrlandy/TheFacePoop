@@ -3,10 +3,12 @@
 include("../../config/config.php");
 include("../models/User.php");
 include("../models/Post.php");
+include("../models/Reaction.php");
 include("../models/Search.php");
 include("../models/Friendship.php");
 include("../models/DAOs/UserDAO.php");
 include("../models/DAOs/PostDAO.php");
+include("../models/DAOs/ReactionDAO.php");
 include("../models/DAOs/SearchDAO.php");
 include("../models/DAOs/FriendshipDAO.php");
 
@@ -77,7 +79,7 @@ foreach ($friends as &$user) {
                             </div>				
                             
                             <div class='newsfeedPostOptions'>
-                                <iframe src='like.php?post_id=$postId' scrolling='no'></iframe>
+                                <iframe src='reaction.php?post_id=$postId' scrolling='no'></iframe>
                             </div>
 
                         </div>
@@ -86,9 +88,9 @@ foreach ($friends as &$user) {
 ?>
                 <script>
                     $(document).ready(function() {
-                        $('#post<?php echo $id; ?>').on('click', function() {
+                        $('#post<?php echo $postId; ?>').on('click', function() {
                             bootbox.confirm("Tem certeza que deseja excluir esta postagem?", function(result) {
-                                $.post("includes/form_handlers/delete_post.php?post_id=<?php echo $postId; ?>", {
+                                $.post("includes/form_handlers/delete_post.php?post_id=<?php echo $postId; ?>&user_id=<?php echo $userId; ?>", {
                                     result: result
                                 });
 
@@ -107,7 +109,7 @@ foreach ($friends as &$user) {
 
             }
 
-            if ($count > $limit)
+            if ($count < $limit)
                 $str .= "<input type='hidden' class='nextPage' value='" . ($page + 1) . "'>
                         <input type='hidden' class='noMorePosts' value='false'>";
             else

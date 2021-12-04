@@ -88,7 +88,7 @@ class FriendshipDAO
     public function getFriends($userId)
     {
         $query = pg_query($this->con, "SELECT * FROM friendships WHERE (user_to_id=$userId OR user_id=$userId) AND acceptance_date IS NOT NULL");
-        $friends = array();
+        $friends = array(new User($userId));
 
         while ($row = pg_fetch_array($query)) {
             $friendUserId = $row['user_id'];

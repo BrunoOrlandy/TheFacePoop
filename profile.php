@@ -71,14 +71,8 @@ if (isset($_POST['respond_request'])) {
 </div>
 
 <div class="profile_main_column column">
-
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane fade in active" id="newsfeed_div">
-      <div class="posts_area"></div>
-      <img id="loading" src="assets/images/icons/loading.gif">
-    </div>
-  </div>
-
+  <div class="posts_area"></div>
+  <img id="loading" src="assets/images/icons/loading.gif">
 </div>
 
 <div class="modal fade" id="post_form" tabindex="-1" role="dialog" aria-labelledby="postModalLabel" aria-hidden="true" style="z-index: 9999; margin-top: 60px;">
