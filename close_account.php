@@ -6,7 +6,7 @@ if (isset($_POST['cancel'])) {
 }
 
 if (isset($_POST['close_account'])) {
-	$close_query = pg_query($con, "UPDATE users SET is_active=false WHERE login='$loggedUserLogin'");
+	$loggedUser->setIsActive(false);
 	session_destroy();
 	header("Location: register.php");
 }

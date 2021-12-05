@@ -2,11 +2,33 @@
 
 class Post
 {
+    private $id;
     private $date;
     private $images;
     private $comments;
-    private $reactions;
+    private $reaction;
     private $text;
+
+    private $postDAO;
+
+    public function __construct()
+    {
+        $this->postDAO = new PostDAO();
+
+        $this->reaction = new Reaction();
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     public function getDate()
     {
@@ -44,18 +66,6 @@ class Post
         return $this;
     }
 
-    public function getReactions()
-    {
-        return $this->reactions;
-    }
-
-    public function setReactions($reactions)
-    {
-        $this->reactions = $reactions;
-
-        return $this;
-    }
- 
     public function getText()
     {
         return $this->text;
@@ -66,5 +76,37 @@ class Post
         $this->text = $text;
 
         return $this;
+    }
+
+    public function submitPost($userId, $postText)
+    {
+        $this->postDAO->submitPost($userId, $postText);
+    }
+
+    public function getPosts($userId)
+    {
+        return $this->postDAO->getPosts($userId);
+    }
+
+    public function deletePost($postId)
+    {
+        $this->postDAO->deletePost($postId);
+    }
+
+    //Reaction region
+
+    public function submitReaction($userId, $reactionValue)
+    {
+        $this->reaction->submitReaction($userId, $this->getId(), $reactionValue);
+    }
+
+    public function getReactions()
+    {
+        return $this->reaction->getReactions($this->getId());
+    }
+
+    public function getUserReaction($userId, $postId)
+    {
+        return $this->reaction->getUserReaction($userId, $postId);
     }
 }

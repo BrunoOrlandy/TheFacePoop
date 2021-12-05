@@ -2,18 +2,17 @@
 include("includes/header.php");
 
 if (isset($_POST['post'])) {
-	$post = new PostDAO($loggedUserID);
-	$post->submitPost($_POST['post_text']);
+	$loggedUser->submitPost($_POST['post_text']);
 }
 ?>
 
 <div class="user_details column">
 
-	<a href="profile.php?profileUserID=<?php echo $loggedUserID; ?>"> <img src="assets/images/profile_pics/imagem.jpg"> </a>
+	<a href="profile.php?profileUserID=<?php echo $loggedUser->getId(); ?>"> <img src="assets/images/profile_pics/imagem.jpg"> </a>
 
 	<div class="user_details_left_right">
 
-		<a href="profile.php?profileUserID=<?php echo $loggedUserID; ?>">
+		<a href="profile.php?profileUserID=<?php echo $loggedUser->getId(); ?>">
 
 			<?php
 			echo $loggedUser->getFirstName() . " " . $loggedUser->getLastName();
@@ -41,7 +40,7 @@ if (isset($_POST['post'])) {
 
 
 <script>
-	var userID = '<?php echo $loggedUserID; ?>';
+	var userID = '<?php echo $loggedUser->getId(); ?>';
 
 	$(document).ready(function() {
 

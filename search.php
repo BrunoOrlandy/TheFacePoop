@@ -107,9 +107,6 @@ if (isset($_GET['type'])) {
 		}
 	}
 
-
 	?>
-
-
 
 </div>

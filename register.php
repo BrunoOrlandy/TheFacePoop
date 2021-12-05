@@ -49,15 +49,9 @@ require 'includes/form_handlers/login_handler.php';
 
 			</br>
 
-			<!-- Login Section -->
-
 			<div id="first">
 
-				<!-- Login form -->
-
 				<form action="register.php" method="POST">
-
-					<!-- Email Section -->
 
 					<input type="email" name="log_email" placeholder="Endereço de email" value="<?php
 																								if (isset($_SESSION['log_email'])) {
@@ -66,16 +60,10 @@ require 'includes/form_handlers/login_handler.php';
 																								?>" required>
 					<br>
 
-					<!-- Password Section -->
-
 					<input type="password" name="log_password" placeholder="Senha">
 					<br>
 
-					<!-- Error's Section -->
-
 					<?php if (in_array("Login ou senha incorretos<br>", $error_array)) echo  "Login ou senha incorretos<br>"; ?>
-
-					<!-- Login Button -->
 
 					<input type="submit" name="login_button" value="Login">
 					<br>
@@ -86,11 +74,7 @@ require 'includes/form_handlers/login_handler.php';
 
 			</div>
 
-			<!-- Register Section -->
-
 			<div id="second">
-
-				<!-- Register form -->
 
 				<form action="register.php" method="POST">
 
