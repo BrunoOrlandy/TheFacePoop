@@ -84,7 +84,7 @@ if (isset($_GET['type'])) {
 								</form>
 							</div>
 							<div class='result_profile_pic'>
-								<a href='" . $currentUserId . "'><img src='" . $value->getProfilePhoto() . "' style='height: 100px;'></a>
+								<a href='" . $currentUserId . "'><img src='" . $value->getProfilePhoto() . "' style='height: 100px;' class='small_profile_pic'></a>
 							</div>
 								<a href='" . $value->getLogin() . "'> " . $value->getFirstName() . " " . $value->getLastName() . "
 								<p id='grey'> " . $value->getLogin() . "</p>
@@ -100,7 +100,7 @@ if (isset($_GET['type'])) {
 			}
 
 			if ($value instanceof Comment) {
-				echo "É USUÁRIO PORCO";
+				echo "NOT IMPLEMENTED";
 			}
 		}
 	}

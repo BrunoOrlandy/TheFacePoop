@@ -480,10 +480,20 @@ textarea:focus {
 /* pagina configuracoes  */
 /*---------------*/
 
+.small_profile_pic_header {
+	height: 55px;
+    margin: -22px 10px 10px 10px;
+    float: left;
+	border: 5px solid #0a3d62;
+	border-radius: 100px;
+}
+
 .small_profile_pic {
 	height: 55px;
     margin: 1px 12px 0 2px;
     float: left;
+	border: 3px solid #0a3d62;
+	border-radius: 100px;
 }
 
 #settings_input {

@@ -6,7 +6,7 @@ include("includes/form_handlers/settings_handler.php");
 <div class="main_column column">
 
 	<h4>Configurações da conta</h4>
-	<img src='assets/images/profile_pics/imagem.jpg' class='small_profile_pic'>
+	<img src='<?php echo $loggedUser->getProfilePhoto(); ?>' class='small_profile_pic'>
 	<br>
 	<a href="upload.php">Atualizar foto de perfil</a> <br><br><br>
 

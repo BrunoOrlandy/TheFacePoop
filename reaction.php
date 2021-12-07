@@ -198,8 +198,8 @@
     ';
     echo '<form action="reaction.php?post_id=' . $postId . '&user_id=' . $userId . '" method="POST" id="form_sadness">
             <button type="submit" name="sadness_button" class="btn">
-			    <i class="fas fa-sad-tear"></i>
-                    <div class="like_value">
+            <i class="fas fa-sad-tear"></i>
+                <div class="like_value">
                         ' . $sadnesses . ' 
                     </div>
 		    </button>

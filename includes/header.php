@@ -64,6 +64,7 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 
 		<nav>
 			<a href="profile.php?profileUserID=<?php echo $loggedUser->getId(); ?>">
+				<img src='<?php echo $loggedUser->getProfilePhoto(); ?>' class='small_profile_pic_header'/>
 				<?php echo $loggedUser->getFirstName(); ?>
 			</a>
 

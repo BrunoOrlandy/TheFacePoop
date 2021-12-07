@@ -61,7 +61,7 @@ foreach ($friends as &$user) {
 
                 $str .= "<div class='status_post' onClick='javascript:toggle$postId()'>
                             <div class='post_profilePhoto'>
-                                <img src='$profilePhoto' width='50'>
+                                <img src='$profilePhoto' class='small_profile_pic'>
                             </div>
 
                             <div class = 'post_main_frame' style='margin-left: 8px;'>
@@ -79,7 +79,7 @@ foreach ($friends as &$user) {
                             </div>				
                             
                             <div class='newsfeedPostOptions'>
-                                <iframe src='reaction.php?post_id=$postId&user_id=$userId' scrolling='yes'></iframe>
+                                <iframe id='reaction_iframe' src='reaction.php?post_id=$postId&user_id=$userId' scrolling='no'></iframe>
                             </div>
 
                         </div>
@@ -98,7 +98,6 @@ foreach ($friends as &$user) {
                                     location.reload();
                             });
                         });
-
 
                     });
                 </script>

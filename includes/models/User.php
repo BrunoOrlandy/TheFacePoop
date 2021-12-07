@@ -27,6 +27,7 @@ class User
         $this->setFirstName($this->userDAO->getFirstName());
         $this->setLastName($this->userDAO->getLastName());
         $this->setIsActive($this->userDAO->getIsActive());
+        $this->setProfilePhoto($this->userDAO->getProfilePhoto());
 
         $this->friendship = new Friendship();
         $this->post = new Post();

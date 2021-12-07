@@ -71,10 +71,23 @@ class UserDAO
 		return $row['first_name'] . " " . $row['last_name'];
 	}
 
-	public function getProfilePic()
+	public function getProfilePhoto()
 	{
-		return "assets/images/profile_pics/imagem.jpg";
-		//ainda nao upa imagem kkk
+		$userId = $this->user['user_id'];
+		$query = pg_query($this->con, "SELECT image_id FROM users WHERE user_id='$userId'");
+		$row = pg_fetch_array($query);
+		$imageId = $row['image_id'];
+
+		if ($imageId != '') {
+			$imageQuery = pg_query($this->con, "SELECT file FROM images WHERE image_id='$imageId'");
+			$imageRow = pg_fetch_array($imageQuery);
+			$imagePath = $imageRow['file'];
+
+			if ($imagePath != '')
+				return $imagePath;
+		}
+
+		return "./assets/images/profile_pics/fb_default_green_sea.png";
 	}
 
 	public function isAccountClosed()

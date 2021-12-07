@@ -29,7 +29,7 @@ if (isset($_POST['respond_request'])) {
 
 <div class="profile_left">
 
-  <img src="assets/images/profile_pics/imagem.jpg">
+  <img src="<?php echo $profileUser->getProfilePhoto(); ?>">
 
   <form action="<?php echo $profileUser->getId(); ?>" method="POST">
 
