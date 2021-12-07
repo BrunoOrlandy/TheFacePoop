@@ -105,6 +105,8 @@ class Post
         return $this->reaction->getReactions($this->getId());
     }
 
+    
+
     public function getUserReaction($userId, $postId)
     {
         return $this->reaction->getUserReaction($userId, $postId);

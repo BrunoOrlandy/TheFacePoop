@@ -2,7 +2,23 @@
 
 <head>
     <title></title>
+    <link rel="stylesheet" type="text/css" href="assets/css/fontsawesome.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/all.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/jquery.Jcrop.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/bootbox.min.js"></script>
+    <script src="assets/js/bootbox.locales.min.js"></script>
+
+    <script src="assets/js/facepoop.js"></script>
+    <script src="assets/js/jquery.jcrop.js"></script>
+    <script src="assets/js/jcrop_bits.js"></script>
 </head>
 
 <body>
@@ -27,117 +43,135 @@
     </style>
 
     <?php
-    include("includes/header.php");
+    require 'config/config.php';
+    include("includes/models/User.php");
+    include("includes/models/Post.php");
+    include("includes/models/Reaction.php");
+    include("includes/models/Search.php");
+    include("includes/models/Friendship.php");
+    include("includes/models/DAOs/UserDAO.php");
+    include("includes/models/DAOs/PostDAO.php");
+    include("includes/models/DAOs/ReactionDAO.php");
+    include("includes/models/DAOs/SearchDAO.php");
+    include("includes/models/DAOs/FriendshipDAO.php");
 
-    // if (isset($_SESSION['username'])) {
-    //     $userLoggedIn = $_SESSION['username'];
-    //     $user_details_query = mysqli_query($con, "SELECT * FROM users WHERE username='$userLoggedIn'");
-    //     $user = mysqli_fetch_array($user_details_query);
-    // } else {
-    //     header("Location: register.php");
-    // }
-
-    if (isset($_GET['post_id'])) {
+    if (isset($_GET['post_id']) && isset($_GET['user_id'])) {
         $postId = $_GET['post_id'];
+        $userId = $_GET['user_id'];
     }
 
     $post = new Post();
     $post->setId($postId);
     $reactions = $post->getReactions();
+    $likes = 0;
+    $dislikes = 0;
+    $surprises = 0;
+    $laughes = 0;
+    $sadnesses = 0;
+    $angers = 0;
 
-    // $get_likes = mysqli_query($con, "SELECT likes, added_by FROM posts WHERE id='$postId'");
-    // $row = mysqli_fetch_array($get_likes);
-    // $total_likes = $row['likes'];
-    // $user_liked = $row['added_by'];
-
-    // $user_details_query = mysqli_query($con, "SELECT * FROM users WHERE username='$user_liked'");
-    // $row = mysqli_fetch_array($user_details_query);
-    // $total_user_likes = $row['num_likes'];
-
-    if (isset($_POST['like_button'])) {
-        $post->submitReaction($loggedUser->getId(), 0);
-    }
-
-    if (isset($_POST['dislike_button'])) {
-        $post->submitReaction($loggedUser->getId(), 1);
-    }
-
-    if (isset($_POST['surprise_button'])) {
-        $post->submitReaction($loggedUser->getId(), 2);
-    }
-
-    if (isset($_POST['laugh_button'])) {
-        $post->submitReaction($loggedUser->getId(), 3);
-    }
-
-    if (isset($_POST['sadness_button'])) {
-        $post->submitReaction($loggedUser->getId(), 4);
-    }
-
-    if (isset($_POST['anger_button'])) {
-        $post->submitReaction($loggedUser->getId(), 5);
-    }
-
-    $reaction = $loggedUser->getReaction($postId);
-
-    if ($reaction->getReactionType() != null) {
+    foreach ($reactions as &$reaction) {
         switch ($reaction->getReactionType()) {
             case 0:
-                echo '<form action="reaction.php?post_id=' . $postId . '" method="POST">
-				    <input type="submit" class="comment_like" name="like_button" value="Like">
-				    <div class="like_value">
-					    ' . $total_likes . ' Likes 
-				    </div>
-			        </form>
-		        ';
+                $likes++;
                 break;
             case 1:
-                echo '<form action="reaction.php?post_id=' . $postId . '" method="POST">
-				    <input type="submit" class="comment_like" name="dislike_button" value="Unlike">
-				    <div class="like_value">
-					    ' . $total_likes . ' Likes 
-				    </div>
-			        </form>
-		        ';
+                $dislikes++;
                 break;
             case 2:
-                echo '<form action="reaction.php?post_id=' . $postId . '" method="POST">
-				    <input type="submit" class="comment_like" name="surprise_button" value="Surprise">
-				    <div class="like_value">
-					    ' . $total_likes . ' Likes 
-				    </div>
-			        </form>
-		        ';
+                $surprises++;
                 break;
             case 3:
-                echo '<form action="reaction.php?post_id=' . $postId . '" method="POST">
-                    <input type="submit" class="comment_like" name="laugh_button" value="Laugh">
-                    <div class="like_value">
-                        ' . $total_likes . ' Likes 
-                    </div>
-                    </form>
-                ';
+                $laughes++;
                 break;
             case 4:
-                echo '<form action="reaction.php?post_id=' . $postId . '" method="POST">
-                    <input type="submit" class="comment_like" name="sadness_button" value="Sadness">
-                    <div class="like_value">
-                        ' . $total_likes . ' Likes 
-                    </div>
-                    </form>
-                ';
+                $sadnesses++;
                 break;
             case 5:
-                echo '<form action="reaction.php?post_id=' . $postId . '" method="POST">
-                    <input type="submit" class="comment_like" name="anger_button" value="Anger">
-                    <div class="like_value">
-                        ' . $total_likes . ' Likes 
-                    </div>
-                    </form>
-                ';
+                $angers++;
                 break;
         }
     }
+
+    $user = new User($userId);
+    if (isset($_POST['like_button'])) {
+        $post->submitReaction($user->getId(), 0);
+    }
+
+    if (isset($_POST['dislike_button'])) {
+        $post->submitReaction($user->getId(), 1);
+    }
+
+    if (isset($_POST['surprise_button'])) {
+        $post->submitReaction($user->getId(), 2);
+    }
+
+    if (isset($_POST['laugh_button'])) {
+        $post->submitReaction($user->getId(), 3);
+    }
+
+    if (isset($_POST['sadness_button'])) {
+        $post->submitReaction($user->getId(), 4);
+    }
+
+    if (isset($_POST['anger_button'])) {
+        $post->submitReaction($user->getId(), 5);
+    }
+
+    echo '<form action="reaction.php?post_id=' . $postId . '&user_id=' . $userId . '" method="POST" id="form_like">
+            <button type="submit" name="like_button" class="btn">
+			    <i class="fa fa-thumbs-up"></i>
+                    <div class="like_value">
+                        ' . $likes . ' 
+                    </div>
+		    </button>
+        </form>
+        ';
+    echo '<form action="reaction.php?post_id=' . $postId . '&user_id=' . $userId . '" method="POST" id="form_dislike">
+            <button type="submit" name="dislike_button" class="btn comment_like">
+                <i class="fa fa-thumbs-down"></i>
+                    <div class="like_value">
+                        ' . $dislikes . ' 
+                    </div>
+            </button>
+        </form>
+    ';
+    echo '<form action="reaction.php?post_id=' . $postId . '&user_id=' . $userId . '" method="POST" id="form_surprise">
+            <button type="submit" name="surprise_button" class="btn">
+			    <i class="fas fa-surprise"></i>
+                    <div class="like_value">
+                        ' . $surprises . ' 
+                    </div>
+		    </button>
+        </form>
+        ';
+    echo '<form action="reaction.php?post_id=' . $postId . '&user_id=' . $userId . '" method="POST" id="form_laugh">
+            <button type="submit" name="laugh_button" class="btn">
+            <i class="fa fa-smile"></i>
+                <div class="like_value">
+                    ' . $laughes . ' 
+                </div>
+            </button>
+        </form>
+    ';
+    echo '<form action="reaction.php?post_id=' . $postId . '&user_id=' . $userId . '" method="POST" id="form_sadness">
+            <button type="submit" name="sadness_button" class="btn">
+			    <i class="fas fa-sad-tear"></i>
+                    <div class="like_value">
+                        ' . $sadnesses . ' 
+                    </div>
+		    </button>
+        </form>
+        ';
+    echo '<form action="reaction.php?post_id=' . $postId . '&user_id=' . $userId . '" method="POST" id="form_anger">
+        <button type="submit" name="anger_button" class="btn">
+            <i class="fas fa-angry"></i>
+                <div class="like_value">
+                    ' . $angers . ' 
+                </div>
+        </button>
+    </form>
+    ';
     ?>
 
 </body>

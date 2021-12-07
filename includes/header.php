@@ -31,6 +31,7 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 	<title>Bem-vindo ao FacePoop!</title>
 
 	<link rel="stylesheet" type="text/css" href="assets/css/fontsawesome.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/all.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
@@ -83,7 +84,7 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 			</a>
 
 			<a href="includes/handlers/logout.php">
-				<i class="fas fa-sign-out-alt"></i>
+				<i class="fa fa-sign-out-alt"></i>
 			</a>
 
 		</nav>

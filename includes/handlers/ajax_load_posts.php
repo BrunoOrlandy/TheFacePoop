@@ -79,7 +79,7 @@ foreach ($friends as &$user) {
                             </div>				
                             
                             <div class='newsfeedPostOptions'>
-                                <iframe src='reaction.php?post_id=$postId' scrolling='no'></iframe>
+                                <iframe src='reaction.php?post_id=$postId&user_id=$userId' scrolling='yes'></iframe>
                             </div>
 
                         </div>
