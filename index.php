@@ -2,10 +2,10 @@
 include("includes/header.php");
 
 if (isset($_POST['post'])) {
-	$post = new PostDAO($loggedUserID);
-	$post->submitPost($_POST['post_text']);
+	$loggedUser->submitPost($_POST['post_text']);
 }
 ?>
+
 
 <div class="main_column column">
 	<form class="post_form" action="index.php" method="POST">
@@ -25,7 +25,7 @@ if (isset($_POST['post'])) {
 
 
 <script>
-	var userID = '<?php echo $loggedUserID; ?>';
+	var userID = '<?php echo $loggedUser->getId(); ?>';
 
 	$(document).ready(function() {
 

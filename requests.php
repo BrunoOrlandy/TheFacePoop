@@ -11,8 +11,7 @@ include("includes/header.php");
 
 	<?php
 
-	$friendship = new Friendship($loggedUserID);
-	$users = $friendship->getFriendRequests();
+	$users = $loggedUser->getFriendRequests();
 
 	if (count($users) == 0)
 		echo "Você não tem novos pedidos de amizade!";
@@ -22,7 +21,7 @@ include("includes/header.php");
 
 			if (isset($_POST['accept_request' . $user->getId()])) {
 
-				$friendship->acceptFriendRequest($user->getId());
+				$loggedUser->acceptFriendRequest($user->getId());
 
 				echo "Agora vocês são amigos!";
 
@@ -31,7 +30,7 @@ include("includes/header.php");
 
 			if (isset($_POST['reject_request' . $user->getId()])) {
 
-				$friendship->rejectFriendRequest($user->getId());
+				$loggedUser->rejectFriendRequest($user->getId());
 
 				echo "Você recusou a solicitação de amizade!";
 

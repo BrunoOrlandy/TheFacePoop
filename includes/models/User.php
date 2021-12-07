@@ -4,6 +4,7 @@ class User
 {
     private $id;
     private $login;
+    private $isActive;
     private $firstName;
     private $lastName;
     private $email;
@@ -11,8 +12,8 @@ class User
     private $description;
     private $profilePhoto;
     private $coverPhoto;
-    private $posts;
-    private $friendships;
+    private $post;
+    private $friendship;
     private $registerDate;
     private $birthdayDate;
 
@@ -25,18 +26,10 @@ class User
         $this->setId($this->userDAO->getID());
         $this->setFirstName($this->userDAO->getFirstName());
         $this->setLastName($this->userDAO->getLastName());
-        $this->setId($this->userDAO->getID());
-        $this->setId($this->userDAO->getID());
-        $this->setId($this->userDAO->getID());
-        $this->setId($this->userDAO->getID());
-        $this->setId($this->userDAO->getID());
-        $this->setId($this->userDAO->getID());
-        $this->setId($this->userDAO->getID());
-        $this->setId($this->userDAO->getID());
-        $this->setId($this->userDAO->getID());
-        $this->setId($this->userDAO->getID());
-        $this->setId($this->userDAO->getID());
-        $this->setId($this->userDAO->getID());
+        $this->setIsActive($this->userDAO->getIsActive());
+
+        $this->friendship = new Friendship();
+        $this->post = new Post();
     }
 
     public function getId()
@@ -59,6 +52,19 @@ class User
     public function setLogin($login)
     {
         $this->login = $login;
+
+        return $this;
+    }
+
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+        $this->userDAO->setIsActive();
 
         return $this;
     }
@@ -152,28 +158,14 @@ class User
         return $this;
     }
 
-    public function getPosts()
+    public function getPost()
     {
-        return $this->posts;
+        return $this->post;
     }
 
-    public function setPosts($posts)
+    public function getFriendship()
     {
-        $this->posts = $posts;
-
-        return $this;
-    }
-
-    public function getFriendships()
-    {
-        return $this->friendships;
-    }
-
-    public function setFriendships($friendships)
-    {
-        $this->friendships = $friendships;
-
-        return $this;
+        return $this->friendship;
     }
 
     public function getRegisterDate()
@@ -200,33 +192,79 @@ class User
         return $this;
     }
 
+    //Post region
+
+    public function submitPost($postText)
+    {
+        $this->post->submitPost($this->getId(), $postText);
+    }
+
+    public function getPosts()
+    {
+        return $this->post->getPosts($this->getId());
+    }
+
+    public function deletePost($postId)
+    {
+        $this->post->deletePost($postId);
+    }
+
+    public function getReaction($postId)
+    {
+        return $this->post->getUserReaction($this->getId(), $postId);
+    }
+
+    //Friendship region
+
     public function isFriendOf($userToId)
     {
-        return $this->userDAO->isFriendOf($userToId);
+        return $this->friendship->isFriendOf($this->getId(), $userToId);
     }
 
     public function didReceiveRequest($userToId)
     {
-        return $this->userDAO->didReceiveRequest($userToId);
+        return $this->friendship->didReceiveRequest($this->getId(), $userToId);
     }
 
     public function didSendRequest($userToId)
     {
-        return $this->userDAO->didSendRequest($userToId);
+        return $this->friendship->didSendRequest($this->getId(), $userToId);
     }
 
     public function sendRequest($userToId)
     {
-        return $this->userDAO->sendRequest($userToId);
+        return $this->friendship->sendRequest($this->getId(), $userToId);
     }
 
     public function removeFriend($userIdToRemove)
     {
-        $this->userDAO->removeFriend($userIdToRemove);
+        $this->friendship->removeFriend($this->getId(), $userIdToRemove);
     }
 
     public function getMutualFriends($userIdToCheck)
     {
-        return $this->userDAO->getMutualFriends($userIdToCheck);
+        return $this->friendship->getMutualFriends($this->getId(), $userIdToCheck);
+    }
+
+    public function getFriendRequests()
+    {
+        return $this->friendship->getFriendRequests($this->getId());
+    }
+
+    public function getFriends()
+    {
+        $friends = $this->friendship->getFriends($this->getId());
+
+        return $friends;
+    }
+
+    public function acceptFriendRequest($userToId)
+    {
+        $this->friendship->acceptFriendRequest($this->getId(), $userToId);
+    }
+
+    public function rejectFriendRequest($userToId)
+    {
+        $this->friendship->rejectFriendRequest($this->getId(), $userToId);
     }
 }

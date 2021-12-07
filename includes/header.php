@@ -3,10 +3,12 @@
 require 'config/config.php';
 include("includes/models/User.php");
 include("includes/models/Post.php");
+include("includes/models/Reaction.php");
 include("includes/models/Search.php");
 include("includes/models/Friendship.php");
 include("includes/models/DAOs/UserDAO.php");
 include("includes/models/DAOs/PostDAO.php");
+include("includes/models/DAOs/ReactionDAO.php");
 include("includes/models/DAOs/SearchDAO.php");
 include("includes/models/DAOs/FriendshipDAO.php");
 
@@ -28,8 +30,9 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 <head>
 	<title>Bem-vindo ao FacePoop!</title>
 
+	<link rel="stylesheet" type="text/css" href="assets/css/fontsawesome.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/all.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
 	<link rel="stylesheet" type="text/css" href="assets/css/jquery.Jcrop.css" />
@@ -60,7 +63,7 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 		</div>
 
 		<nav>
-			<a href="profile.php?profileUserID=<?php echo $loggedUserID; ?>">
+			<a href="profile.php?profileUserID=<?php echo $loggedUser->getId(); ?>">
 				<?php echo $loggedUser->getFirstName(); ?>
 			</a>
 
@@ -81,7 +84,7 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 			</a>
 
 			<a href="includes/handlers/logout.php">
-				<i class="fas fa-sign-out-alt"></i>
+				<i class="fa fa-sign-out-alt"></i>
 			</a>
 
 		</nav>

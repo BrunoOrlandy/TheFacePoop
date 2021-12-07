@@ -1,11 +1,23 @@
 <?php
 
-require '../../config/config.php';
+include("../../config/config.php");
+include("../models/User.php");
+include("../models/Post.php");
+include("../models/Search.php");
+include("../models/Friendship.php");
+include("../models/DAOs/UserDAO.php");
+include("../models/DAOs/PostDAO.php");
+include("../models/DAOs/SearchDAO.php");
+include("../models/DAOs/FriendshipDAO.php");
 
-if (isset($_GET['post_id']))
-	$post_id = $_GET['post_id'];
+if (isset($_GET['post_id']) && isset($_GET['user_id'])) {
+	$userId = $Get['user_id'];
+	$postId = $_GET['post_id'];
+}
 
 if (isset($_POST['result'])) {
-	if ($_POST['result'] == 'true')
-		$query = pg_query($con, "UPDATE posts SET is_deleted=true WHERE post_id='$post_id'");
+	if ($_POST['result'] == 'true') {
+		$loggedUser = new User($userId);
+		$loggedUser->deletePost($postId);
+	}
 }

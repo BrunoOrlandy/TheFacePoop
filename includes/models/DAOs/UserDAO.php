@@ -22,6 +22,21 @@ class UserDAO
 		return $this->user['login'];
 	}
 
+	public function getIsActive()
+	{
+		$userId = $this->user['user_id'];
+		$query = pg_query($this->con, "SELECT is_active FROM users WHERE user_id='$userId'");
+		$row = pg_fetch_array($query);
+
+		return $row['is_active'] == true;
+	}
+
+	public function setIsActive()
+	{
+		$userId = $this->user['user_id'];
+		pg_query($this->con, "UPDATE users SET is_active=false WHERE user_id='$userId'");
+	}
+
 	public function getNumberOfFriendRequests()
 	{
 		$login = $this->user['login'];
@@ -80,68 +95,5 @@ class UserDAO
 			return true;
 		else
 			return false;
-	}
-
-	public function isFriendOf($userToId)
-	{
-		$userFromId = $this->user['user_id'];
-
-		$checkRequest = pg_query($this->con, "SELECT * FROM friendships WHERE ((user_to_id=$userFromId AND user_id=$userToId) OR (user_to_id=$userToId AND user_id=$userFromId)) AND (acceptance_date IS NOT NULL OR block_date IS NOT NULL)");
-
-		if (pg_num_rows($checkRequest) > 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public function didReceiveRequest($userToId)
-	{
-		$userFromId = $this->user['user_id'];
-
-		$checkRequest = pg_query($this->con, "SELECT * FROM friendships WHERE user_to_id=$userToId AND user_id=$userFromId AND request_date IS NOT NULL");
-
-		if (pg_num_rows($checkRequest) > 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public function didSendRequest($userToId)
-	{
-		$userFromId = $this->user['user_id'];
-
-		$checkRequest = pg_query($this->con, "SELECT * FROM friendships WHERE user_to_id=$userToId AND user_id=$userFromId AND request_date IS NOT NULL");
-
-		if (pg_num_rows($checkRequest) > 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public function sendRequest($userToId)
-	{
-		$userFromId = $this->user['user_id'];
-		$date = date("Y-m-d");
-
-		pg_query($this->con, "INSERT INTO friendships VALUES(default, $userToId, $userFromId, '$date', default, default)");
-	}
-
-	public function removeFriend($userIdToRemove)
-	{
-		$userId = $this->user['user_id'];
-
-		pg_query($this->con, "DELETE FROM friendships WHERE user_to_id=$userId AND user_id=$userIdToRemove");
-	}
-
-	public function getMutualFriends($userIdToCheck)
-	{
-		$userId = $this->user['user_id'];
-
-		$query = pg_query($this->con, "SELECT * FROM friendships WHERE user_to_id=$userId AND user_id=$userIdToCheck AND request_date IS NOT NULL");
-
-		return pg_num_rows($query);
 	}
 }

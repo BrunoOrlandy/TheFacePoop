@@ -197,15 +197,45 @@ textarea:focus {
 	width: 100%;
 }
 
-.comment_like {
-	background-color: transparent;
+#form_like {
 	border: none;
-	font-size: 110%;
-	color: #3498db;
 	height: auto;
 	width: auto;
-	margin: 0;
-	padding: 10px;
+}
+
+#form_dislike {
+	border: none;
+	height: auto;
+	width: auto;
+	margin-left: 100px;
+}
+
+#form_surprise {
+	border: none;
+	height: auto;
+	width: auto;
+	margin-left: 200px;
+}
+
+#form_laugh {
+	border: none;
+	height: auto;
+	width: auto;
+	margin-left: 300px;
+}
+
+#form_sadness {
+	border: none;
+	height: auto;
+	width: auto;
+	margin-left: 400px;
+}
+
+#form_anger {
+	border: none;
+	height: auto;
+	width: auto;
+	margin-left: 500px;
 }
 
 .like_value {

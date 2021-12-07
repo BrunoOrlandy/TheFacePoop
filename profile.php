@@ -3,16 +3,15 @@ include("includes/header.php");
 
 if (isset($_GET['profileUserID'])) {
   $profileUserID = $_GET['profileUserID'];
+  $profileUser = new User($profileUserID);
 }
 
 if (isset($_POST['remove_friend'])) {
-  $user = new User($loggedUserID);
-  $user->removeFriend($profileUserID);
+  $loggedUser->removeFriend($profileUser->getId());
 }
 
 if (isset($_POST['add_friend'])) {
-  $user = new User($loggedUserID);
-  $user->sendRequest($profileUserID);
+  $loggedUser->sendRequest($profileUser->getId());
 }
 
 if (isset($_POST['respond_request'])) {
@@ -32,16 +31,16 @@ if (isset($_POST['respond_request'])) {
 
   <img src="assets/images/profile_pics/imagem.jpg">
 
-  <form action="<?php echo $profileUserID; ?>" method="POST">
+  <form action="<?php echo $profileUser->getId(); ?>" method="POST">
 
     <?php
 
-    if ($loggedUser->getId() != $profileUserID)
-      if ($loggedUser->isFriendOf($profileUserID))
+    if ($loggedUser->getId() != $profileUserID) {
+      if ($loggedUser->isFriendOf($uprofileUserID)) 
         echo '<button type="submit" class="btn btn-danger profile_side_button" name="remove_friend"><i class="fa fa-user-times"></i></button><br>';
-      else if ($loggedUser->didReceiveRequest($profileUserID))
+       else if ($loggedUser->didReceiveRequest($profileUserID)) 
         echo '<input type="submit" name="respond_request" class="default" value="Responder solicitação"><br>';
-      else if ($loggedUser->didSendRequest($profileUserID))
+       else if ($loggedUser->didSendRequest($profileUserID)) 
         echo '<input type="submit" name="" class="default" value="Solicitação enviada"><br>';
       else
         echo '<button type="submit" class="btn btn-success profile_side_button" name="add_friend"><i class="fa fa-user-plus"></i></button><br>';
@@ -57,11 +56,11 @@ if (isset($_POST['respond_request'])) {
 
   <?php
 
-  if ($loggedUserID != $profileUserID) {
+  if ($loggedUser->getId() != $profileUser->getId()) {
 
     echo '<div class="profile_info_bottom">';
 
-    echo $loggedUser->getMutualFriends($profileUserID) . " amigo(s) em comum";
+    echo $loggedUser->getMutualFriends($profileUser->getId()) . " amigo(s) em comum";
 
     echo '</div>';
   }
@@ -94,7 +93,7 @@ if (isset($_POST['respond_request'])) {
 
             <textarea class="form-control" name="post_body"></textarea>
 
-            <input type="hidden" name="logged_user" value="<?php echo $profileUserID; ?>">
+            <input type="hidden" name="logged_user" value="<?php echo $profileUser->getId(); ?>">
 
           </div>
         </form>
@@ -112,7 +111,7 @@ if (isset($_POST['respond_request'])) {
 </div>
 
 <script>
-  var userID = '<?php echo $profileUserID; ?>';
+  var userID = '<?php echo $profileUser->getId(); ?>';
 
   $(document).ready(function() {
 

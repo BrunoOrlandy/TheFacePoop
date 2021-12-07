@@ -8,7 +8,7 @@ include("includes/form_handlers/settings_handler.php");
 	<h4>Configurações da conta</h4>
 	<img src='assets/images/profile_pics/imagem.jpg' class='small_profile_pic'>
 	<br>
-	<a href="settings.php">Atualizar foto de perfil</a> <br><br><br>
+	<a href="upload.php">Atualizar foto de perfil</a> <br><br><br>
 
 	Altere os valores e clique em 'Atualizar Informações'
 
