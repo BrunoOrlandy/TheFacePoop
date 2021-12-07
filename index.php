@@ -55,7 +55,7 @@ if (isset($_POST['post'])) {
 				var ajaxReq = $.ajax({
 					url: "includes/handlers/ajax_load_posts.php",
 					type: "POST",
-					data: "page=1&userID=" + userID,
+					data: "page=" + page + "&userID=" + userID,
 					cache: false,
 
 					success: function(response) {

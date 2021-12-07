@@ -55,7 +55,7 @@ foreach ($friends as &$user) {
                 $postDate = $post->getDate();
 
                 if ($loggedUser->getId() == $userId)
-                    $deleteButton = "<button class='delete_button btn-danger' id='post$postId'>Excluir</button>";
+                    $deleteButton = "<i class='fas fa-trash delete_button' id='post$postId'></i>";
                 else
                     $deleteButton = "";
 

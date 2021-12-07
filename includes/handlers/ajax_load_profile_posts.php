@@ -13,9 +13,10 @@ include("../models/DAOs/SearchDAO.php");
 include("../models/DAOs/FriendshipDAO.php");
 
 $limit = 10;
-$loggedUser = new User($_REQUEST['userID']);
+$profileUser = new User($_REQUEST['profileUserID']);
+$loggedUser = new User($_REQUEST['loggedUserID']);
 
-$posts = $loggedUser->getPosts();
+$posts = $profileUser->getPosts();
 
 foreach ($posts as &$post) {
     if ($post instanceof Post) {
@@ -39,16 +40,16 @@ foreach ($posts as &$post) {
             $count++;
         }
 
-        $userId = $loggedUser->getId();
-        $firstName = $loggedUser->getFirstName();
-        $lastName = $loggedUser->getLastName();
-        $profilePhoto = $loggedUser->getProfilePhoto();
+        $userId = $profileUser->getId();
+        $firstName = $profileUser->getFirstName();
+        $lastName = $profileUser->getLastName();
+        $profilePhoto = $profileUser->getProfilePhoto();
         $postId = $post->getId();
         $postText = $post->getText();
         $postDate = $post->getDate();
 
-        if ($loggedUser->getId() == $userId)
-            $deleteButton = "<button class='delete_button btn-danger' id='post$postId'>Excluir</button>";
+        if ($profileUser->getId() == $loggedUser->getId())
+            $deleteButton = "<i class='fas fa-trash delete_button' id='post$postId'></i>";
         else
             $deleteButton = "";
 

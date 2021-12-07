@@ -30,7 +30,7 @@ class SearchDAO
 
     public function searchUsers($searchString)
     {
-        $query = pg_query($this->con, "SELECT * FROM users WHERE (login LIKE '$searchString%' OR first_name LIKE '$searchString%' OR last_name LIKE '$searchString%') AND is_active=true LIMIT 8");
+        $query = pg_query($this->con, "SELECT * FROM users WHERE (login LIKE '$searchString%' OR first_name LIKE '$searchString%' OR last_name LIKE '$searchString%') AND is_active=1 LIMIT 8");
         $users = array();
 
         while ($row = pg_fetch_array($query)) {

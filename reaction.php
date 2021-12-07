@@ -147,7 +147,7 @@
         ';
     echo '<form action="reaction.php?post_id=' . $postId . '&user_id=' . $userId . '" method="POST" id="form_laugh">
             <button type="submit" name="laugh_button" class="btn">
-            <i class="fa fa-smile"></i>
+            <i class="fa fa-laugh-squint"></i>
                 <div class="like_value">
                     ' . $laughes . ' 
                 </div>

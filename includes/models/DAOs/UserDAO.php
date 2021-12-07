@@ -28,13 +28,13 @@ class UserDAO
 		$query = pg_query($this->con, "SELECT is_active FROM users WHERE user_id='$userId'");
 		$row = pg_fetch_array($query);
 
-		return $row['is_active'] == true;
+		return $row['is_active'] == 1;
 	}
 
-	public function setIsActive()
+	public function setIsActive($isActive)
 	{
 		$userId = $this->user['user_id'];
-		pg_query($this->con, "UPDATE users SET is_active=false WHERE user_id='$userId'");
+		pg_query($this->con, "UPDATE users SET is_active=$isActive WHERE user_id='$userId'");
 	}
 
 	public function getNumberOfFriendRequests()
@@ -43,14 +43,6 @@ class UserDAO
 		$query = pg_query($this->con, "SELECT * FROM friend_requests WHERE user_to='$login'");
 		return pg_num_rows($query);
 	}
-
-	// public function getNumPosts()
-	// {
-	// 	$login = $this->user['login'];
-	// 	$query = pg_query($this->con, "SELECT num_posts FROM users WHERE login='$login'");
-	// 	$row = pg_fetch_array($query);
-	// 	return $row['num_posts'];
-	// }
 
 	public function getFirstName()
 	{
@@ -91,9 +83,6 @@ class UserDAO
 		$query = pg_query($this->con, "SELECT is_active FROM users WHERE user_id='$userId'");
 		$row = pg_fetch_array($query);
 
-		if ($row['is_active'] == false)
-			return true;
-		else
-			return false;
+		return $row['is_active'] == 1;
 	}
 }
