@@ -41,11 +41,17 @@ class ReactionDAO
             $reaction->setId($row['reaction_id']);
             $reaction->setReactionType($row['reaction_value']);
             $reaction->setDate($row['inclusion_date']);
-            
+
             return $reaction;
         }
 
         return null;
+    }
+
+    public function changeReaction($userId, $postId, $reactionValue)
+    {
+        $inclusion_date = date("Y-m-d h:i:s");
+        pg_query($this->con, "UPDATE reactions SET reaction_value=$reactionValue, inclusion_date='$inclusion_date' WHERE user_id='$userId' AND post_id='$postId'");
     }
 
     public function deleteReaction($reactionId)

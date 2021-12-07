@@ -54,6 +54,16 @@ class Reaction
         $this->reactionDAO->submitReaction($userId, $postId, $reactionValue);
     }
 
+    public function removeReaction($reactionId)
+    {
+        $this->reactionDAO->deleteReaction($reactionId);
+    }
+
+    public function changeReaction($userId, $postId, $reactionValue)
+    {
+        $this->reactionDAO->changeReaction($userId, $postId, $reactionValue);
+    }
+
     public function getReactions($postId)
     {
         return $this->reactionDAO->getReactions($postId);
@@ -69,7 +79,7 @@ abstract class ReactionType
 {
     const LIKE = 0;
     const DISLIKE = 1;
-    const SUPRISE = 2;
+    const SURPRISE = 2;
     const LAUGH = 3;
     const SADNESS = 4;
     const ANGER = 5;

@@ -95,27 +95,69 @@
 
     $user = new User($userId);
     if (isset($_POST['like_button'])) {
-        $post->submitReaction($user->getId(), 0);
+        $reaction = $user->getReaction($post->getId());
+
+        if (is_null($reaction))
+            $user->reactTo($post->getId(), ReactionType::LIKE);
+        else if (!is_null($reaction) && $reaction->getReactionType() == ReactionType::LIKE) {
+            $user->unReactTo($reaction->getId());
+        } else
+            $user->changeReaction($post->getId(), ReactionType::LIKE);
     }
 
     if (isset($_POST['dislike_button'])) {
-        $post->submitReaction($user->getId(), 1);
+        $reaction = $user->getReaction($post->getId());
+
+        if (is_null($reaction))
+            $user->reactTo($post->getId(), ReactionType::DISLIKE);
+        else if (!is_null($reaction) && $reaction->getReactionType() == ReactionType::DISLIKE) {
+            $user->unReactTo($reaction->getId());
+        } else
+            $user->changeReaction($post->getId(), ReactionType::DISLIKE);
     }
 
     if (isset($_POST['surprise_button'])) {
-        $post->submitReaction($user->getId(), 2);
+        $reaction = $user->getReaction($post->getId());
+
+        if (is_null($reaction))
+            $user->reactTo($post->getId(), ReactionType::SURPRISE);
+        else if (!is_null($reaction) && $reaction->getReactionType() == ReactionType::SURPRISE) {
+            $user->unReactTo($reaction->getId());
+        } else
+            $user->changeReaction($post->getId(), ReactionType::SURPRISE);
     }
 
     if (isset($_POST['laugh_button'])) {
-        $post->submitReaction($user->getId(), 3);
+        $reaction = $user->getReaction($post->getId());
+
+        if (is_null($reaction))
+            $user->reactTo($post->getId(), ReactionType::LAUGH);
+        else if (!is_null($reaction) && $reaction->getReactionType() == ReactionType::LAUGH) {
+            $user->unReactTo($reaction->getId());
+        } else
+            $user->changeReaction($post->getId(), ReactionType::LAUGH);
     }
 
     if (isset($_POST['sadness_button'])) {
-        $post->submitReaction($user->getId(), 4);
+        $reaction = $user->getReaction($post->getId());
+
+        if (is_null($reaction))
+            $user->reactTo($post->getId(), ReactionType::SADNESS);
+        else if (!is_null($reaction) && $reaction->getReactionType() == ReactionType::SADNESS) {
+            $user->unReactTo($reaction->getId());
+        } else
+            $user->changeReaction($post->getId(), ReactionType::SADNESS);
     }
 
     if (isset($_POST['anger_button'])) {
-        $post->submitReaction($user->getId(), 5);
+        $reaction = $user->getReaction($post->getId());
+
+        if (is_null($reaction))
+            $user->reactTo($post->getId(), ReactionType::ANGER);
+        else if (!is_null($reaction) && $reaction->getReactionType() == ReactionType::ANGER) {
+            $user->unReactTo($reaction->getId());
+        } else
+            $user->changeReaction($post->getId(), ReactionType::ANGER);
     }
 
     echo '<form action="reaction.php?post_id=' . $postId . '&user_id=' . $userId . '" method="POST" id="form_like">

@@ -214,6 +214,21 @@ class User
         return $this->post->getUserReaction($this->getId(), $postId);
     }
 
+    public function reactTo($postId, $reactionType)
+    {
+        $this->post->submitUserReaction($this->getId(), $postId, $reactionType);
+    }
+
+    public function unReactTo($reactionId)
+    {
+        $this->post->removeUserReaction($reactionId);
+    }
+
+    public function changeReaction($postId, $reactionType)
+    {
+        $this->post->changeUserReaction($this->getId(), $postId, $reactionType);
+    }
+
     //Friendship region
 
     public function isFriendOf($userToId)

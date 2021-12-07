@@ -95,17 +95,25 @@ class Post
 
     //Reaction region
 
-    public function submitReaction($userId, $reactionValue)
-    {
-        $this->reaction->submitReaction($userId, $this->getId(), $reactionValue);
-    }
-
     public function getReactions()
     {
         return $this->reaction->getReactions($this->getId());
     }
 
-    
+    public function submitUserReaction($userId, $postId, $reactionValue)
+    {
+        $this->reaction->submitReaction($userId, $postId, $reactionValue);
+    }
+
+    public function removeUserReaction($reactionId)
+    {
+        $this->reaction->removeReaction($reactionId);
+    }
+
+    public function changeUserReaction($userId, $postId, $reactionValue)
+    {
+        $this->reaction->changeReaction($userId, $postId, $reactionValue);
+    }
 
     public function getUserReaction($userId, $postId)
     {
