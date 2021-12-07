@@ -96,7 +96,7 @@ if (isset($_GET['type'])) {
 			}
 
 			if ($value instanceof Post) {
-				echo "É USUÁRIO PORCO";
+				echo "NOT IMPLEMENTED";
 			}
 
 			if ($value instanceof Comment) {

@@ -46,7 +46,12 @@ class SearchDAO
         $posts = array();
 
         while ($row = pg_fetch_array($query)) {
-            $posts[] = new User($row['user_id']);
+            $post = new Post();
+			$post->setId($row['post_id']);
+			$post->setText($row['text']);
+			$post->setDate($row['inclusion_date']);
+
+            $posts[] = $post;
         }
 
         return count($posts) > 0 ? $posts : null;
@@ -54,13 +59,16 @@ class SearchDAO
 
     public function searchComments($searchString)
     {
-        $query = pg_query($this->con, "SELECT * FROM comments WHERE text LIKE '$searchString%' LIMIT 8");
+        // $query = pg_query($this->con, "SELECT * FROM comments WHERE text LIKE '$searchString%' LIMIT 8");
+        // $comments = array();
+
+        // while ($row = pg_fetch_array($query)) {
+        //     $comments[] = new Comment($row['user_id']);
+        // }
+
+        // return count($comments) > 0 ? $comments : null;
         $comments = array();
 
-        while ($row = pg_fetch_array($query)) {
-            $comments[] = new User($row['user_id']);
-        }
-
-        return count($comments) > 0 ? $comments : null;
+        return $comments;
     }
 }
