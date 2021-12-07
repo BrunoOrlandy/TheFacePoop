@@ -39,21 +39,24 @@ if (isset($_POST['respond_request'])) {
       header("Location: user_closed.php");
     }
 
-    if ($loggedUser->getId() != $profileUser->getId()) {
-      if ($loggedUser->isFriendOf($profileUser->getId())) {
-        echo '<input type="submit" name="remove_friend" class="danger" value="Excluir amigo"><br>';
-      } else if ($loggedUser->didReceiveRequest($profileUser->getId())) {
+    if ($loggedUser->getId() != $profileUserID)
+      if ($loggedUser->isFriendOf($profileUserID))
+        echo '<button type="submit" class="btn btn-danger profile_side_button" name="remove_friend"><i class="fa fa-user-times"></i></button><br>';
+      else if ($loggedUser->didReceiveRequest($profileUserID))
         echo '<input type="submit" name="respond_request" class="default" value="Responder solicitação"><br>';
-      } else if ($loggedUser->didSendRequest($profileUser->getId())) {
+      else if ($loggedUser->didSendRequest($profileUserID))
         echo '<input type="submit" name="" class="default" value="Solicitação enviada"><br>';
-      } else
-        echo '<input type="submit" name="add_friend" class="success" value="Adicionar amigo"><br>';
-    }
+      else
+        echo '<button type="submit" class="btn btn-success profile_side_button" name="add_friend"><i class="fa fa-user-plus"></i></button><br>';
 
     ?>
   </form>
 
-  <input type="submit" class="blue" data-toggle="modal" data-target="#post_form" value="Nova postagem">
+  <?php
+  if ($loggedUser->getId() == $profileUserID) {
+    echo '<button type="submit" class="btn btn-primary  profile_side_button" data-toggle="modal" data-target="#post_form"><i class="fa fa-plus-circle"></i></button>';
+  }
+  ?>
 
   <?php
 
@@ -100,7 +103,6 @@ if (isset($_POST['respond_request'])) {
         </form>
       </div>
 
-
       <div class="modal-footer">
 
         <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
@@ -113,7 +115,8 @@ if (isset($_POST['respond_request'])) {
 </div>
 
 <script>
-  var userID = '<?php echo $profileUser->getId(); ?>';
+  var profileUserID = '<?php echo $profileUser->getId(); ?>';
+  var loggedUserID = '<?php echo $loggedUser->getId(); ?>';
 
   $(document).ready(function() {
 
@@ -122,7 +125,7 @@ if (isset($_POST['respond_request'])) {
     $.ajax({
       url: "includes/handlers/ajax_load_profile_posts.php",
       type: "POST",
-      data: "page=1&userID=" + userID,
+      data: "page=1&profileUserID=" + profileUserID + "&loggedUserID=" + loggedUserID,
       cache: false,
 
       success: function(data) {
@@ -143,7 +146,7 @@ if (isset($_POST['respond_request'])) {
         var ajaxReq = $.ajax({
           url: "includes/handlers/ajax_load_profile_posts.php",
           type: "POST",
-          data: "page=" + page + "&userID=" + userID,
+          data: "page=" + page + "&profileUserID=" + profileUserID + "&loggedUserID=" + loggedUserID,
           cache: false,
 
           success: function(response) {

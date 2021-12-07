@@ -92,7 +92,6 @@ if (isset($_SESSION['login']) && isset($_SESSION['user_id'])) {
 		<div class="dropdown_data_window" style="height:0px; border:none;"></div>
 		<input type="hidden" id="dropdown_data_type" value="">
 
-
 	</div>
 
 	<div class="wrapper">

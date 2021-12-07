@@ -6,7 +6,7 @@ $(document).ready(function () {
 		}
 	});
 
-	$('.button_holder').on('click', function () {
+	$('.search_button').on('click', function () {
 		document.search_form.submit();
 	})
 

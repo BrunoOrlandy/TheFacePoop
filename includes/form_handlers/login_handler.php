@@ -17,9 +17,9 @@ if (isset($_POST['login_button'])) {
 		$login = $row['login'];
 		$user_id = $row['user_id'];
 
-		$user_closed_query = pg_query($con, "SELECT * FROM users WHERE email='$email' AND is_active=false");
+		$user_closed_query = pg_query($con, "SELECT * FROM users WHERE email='$email' AND is_active=0");
 		if (pg_num_rows($user_closed_query) == 1) {
-			$reopen_account = pg_query($con, "UPDATE users SET is_active=true WHERE email='$email'");
+			$reopen_account = pg_query($con, "UPDATE users SET is_active=1 WHERE user_id=$user_id");
 		}
 
 		$_SESSION['login'] = $login;

@@ -15,13 +15,13 @@ class PostDAO
 
 		if (!$isEmpty) {
 			$inclusion_date = date("Y-m-d h:i:s");
-			pg_query($this->con, "INSERT INTO posts VALUES(default, default, '$userId', '$postText', '$inclusion_date', false)");
+			pg_query($this->con, "INSERT INTO posts VALUES(default, default, '$userId', '$postText', '$inclusion_date', 0)");
 		}
 	}
 
 	public function getPosts($userId)
 	{
-		$query = pg_query($this->con, "SELECT * FROM posts WHERE user_id=$userId AND is_deleted=false ORDER BY post_id DESC");
+		$query = pg_query($this->con, "SELECT * FROM posts WHERE user_id=$userId AND is_deleted=0 ORDER BY post_id DESC");
 		$posts = array();
 
 		while ($row = pg_fetch_array($query)) {
@@ -38,7 +38,7 @@ class PostDAO
 
 	public function deletePost($postId)
     {
-		$query = pg_query($this->con, "UPDATE posts SET is_deleted=true WHERE post_id='$postId'");
+		$query = pg_query($this->con, "UPDATE posts SET is_deleted=1 WHERE post_id='$postId'");
     }
 }
 

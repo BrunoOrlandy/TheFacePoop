@@ -1,3 +1,8 @@
+CREATE TABLE images(
+	image_id SERIAL PRIMARY KEY,
+	file TEXT
+);
+
 CREATE TABLE users(
 	user_id SERIAL PRIMARY KEY,
 	login VARCHAR(50) NOT NULL,
@@ -9,7 +14,7 @@ CREATE TABLE users(
 	birthday_date DATE,
 	register_date DATE NOT NULL DEFAULT CURRENT_DATE,
 	image_id INT,
-	is_active BOOLEAN,
+	is_active INT,
 	CONSTRAINT fk_image FOREIGN KEY (image_id) REFERENCES images(image_id)
 );
 
@@ -34,20 +39,14 @@ CREATE TABLE comments(
 	CONSTRAINT fk_users FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 
-CREATE TABLE images(
-	image_id SERIAL PRIMARY KEY,
-	file BYTEA
-);
-
 CREATE TABLE posts(
 	post_id SERIAL PRIMARY KEY,
 	image_id INT,
 	user_id INT NOT NULL,
 	text TEXT,
 	inclusion_date DATE NOT NULL,
-	is_deleted BOOLEAN,
+	is_deleted INT,
 	CONSTRAINT fk_users FOREIGN KEY (user_id) REFERENCES users(user_id),
-	CONSTRAINT fk_comment FOREIGN KEY (comment_id) REFERENCES comments(comment_id),
 	CONSTRAINT fk_image FOREIGN KEY (image_id) REFERENCES images(image_id)
 );
 
