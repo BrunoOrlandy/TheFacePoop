@@ -31,7 +31,7 @@ if (isset($_POST['respond_request'])) {
 
   <img src="<?php echo $profileUser->getProfilePhoto(); ?>">
 
-  <form action="<?php echo $profileUser->getId(); ?>" method="POST">
+  <form action="profile.php?profileUserID=<?php echo $profileUser->getId(); ?>" method="POST">
 
     <?php
 
